@@ -106,6 +106,8 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 .chips{display:flex;gap:6px;justify-content:center}
 .chip{padding:8px 15px;border-radius:999px;background:rgba(0,0,0,.25);border:2px solid transparent;font-size:1rem;font-weight:700}
 .chip.sel{background:var(--gold);color:#22160a;border-color:var(--gold)}
+.bank{color:var(--dim);font-size:.9rem;margin-bottom:14px}
+.bank b{color:var(--gold);font-size:1.1rem}
 .start{font-size:clamp(1.25rem,3.2vw,1.8rem);font-weight:800;padding:16px 56px;border-radius:999px;
   background:linear-gradient(135deg,var(--gold),#ffb01f);color:#2a1c05;box-shadow:0 14px 40px rgba(255,210,63,.3)}
 .start:hover{transform:translateY(-2px)}
@@ -131,12 +133,16 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 @keyframes pulse{50%{transform:scale(1.07)}}
 .track{height:10px;border-radius:10px;background:rgba(0,0,0,.3);overflow:hidden;margin-bottom:clamp(12px,2.4vw,24px)}
 .track i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--d),var(--gold));transition:width .25s linear}
-.qbox{flex:1;display:grid;place-items:center;text-align:center;padding:clamp(14px,3vw,34px);
-  background:var(--panel);border:1px solid var(--line);border-radius:26px;margin-bottom:clamp(12px,2.4vw,22px)}
-.qbox h2{font-size:clamp(1.5rem,4.6vw,3.2rem);line-height:1.45;max-width:20ch}
+.qbox{flex:1;display:grid;place-items:center;text-align:center;padding:clamp(16px,3vw,40px);
+  background:var(--panel);border:1px solid var(--line);border-radius:26px;margin-bottom:clamp(10px,2vw,18px);
+  min-height:clamp(150px,30vh,380px)}
+.qbox h2{line-height:1.35;max-width:min(94%,30ch);text-wrap:balance}
+.qbox h2.s1{font-size:clamp(2rem,6.6vw,5rem)}
+.qbox h2.s2{font-size:clamp(1.7rem,5vw,3.9rem)}
+.qbox h2.s3{font-size:clamp(1.45rem,4vw,3.1rem)}
 .ans{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.4vw,14px);margin-bottom:clamp(12px,2vw,20px)}
 .ans button{display:flex;align-items:center;gap:14px;text-align:start;padding:clamp(14px,2.4vw,24px) clamp(16px,2.4vw,26px);
-  border-radius:20px;font-size:clamp(1.05rem,2.6vw,1.75rem);font-weight:700;transition:.15s;min-height:clamp(66px,10vh,116px)}
+  border-radius:20px;font-size:clamp(1.05rem,2.5vw,1.7rem);font-weight:700;transition:.15s;min-height:clamp(60px,8.5vh,102px)}
 .ans button .sh{font-size:1.3em;line-height:1;opacity:.85;flex:none}
 .ans button .n{background:rgba(0,0,0,.25);border-radius:9px;padding:1px 10px;font-size:.8em;flex:none}
 .ans button:nth-child(1){background:var(--a)}
@@ -181,7 +187,9 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 
 @media (max-width:640px){
   .tools button{width:34px;height:34px;font-size:.92rem}
-  .bar{padding-inline-start:118px;gap:8px}
+  .bar{padding-inline-start:0;padding-top:40px;gap:8px;flex-wrap:wrap}
+  .turn{order:3;flex-basis:100%}
+  .qbox{min-height:clamp(120px,24vh,220px)}
   .teams-in,.ans,.podium{grid-template-columns:1fr}
   .foot{flex-direction:column}
   .gift b{white-space:normal}
@@ -233,7 +241,7 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 
     <div class="opts-row">
       <div class="opt-g">
-        <h3>عدد الأسئلة</h3>
+        <h3>عدد أسئلة الجولة</h3>
         <div class="chips" id="chQ"></div>
       </div>
       <div class="opt-g">
@@ -245,6 +253,8 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
         <div class="chips" id="chS"></div>
       </div>
     </div>
+
+    <p class="bank">بنك الأسئلة: <b id="bankN">0</b> سؤال — كل جولة بتاخد أسئلة جديدة، وترتيب الأسئلة والأجوبة بيتغيّر كل مرة</p>
 
     <button class="start" id="startBtn" type="button">يلا نبلّش 🚀</button>
     <button class="test" id="testBtn" type="button">جرّب الصوت قبل ما تبلّش 🔊</button>
@@ -305,34 +315,15 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
   </div>
 </section>
 
+<script src="questions.js"></script>
 <script>
 /* =======================================================
    تحدّي النظافة — مسابقة صفّية على الشاشة
    هدية ليوم النظافة العالمي من الطالبة جنى رامي أسعد اغبارية
-   الأسئلة كلها بمصفوفة BANK. المؤثرات الصوتية مولّدة داخل
+   الأسئلة كلها بملف questions.js. المؤثرات الصوتية مولّدة داخل
    المتصفح، والتعليق الصوتي من ElevenLabs (روابط VO).
    ======================================================= */
 
-const BANK = [
-  ["وين بنرمي قنينة البلاستيك الفاضية؟", ["حاوية البلاستيك","حاوية الورق","النفايات العضوية","بالأرض ورا الشجرة"], 0],
-  ["قنينة البلاستيك كم بدها وقت لتتحلل بالطبيعة؟", ["أسبوع","سنة وحدة","عشر سنين","حوالي 450 سنة"], 3],
-  ["الجرايد والكرتون وين بيروحوا؟", ["حاوية الزجاج","حاوية الورق والكرتون","النفايات العضوية","حاوية البلاستيك"], 1],
-  ["شو أول إشي بنعمله قبل ما نبلّش التنظيف؟", ["نبلّش نلمّ بسرعة","نصوّر صور","نلبس القفازات","نوزّع الجوائز"], 2],
-  ["لقيت زجاج مكسور بالساحة، شو بتعمل؟", ["بلمّه بإيدي","بخبّر المعلّمة وما بلمسه","بركله بعيد","بتجاهله"], 1],
-  ["إيمتى بينحتفل باليوم العالمي للنظافة؟", ["أول يوم بالسنة","السبت الثالث من أيلول","آخر جمعة بأيار","كل يوم إثنين"], 1],
-  ["أحسن طريقة نقلّل فيها النفايات؟", ["نستهلك أقل ونعيد الاستخدام","نحرقها","ندفنها بالحديقة","نرميها ببلد تاني"], 0],
-  ["قشر الموز وبقايا الخضار وين بيروحوا؟", ["النفايات العضوية","حاوية الورق","حاوية الزجاج","حاوية البلاستيك"], 0],
-  ["شو معنى «إعادة التدوير»؟", ["نرمي النفايات بعيد","نحوّل النفايات لمواد جديدة","نحرق النفايات","نخبّي النفايات"], 1],
-  ["البطاريات المستعملة وين بنحطها؟", ["مع النفايات العادية","بالمي","صندوق خاص للنفايات الخطرة","بحاوية الورق"], 2],
-  ["الكيس اللي بينرمى بالشارع لوين بيوصل غالبًا؟", ["بيختفي لحاله","للوادي وبعدين للبحر","بيتحوّل تراب بيوم","بياخده الهوا للفضاء"], 1],
-  ["شو بيصير للسمك لما ياكل بلاستيك؟", ["بيكبر أسرع","بيتأذى وممكن يموت","ما بيصير إشي","بيصير لونه أحلى"], 1],
-  ["أي وحدة من هدول بتنعاد تدويرها؟", ["كيس الشيبس","علبة الألمنيوم","المحارم المستعملة","علكة"], 1],
-  ["الزجاج كم مرة بينفع ينعاد تدويره؟", ["ولا مرة","مرة وحدة بس","مرتين","مرات كتير بدون ما يخسر جودته"], 3],
-  ["شو أفضل بديل عن الأكياس البلاستيكية؟", ["كيس قماش بينعاد استخدامه","كيسين بلاستيك","كرتونة بترمى","ما في بديل"], 0],
-  ["لما نشوف حدا بيرمي زبالة عالأرض، شو بنعمل؟", ["بنتجاهله","بنصرّخ عليه","بننبّهه بلطف","بنرمي إحنا كمان"], 2],
-  ["«الكومبوست» شو هو؟", ["نوع بلاستيك","سماد طبيعي من بقايا الأكل","آلة تنظيف","حاوية زجاج"], 1],
-  ["شو بيوفّر أكثر إشي مي؟", ["نسكّر الحنفية وقت تنظيف الأسنان","نغسل السيارة كل يوم","نترك الحنفية مفتوحة","نستحمّى ساعة"], 0]
-];
 
 /* التعليق الصوتي (ElevenLabs) — بدّل الروابط إذا بدك أصوات تانية */
 const CDN = "https://d8j0ntlcm91z4.cloudfront.net/user_3GFqKKKXq5ngkGMrqNrzPKz5sgY/hf_20260919_111318_";
@@ -612,7 +603,8 @@ function chips(box, vals, cur, onPick) {
     sfx.click();
   };
 }
-chips($("#chQ"), [["6","6"],["10","10"],["14","14"],["الكل","99"]], "10", v => S.nQ = +v);
+chips($("#chQ"), [["6","6"],["10","10"],["15","15"],["20","20"]], "10", v => S.nQ = +v);
+$("#bankN").textContent = BANK.length;
 chips($("#chT"), [["15 ث","15"],["25 ث","25"],["40 ث","40"]], "25", v => S.secs = +v);
 chips($("#chS"), [["مفعّلة","1"],["مقفلة","0"]], "1", v => S.steal = v === "1");
 
@@ -638,6 +630,29 @@ function shuffle(a) {
   return c;
 }
 
+/* --- اختيار أسئلة الجولة: ما بتتكرر لحد ما يخلص البنك --- */
+const SEEN = "wcd_seen";
+const loadSeen = () => { try { return (JSON.parse(localStorage.getItem(SEEN)) || []).filter(i => i < BANK.length); } catch { return []; } };
+const saveSeen = a => { try { localStorage.setItem(SEEN, JSON.stringify(a)); } catch {} };
+
+function prepQ(q) {                       // خلط الأجوبة كمان
+  const order = shuffle(q[1].map((_, i) => i));
+  return [q[0], order.map(i => q[1][i]), order.indexOf(q[2])];
+}
+function pickRound(n) {
+  n = Math.min(n, BANK.length);
+  const all = BANK.map((_, i) => i);
+  let seen = loadSeen();
+  let fresh = all.filter(i => !seen.includes(i));
+  if (fresh.length < n) {                 // خلص البنك: بنبلّش دورة جديدة
+    seen = seen.slice(-Math.min(5, BANK.length - n));
+    fresh = all.filter(i => !seen.includes(i));
+  }
+  const chosen = shuffle(fresh).slice(0, n);
+  saveSeen([...seen, ...chosen].slice(-(BANK.length - 1)));
+  return chosen.map(i => prepQ(BANK[i]));
+}
+
 $("#startBtn").onclick = () => {
   audio();
   S.names[0] = $("#n1").value.trim() || "الفريق الأول";
@@ -649,7 +664,7 @@ $("#startBtn").onclick = () => {
 function newRound() {
   audio();
   S.score = [0, 0];
-  S.list = shuffle(BANK).slice(0, Math.min(S.nQ, BANK.length));
+  S.list = pickRound(S.nQ);
   S.i = 0; S.turn = 0;
   $("#sn1").textContent = S.names[0];
   $("#sn2").textContent = S.names[1];
@@ -666,6 +681,7 @@ function askQ(first) {
   S.phase = "ask"; S.golden = false;
   $("#qNum").textContent = `سؤال ${S.i + 1} / ${S.list.length}`;
   $("#qText").textContent = q;
+  $("#qText").className = q.length <= 30 ? "s1" : q.length <= 46 ? "s2" : "s3";
   $("#msg").innerHTML = "&nbsp;"; $("#msg").className = "msg";
   $("#nextBtn").classList.add("hidden");
   $("#ans").innerHTML = a.map((t, i) =>
