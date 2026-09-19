@@ -106,6 +106,30 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 .chips{display:flex;gap:6px;justify-content:center}
 .chip{padding:8px 15px;border-radius:999px;background:rgba(0,0,0,.25);border:2px solid transparent;font-size:1rem;font-weight:700}
 .chip.sel{background:var(--gold);color:#22160a;border-color:var(--gold)}
+/* ---------- avatar ---------- */
+.ava-wrap{display:flex;align-items:center;gap:clamp(10px,2vw,22px);justify-content:center;
+  margin:0 auto clamp(14px,2.4vw,24px);max-width:860px}
+.ava{width:clamp(100px,13vw,158px);flex:none;position:relative;cursor:pointer;
+  animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-9px)}}
+.ava svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 26px rgba(0,0,0,.38))}
+.ava .spk{position:absolute;inset-inline-end:-4px;bottom:2px;width:34px;height:34px;border-radius:50%;
+  background:var(--gold);color:#2a1c05;font-size:.95rem;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.ava .spk:hover{transform:scale(1.1)}
+.wave-arm{transform-origin:148px 126px;animation:wv 1.2s ease-in-out infinite}
+@keyframes wv{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(24deg)}}
+.ava.talk .wave-arm{animation-duration:.55s}
+.ava.talk{animation-duration:2s}
+.eye{transform-origin:center;animation:blink 5s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.bub{position:relative;flex:1;min-width:0;text-align:start;
+  background:linear-gradient(135deg,rgba(255,210,63,.18),rgba(255,255,255,.07));
+  border:2px solid var(--gold);border-radius:22px;padding:clamp(12px,2vw,20px) clamp(15px,2.2vw,26px);
+  font-size:clamp(.95rem,2vw,1.3rem);line-height:1.85;font-weight:500;min-height:4.4em}
+.bub b{color:var(--gold);font-weight:800}
+.bub::after{content:"";position:absolute;inset-inline-start:-14px;top:44%;width:0;height:0;
+  border:12px solid transparent;border-inline-end-color:var(--gold)}
+.bub .cur{color:var(--gold)}
 .bank{color:var(--dim);font-size:.9rem;margin-bottom:14px}
 .bank b{color:var(--gold);font-size:1.1rem}
 .start{font-size:clamp(1.25rem,3.2vw,1.8rem);font-weight:800;padding:16px 56px;border-radius:999px;
@@ -190,9 +214,28 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
   .bar{padding-inline-start:0;padding-top:40px;gap:8px;flex-wrap:wrap}
   .turn{order:3;flex-basis:100%}
   .qbox{min-height:clamp(120px,24vh,220px)}
+  .ava-wrap{flex-direction:column;gap:10px}
+  .bub{text-align:center;min-height:auto}
+  .bub::after{display:none}
   .teams-in,.ans,.podium{grid-template-columns:1fr}
   .foot{flex-direction:column}
   .gift b{white-space:normal}
+}
+@media (max-height:820px){
+  .logo{font-size:clamp(1.9rem,4.6vw,2.8rem)}
+  .setup h1{font-size:clamp(1.5rem,4.2vw,2.5rem);margin:.05em 0}
+  .setup .tag{font-size:.95rem;margin-bottom:10px}
+  .ava-wrap{margin-bottom:12px}
+  .ava{width:clamp(84px,9.5vw,118px)}
+  .bub{font-size:clamp(.88rem,1.6vw,1.08rem);line-height:1.7;padding:11px 18px;min-height:auto}
+  .teams-in{margin-bottom:12px}
+  .tcard{padding:12px}
+  .empick button{width:38px;height:38px;font-size:1.25rem}
+  .opts-row{margin-bottom:12px;gap:12px}
+  .bank{margin-bottom:10px;font-size:.84rem}
+  .start{padding:13px 46px}
+  .test{margin-top:10px}
+  .hint{margin-top:9px;line-height:1.9}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -221,9 +264,42 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
     <h1>تحدّي النظافة</h1>
     <p class="tag">مسابقة الصف على الشاشة — فريقين، ممثل من كل فريق بيجاوب بالتناوب. بدون تلفونات.</p>
 
-    <div class="gift-card">
-      <span class="k">هدية ليوم النظافة العالمي</span>
-      <span class="v">🎁 من الطالبة جنى رامي أسعد اغبارية 🌍</span>
+    <div class="ava-wrap">
+      <div class="ava" id="ava" title="اضغط لتسمع الترحيب">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <radialGradient id="oc" cx="38%" cy="30%">
+              <stop offset="0%" stop-color="#5fb8f5"/><stop offset="100%" stop-color="#1b63ad"/>
+            </radialGradient>
+            <linearGradient id="lf" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#5fe0a0"/><stop offset="100%" stop-color="#16965e"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="100" cy="182" rx="52" ry="9" fill="rgba(0,0,0,.28)"/>
+          <path d="M100 44 C100 30 92 22 80 18 C84 32 90 40 100 44 Z" fill="url(#lf)"/>
+          <path d="M100 44 C100 30 108 22 120 18 C116 32 110 40 100 44 Z" fill="url(#lf)"/>
+          <path d="M100 52 L100 40" stroke="#16965e" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="100" cy="112" r="62" fill="url(#oc)"/>
+          <path d="M62 92 q16-16 34-8 q12 6 6 18 q-8 14-26 10 q-16-4-14-20 Z" fill="#2fbf71" opacity=".95"/>
+          <path d="M112 74 q22-4 30 10 q6 12-8 16 q-16 4-24-8 q-6-10 2-18 Z" fill="#2fbf71" opacity=".95"/>
+          <path d="M92 142 q20-10 36 2 q10 8 0 16 q-16 10-32 0 q-10-8-4-18 Z" fill="#2fbf71" opacity=".9"/>
+          <g class="wave-arm">
+            <path d="M152 128 L182 100" stroke="#16965e" stroke-width="11" stroke-linecap="round"/>
+            <path d="M182 100 c10-10 24-8 26 2 c2 10-10 18-22 14 c-8-3-10-11-4-16 Z" fill="url(#lf)"/>
+          </g>
+          <ellipse class="eye" cx="82" cy="104" rx="13" ry="15" fill="#fff"/>
+          <ellipse class="eye" cx="120" cy="104" rx="13" ry="15" fill="#fff"/>
+          <circle cx="84" cy="107" r="6.5" fill="#0b2b22"/>
+          <circle cx="122" cy="107" r="6.5" fill="#0b2b22"/>
+          <circle cx="86.5" cy="104" r="2.2" fill="#fff"/>
+          <circle cx="124.5" cy="104" r="2.2" fill="#fff"/>
+          <circle cx="68" cy="126" r="7" fill="#ff8f8f" opacity=".55"/>
+          <circle cx="134" cy="126" r="7" fill="#ff8f8f" opacity=".55"/>
+          <path d="M84 132 q17 16 34 0" stroke="#0b2b22" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <button class="spk" id="avaBtn" type="button" aria-label="اسمع الترحيب">🔊</button>
+      </div>
+      <p class="bub" id="bub"></p>
     </div>
 
     <div class="teams-in">
@@ -337,7 +413,9 @@ const VO = {
   golden: [CDN + "2c74179d-04e4-4c7e-8c36-0134c9d9779c.mp3"],
   timeup: [CDN + "9c3d50b1-27f7-49ef-8482-e8b25de083e3.mp3"],
   last:   [CDN + "d74a0aed-310e-44f7-a784-e0d108831bba.mp3"],
-  win:    [CDN + "758606ef-2976-4f03-aeb9-bb7503c470bf.mp3"]
+  win:    [CDN + "758606ef-2976-4f03-aeb9-bb7503c470bf.mp3"],
+  hello:  ["https://d8j0ntlcm91z4.cloudfront.net/user_3GFqKKKXq5ngkGMrqNrzPKz5sgY/hf_20260919_115332_96a80dba-4baa-42b1-9931-145a8e9aa801.mp3",
+           "https://d8j0ntlcm91z4.cloudfront.net/user_3GFqKKKXq5ngkGMrqNrzPKz5sgY/hf_20260919_115332_9414da9e-72a3-4cc5-b692-ce2303e086d3.mp3"]
 };
 
 const SHAPES = ["▲","◆","●","■"];
@@ -489,7 +567,7 @@ $("#testBtn").onclick = () => { audio(); sfx.correct(); say("right"); };
 addEventListener("pointerdown", function once() {
   removeEventListener("pointerdown", once);
   audio();
-  if (document.body.dataset.phase === "setup") Music.set("lobby");
+  if (document.body.dataset.phase === "setup") { Music.set("lobby"); setTimeout(greet, 250); }
 }, { once: true });
 
 
@@ -579,6 +657,31 @@ $("#musBtn").onclick = () => {
   if (!Music.on) { Music.vol(0, .3); Music.stop(); }
   else { const m = Music.mood; Music.mood = null; Music.set(m || "lobby"); }
 };
+
+/* ================= الأفاتار المرحّب ================= */
+const HELLO = "أهلاً وسهلاً فيكم بتحدّي النظافة! 🌍 هاللعبة هدية من الطالبة جنى رامي أسعد اغبارية، بمناسبة اليوم العالمي للنظافة. جهّزوا فرقكم… ويلا نبلّش! 🚀";
+const HELLO_HTML = HELLO.replace("جنى رامي أسعد اغبارية", "<b>جنى رامي أسعد اغبارية</b>");
+const bub = $("#bub"), ava = $("#ava");
+let typing = null;
+
+function typeHello() {
+  clearInterval(typing);
+  bub.textContent = "";
+  let i = 0;
+  typing = setInterval(() => {
+    bub.textContent = HELLO.slice(0, ++i);
+    if (i >= HELLO.length) { clearInterval(typing); bub.innerHTML = HELLO_HTML; }
+  }, 28);
+}
+function greet() {
+  audio();
+  typeHello();
+  say("hello");
+  ava.classList.add("talk");
+  setTimeout(() => ava.classList.remove("talk"), 9000);
+}
+ava.onclick = greet;
+typeHello();
 
 /* عناصر الخلفية الطايرة */
 (function floaters() {
@@ -842,7 +945,7 @@ $("#againBtn").onclick = () => { stopSay(); sfx.start(); newRound(); };
 $("#homeBtn").onclick = () => {
   clearInterval(S.timer); stopSay(); S.phase = "idle";
   document.body.classList.remove("low");
-  show("scSetup"); setPhase("setup");
+  show("scSetup"); setPhase("setup"); typeHello();
 };
 
 function confetti() {
