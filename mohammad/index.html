@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>بطولة النظافة — مسابقة الصف</title>
+<meta name="description" content="بطولة صفّية على الشاشة بين فريقين، بدون تلفونات. هدية ليوم النظافة العالمي من الطالب محمد رامي أسعد اغبارية." />
+<meta name="theme-color" content="#0e2a4a" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥇</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#eaf1f9; --ink:#0e2a4a; --dim:#5b7b9d; --card:#fff; --line:#d5e2f0;
+  --c1:#ff5f52; --c2:#0ea5a3; --c3:#f5a300; --c4:#6c5ce7;
+  --gold:#f5b301; --ok:#0f9d58; --no:#e23c2f;
+  --f:"Cairo",system-ui,sans-serif;
+  --sh:0 6px 18px rgba(14,42,74,.09); --sh2:0 16px 40px rgba(14,42,74,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--f);color:var(--ink);background:var(--bg);min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button{font-family:var(--f);color:inherit;border:none;background:none;cursor:pointer}
+
+/* ---------- background ---------- */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:var(--bg)}
+.band{position:absolute;inset-inline:-30%;height:62vh;top:-26vh;transform:rotate(-8deg);
+  background:linear-gradient(120deg,#123a63,#0e2a4a 55%,#16507f);transition:filter .8s}
+.band2{position:absolute;inset-inline:-30%;height:26vh;bottom:-16vh;transform:rotate(-6deg);
+  background:linear-gradient(120deg,rgba(14,165,163,.16),rgba(108,92,231,.14));}
+body[data-team="1"] .band{filter:hue-rotate(-18deg) saturate(1.35)}
+body[data-team="2"] .band{filter:hue-rotate(28deg) saturate(1.25)}
+body[data-phase="golden"] .band{background:linear-gradient(120deg,#b97e05,#f5b301 60%,#ffd35c)}
+body[data-phase="end"] .band{background:linear-gradient(120deg,#0ea5a3,#0e2a4a 60%,#f5b301)}
+.dots{position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(rgba(14,42,74,.11) 1.5px,transparent 1.5px);background-size:26px 26px}
+.blob{position:absolute;border-radius:46% 54% 60% 40%/50% 45% 55% 50%;opacity:.16;filter:blur(2px)}
+.bl1{width:26vw;height:26vw;background:var(--c2);bottom:6vh;inset-inline-start:-6vw;animation:sp1 28s linear infinite}
+.bl2{width:20vw;height:20vw;background:var(--c1);top:52vh;inset-inline-end:-5vw;animation:sp2 34s linear infinite}
+@keyframes sp1{to{transform:rotate(360deg)}}
+@keyframes sp2{to{transform:rotate(-360deg)}}
+.flag{position:absolute;inset:0;opacity:0;transition:opacity .7s}
+body[data-phase="golden"] .flag,body[data-phase="end"] .flag{opacity:1}
+.flag i{position:absolute;font-style:normal;font-size:clamp(1rem,2vw,1.6rem);animation:fl linear infinite}
+@keyframes fl{0%{transform:translateY(102vh) rotate(0);opacity:0}10%{opacity:.8}100%{transform:translateY(-12vh) rotate(300deg);opacity:0}}
+.alarm{position:absolute;inset:0;box-shadow:inset 0 0 0 rgba(226,60,47,0);transition:box-shadow .35s}
+body.low .alarm{box-shadow:inset 0 0 16vw rgba(226,60,47,.35);animation:al 1s infinite}
+@keyframes al{50%{box-shadow:inset 0 0 22vw rgba(226,60,47,.5)}}
+
+/* ---------- shell ---------- */
+.screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;
+  padding:clamp(12px,2vw,26px);padding-bottom:clamp(54px,7vh,68px)}
+.screen.on{display:flex}
+.hidden{display:none!important}
+.tools{position:fixed;top:12px;inset-inline-start:12px;display:flex;gap:7px;z-index:45}
+.tools button{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.9);
+  border:1px solid var(--line);box-shadow:var(--sh);font-size:1.02rem;color:var(--ink)}
+.tools button:hover{background:#fff;transform:translateY(-1px)}
+.tools button.off{opacity:.42;position:relative}
+.tools button.off::after{content:"";position:absolute;inset-inline:7px;top:50%;height:2px;background:var(--no);
+  transform:rotate(-22deg);border-radius:2px}
+.credit{position:fixed;bottom:0;inset-inline:0;z-index:40;text-align:center;color:#fff;
+  background:linear-gradient(90deg,#0e2a4a,#16507f 50%,#0e2a4a);font-weight:700;
+  font-size:clamp(.78rem,1.6vw,1rem);padding:8px 14px;letter-spacing:.2px;
+  border-top:3px solid var(--gold)}
+.credit b{color:var(--gold)}
+
+/* ---------- setup ---------- */
+.setup{max-width:1040px;margin:auto;width:100%;text-align:center}
+.crest{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:6px 18px;
+  font-weight:700;font-size:clamp(.8rem,1.7vw,.98rem);margin-bottom:10px}
+.setup h1{color:#fff;font-size:clamp(1.8rem,5.4vw,3.2rem);font-weight:900;line-height:1.25;text-shadow:0 4px 18px rgba(0,0,0,.28)}
+.setup .tag{color:rgba(255,255,255,.82);font-size:clamp(.9rem,2vw,1.12rem);margin-bottom:clamp(14px,2.4vw,22px)}
+.ava-row{display:flex;align-items:center;gap:clamp(10px,2vw,20px);justify-content:center;
+  max-width:880px;margin:0 auto clamp(14px,2.4vw,22px)}
+.ava{width:clamp(96px,12vw,150px);flex:none;position:relative;cursor:pointer;animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.ava svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 22px rgba(14,42,74,.35))}
+.ava .spk{position:absolute;inset-inline-end:-2px;bottom:4px;width:32px;height:32px;border-radius:50%;
+  background:var(--gold);color:#3a2a00;font-size:.9rem;box-shadow:var(--sh)}
+.arm{transform-origin:150px 122px;animation:wv 1.15s ease-in-out infinite}
+@keyframes wv{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(20deg)}}
+.ava.talk .arm{animation-duration:.5s}
+.led{animation:led 1.6s infinite}
+@keyframes led{0%,100%{opacity:1}50%{opacity:.25}}
+.bub{position:relative;flex:1;min-width:0;text-align:start;background:var(--card);border:2px solid var(--gold);
+  border-radius:18px;padding:clamp(11px,1.8vw,18px) clamp(14px,2vw,24px);box-shadow:var(--sh2);
+  font-size:clamp(.92rem,1.9vw,1.24rem);line-height:1.85;font-weight:500;min-height:4.2em}
+.bub b{color:#b07c00;font-weight:900}
+.bub::after{content:"";position:absolute;inset-inline-start:-13px;top:44%;width:0;height:0;
+  border:11px solid transparent;border-inline-end-color:var(--gold)}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.tm{background:var(--card);border-radius:18px;padding:14px;box-shadow:var(--sh);border-top:6px solid var(--line)}
+.tm.a{border-top-color:var(--c1)}
+.tm.b{border-top-color:var(--c2)}
+.tm h3{font-size:.86rem;color:var(--dim);font-weight:700;margin-bottom:8px}
+.tm input{width:100%;text-align:center;font-family:var(--f);font-size:1.16rem;font-weight:900;color:var(--ink);
+  background:#f2f7fc;border:2px solid var(--line);border-radius:12px;padding:9px 12px}
+.tm input:focus{outline:none;border-color:var(--c3)}
+.mascots{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:8px}
+.mascots button{width:42px;height:42px;border-radius:12px;background:#f2f7fc;border:2px solid transparent;font-size:1.4rem;line-height:1}
+.mascots button:hover{background:#e4eef8}
+.tm.a .mascots button.sel{border-color:var(--c1);background:#ffe9e7}
+.tm.b .mascots button.sel{border-color:var(--c2);background:#dff5f4}
+.opts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:14px}
+.og{background:var(--card);border-radius:16px;padding:10px 14px;box-shadow:var(--sh)}
+.og h4{font-size:.8rem;color:var(--dim);font-weight:700;margin-bottom:7px}
+.seg{display:flex;background:#eef4fb;border-radius:999px;padding:3px;gap:2px}
+.seg button{padding:6px 15px;border-radius:999px;font-size:.95rem;font-weight:700;color:var(--dim)}
+.seg button.sel{background:var(--ink);color:#fff;box-shadow:var(--sh)}
+.bank{color:rgba(255,255,255,.8);font-size:.86rem;margin-bottom:14px}
+.bank b{color:var(--gold);font-size:1.05rem}
+.go{font-size:clamp(1.2rem,3vw,1.7rem);font-weight:900;padding:15px 54px;border-radius:14px;color:#fff;
+  background:linear-gradient(135deg,var(--c1),#e0402f);box-shadow:0 12px 30px rgba(255,95,82,.42)}
+.go:hover{transform:translateY(-2px)}
+.try{display:block;margin:12px auto 0;font-size:.92rem;font-weight:700;padding:8px 20px;border-radius:999px;
+  background:rgba(255,255,255,.9);border:1px solid var(--line);box-shadow:var(--sh)}
+.keys{color:var(--dim);font-size:.84rem;margin-top:12px;line-height:1.95}
+.keys kbd{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-family:var(--f);box-shadow:0 1px 0 var(--line)}
+
+/* ---------- play: scoreboard ---------- */
+.board{display:flex;align-items:center;gap:clamp(8px,1.6vw,16px);background:#0e2a4a;color:#fff;
+  border-radius:16px;padding:clamp(8px,1.4vw,14px) clamp(10px,1.8vw,20px);box-shadow:var(--sh2);
+  margin-bottom:clamp(10px,1.8vw,16px);margin-inline-start:150px}
+.side{flex:1;display:flex;align-items:center;gap:9px;min-width:0;padding:6px 12px;border-radius:12px;transition:.25s}
+.side.b{flex-direction:row-reverse;text-align:end}
+.side .em{font-size:clamp(1.2rem,2.4vw,1.8rem);flex:none}
+.side .nm{font-weight:700;font-size:clamp(.88rem,1.8vw,1.2rem);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side.on.a{background:rgba(255,95,82,.28);box-shadow:inset 0 0 0 2px var(--c1)}
+.side.on.b{background:rgba(14,165,163,.28);box-shadow:inset 0 0 0 2px var(--c2)}
+.pts{display:flex;align-items:center;gap:clamp(6px,1.2vw,12px);font-weight:900;flex:none}
+.pts span{background:rgba(255,255,255,.12);border-radius:10px;padding:4px clamp(8px,1.4vw,14px);
+  font-size:clamp(1.1rem,2.6vw,1.9rem);min-width:2.4em;text-align:center}
+.pts .sep{background:none;color:var(--gold);padding:0;min-width:auto}
+.ring-wrap{position:relative;width:clamp(58px,7vw,84px);flex:none}
+.ring{width:100%;height:auto;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
+.ring .bgc{stroke:rgba(255,255,255,.18)}
+.ring .fg{stroke:var(--c3);transition:stroke-dashoffset .3s linear,stroke .3s}
+body.low .ring .fg{stroke:var(--c1)}
+.ring-n{position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:clamp(1rem,2.2vw,1.5rem)}
+body.low .ring-n{color:#ffd0cb;animation:pp .8s infinite}
+@keyframes pp{50%{transform:scale(1.12)}}
+.turnbar{text-align:center;font-weight:900;font-size:clamp(.95rem,2.2vw,1.5rem);margin-bottom:clamp(8px,1.4vw,14px)}
+.turnbar span{display:inline-block;padding:6px 22px;border-radius:999px;color:#fff;background:var(--ink)}
+.turnbar.t1 span{background:var(--c1)}
+.turnbar.t2 span{background:var(--c2)}
+.turnbar.tg span{background:linear-gradient(135deg,var(--gold),#ffd35c);color:#3a2a00;
+  box-shadow:0 0 0 5px rgba(245,179,1,.25);animation:gg 1.2s infinite}
+@keyframes gg{50%{box-shadow:0 0 0 13px rgba(245,179,1,0)}}
+
+.qcard{flex:1;background:var(--card);border-radius:22px;box-shadow:var(--sh2);display:grid;place-items:center;
+  text-align:center;padding:clamp(16px,3vw,40px);margin-bottom:clamp(10px,1.8vw,16px);
+  min-height:clamp(140px,26vh,340px);position:relative;overflow:hidden}
+.qcard::before{content:"";position:absolute;top:0;inset-inline:0;height:7px;
+  background:linear-gradient(90deg,var(--c1),var(--c3),var(--c2),var(--c4))}
+.qcard h2{line-height:1.45;max-width:min(94%,30ch);font-weight:900}
+.qcard h2.s1{font-size:clamp(1.9rem,6vw,4.4rem)}
+.qcard h2.s2{font-size:clamp(1.6rem,4.6vw,3.5rem)}
+.qcard h2.s3{font-size:clamp(1.35rem,3.7vw,2.8rem)}
+
+.list{display:grid;gap:clamp(7px,1.1vw,11px);margin-bottom:clamp(8px,1.4vw,14px)}
+.list button{display:flex;align-items:center;gap:clamp(10px,1.6vw,16px);text-align:start;
+  background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:clamp(9px,1.4vw,14px) clamp(12px,1.8vw,20px);
+  font-size:clamp(1rem,2.2vw,1.55rem);font-weight:700;transition:.16s;border-inline-start:7px solid var(--line);
+  min-height:clamp(52px,7.4vh,86px)}
+.list button .ch{width:clamp(32px,3.4vw,46px);height:clamp(32px,3.4vw,46px);border-radius:11px;flex:none;
+  display:grid;place-items:center;color:#fff;font-weight:900;font-size:clamp(.95rem,1.8vw,1.3rem)}
+.list button:nth-child(1){border-inline-start-color:var(--c1)} .list button:nth-child(1) .ch{background:var(--c1)}
+.list button:nth-child(2){border-inline-start-color:var(--c2)} .list button:nth-child(2) .ch{background:var(--c2)}
+.list button:nth-child(3){border-inline-start-color:var(--c3)} .list button:nth-child(3) .ch{background:var(--c3)}
+.list button:nth-child(4){border-inline-start-color:var(--c4)} .list button:nth-child(4) .ch{background:var(--c4)}
+.list button:hover:not(:disabled){transform:translateX(-5px);box-shadow:var(--sh2)}
+.list button:disabled{cursor:default}
+.list button.right{background:#e6f7ec;border-inline-start-color:var(--ok);box-shadow:0 0 0 3px rgba(15,157,88,.35),var(--sh2)}
+.list button.right .ch{background:var(--ok)}
+.list button.bad{background:#fdeceb;border-inline-start-color:var(--no);opacity:.9}
+.list button.bad .ch{background:var(--no)}
+.list button.dim{opacity:.32}
+.flash{text-align:center;font-weight:900;font-size:clamp(.95rem,2.1vw,1.4rem);min-height:1.6em;margin-bottom:8px}
+.flash.ok{color:var(--ok)}
+.flash.no{color:var(--no)}
+.nxt{align-self:center;font-size:clamp(.98rem,2vw,1.28rem);font-weight:900;padding:11px 40px;border-radius:12px;
+  background:var(--ink);color:#fff;box-shadow:var(--sh2);margin-bottom:4px}
+.nxt:hover{transform:translateY(-2px)}
+
+/* ---------- end ---------- */
+.fin{margin:auto;width:100%;max-width:880px;text-align:center}
+.cup{font-size:clamp(3.2rem,10vw,6.4rem);line-height:1;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(.4) rotate(-12deg);opacity:0}}
+.fin h2{color:#fff;font-size:clamp(1.6rem,5.4vw,3rem);font-weight:900;margin:.1em 0;text-shadow:0 4px 18px rgba(0,0,0,.3)}
+.fin .sub{color:rgba(255,255,255,.85);font-size:clamp(.95rem,2.2vw,1.22rem);margin-bottom:20px}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,2vw,22px);margin-bottom:20px}
+.step{background:var(--card);border-radius:16px 16px 0 0;box-shadow:var(--sh2);padding:14px 10px 12px;
+  width:clamp(120px,22vw,220px);transition:.4s}
+.step .em{font-size:clamp(1.6rem,4vw,2.6rem);line-height:1}
+.step .nm{font-weight:900;font-size:clamp(.92rem,2vw,1.25rem);margin:3px 0}
+.step .sc{font-weight:900;font-size:clamp(1.5rem,4vw,2.6rem);color:var(--ink)}
+.step.win{height:clamp(190px,26vh,260px);border-top:8px solid var(--gold)}
+.step.lose{height:clamp(150px,20vh,200px);border-top:8px solid var(--line)}
+.step .rk{font-size:.8rem;color:var(--dim);font-weight:700}
+.fin-credit{background:var(--card);border:2px solid var(--gold);border-radius:16px;padding:12px 20px;
+  max-width:620px;margin:0 auto 18px;box-shadow:var(--sh2);line-height:1.7}
+.fin-credit .k{display:block;font-size:.78rem;color:var(--dim);letter-spacing:2px;font-weight:700}
+.fin-credit .v{display:block;font-size:clamp(1rem,2.4vw,1.32rem);font-weight:900}
+.fin-btns{display:flex;gap:11px;justify-content:center;flex-wrap:wrap}
+.fin-btns button{font-size:1rem;font-weight:900;padding:12px 28px;border-radius:12px;
+  background:rgba(255,255,255,.92);box-shadow:var(--sh);border:1px solid var(--line)}
+.fin-btns button.main{background:var(--gold);color:#3a2a00;border-color:var(--gold)}
+.fin-btns button:hover{transform:translateY(-2px)}
+
+@media (max-width:700px){
+  .tools button{width:34px;height:34px;font-size:.9rem}
+  .board{margin-inline-start:0;margin-top:44px;flex-wrap:wrap;justify-content:center;gap:8px}
+  .side{flex:auto;min-width:40%}
+  .ava-row{flex-direction:column;gap:9px}
+  .bub{text-align:center;min-height:auto}
+  .bub::after{display:none}
+  .teams{grid-template-columns:1fr}
+  .podium{align-items:stretch}
+  .step.win,.step.lose{height:auto}
+}
+@media (max-height:820px){
+  .setup h1{font-size:clamp(1.5rem,4.2vw,2.4rem)}
+  .setup .tag{font-size:.9rem;margin-bottom:10px}
+  .ava-row{margin-bottom:12px}
+  .ava{width:clamp(80px,9vw,112px)}
+  .bub{font-size:clamp(.86rem,1.6vw,1.05rem);line-height:1.7;padding:10px 16px;min-height:auto}
+  .teams{margin-bottom:11px}
+  .tm{padding:11px}
+  .mascots button{width:36px;height:36px;font-size:1.18rem}
+  .opts{margin-bottom:11px}
+  .bank{margin-bottom:10px;font-size:.8rem}
+  .go{padding:12px 44px}
+  .keys{margin-top:9px;line-height:1.8}
+  /* شاشة اللعب على بروجكتر قصير */
+  .board{padding:7px 12px;margin-bottom:9px}
+  .turnbar{font-size:clamp(.9rem,1.9vw,1.2rem);margin-bottom:8px}
+  .turnbar span{padding:5px 18px}
+  .qcard{min-height:clamp(96px,15vh,190px);padding:12px 20px;margin-bottom:9px}
+  .qcard h2.s1{font-size:clamp(1.6rem,4.4vw,3.1rem)}
+  .qcard h2.s2{font-size:clamp(1.35rem,3.6vw,2.5rem)}
+  .qcard h2.s3{font-size:clamp(1.15rem,3vw,2rem)}
+  .list{gap:7px;margin-bottom:8px}
+  .list button{min-height:clamp(44px,6.6vh,62px);font-size:clamp(.95rem,1.9vw,1.25rem);padding:7px 14px}
+  .list button .ch{width:32px;height:32px;font-size:.95rem}
+  .flash{font-size:clamp(.88rem,1.7vw,1.1rem);margin-bottom:6px}
+  .nxt{padding:9px 32px;font-size:1rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <div class="band"></div>
+  <div class="dots"></div>
+  <div class="blob bl1"></div>
+  <div class="blob bl2"></div>
+  <div class="band2"></div>
+  <div class="flag" id="flag"></div>
+  <div class="alarm"></div>
+</div>
+
+<div class="tools">
+  <button id="fsBtn" type="button" title="ملء الشاشة" aria-label="ملء الشاشة">⛶</button>
+  <button id="sndBtn" type="button" title="الصوت" aria-label="الصوت">🔊</button>
+  <button id="musBtn" type="button" title="موسيقى الخلفية" aria-label="موسيقى الخلفية">🎵</button>
+</div>
+
+<div class="credit">🏅 هدية ليوم النظافة العالمي — من الطالب <b>محمد رامي أسعد اغبارية</b></div>
+
+<!-- ============ SETUP ============ -->
+<section class="screen on" id="scSetup">
+  <div class="setup">
+    <p class="crest">🥇 اليوم العالمي للنظافة · مسابقة الصف</p>
+    <h1>بطولة النظافة</h1>
+    <p class="tag">فريقين على الشاشة — ممثل من كل فريق بيجاوب بالتناوب. بدون تلفونات.</p>
+
+    <div class="ava-row">
+      <div class="ava" id="ava" title="اضغط لتسمع الترحيب">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <linearGradient id="bd" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e9f3fb"/><stop offset="100%" stop-color="#b9d3e8"/>
+            </linearGradient>
+            <linearGradient id="mt" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#19c4c1"/><stop offset="100%" stop-color="#0b7f7d"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="100" cy="184" rx="48" ry="8" fill="rgba(14,42,74,.25)"/>
+          <path d="M100 46 L100 30" stroke="#0e2a4a" stroke-width="5" stroke-linecap="round"/>
+          <circle class="led" cx="100" cy="24" r="9" fill="#ff5f52"/>
+          <rect x="52" y="46" width="96" height="84" rx="24" fill="url(#bd)" stroke="#0e2a4a" stroke-width="4"/>
+          <rect x="66" y="62" width="68" height="46" rx="14" fill="#0e2a4a"/>
+          <circle cx="86" cy="84" r="7.5" fill="#19c4c1"/>
+          <circle cx="114" cy="84" r="7.5" fill="#19c4c1"/>
+          <path d="M88 98 q12 9 24 0" stroke="#19c4c1" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <rect x="62" y="134" width="76" height="34" rx="14" fill="url(#mt)" stroke="#0e2a4a" stroke-width="4"/>
+          <path d="M84 151 l8 8 l18 -18" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <g class="arm">
+            <path d="M150 122 L178 98" stroke="#0e2a4a" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="182" cy="94" r="13" fill="url(#mt)" stroke="#0e2a4a" stroke-width="4"/>
+          </g>
+          <path d="M50 118 L32 132" stroke="#0e2a4a" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="28" cy="136" r="12" fill="url(#mt)" stroke="#0e2a4a" stroke-width="4"/>
+        </svg>
+        <button class="spk" id="avaBtn" type="button" aria-label="اسمع الترحيب">🔊</button>
+      </div>
+      <p class="bub" id="bub"></p>
+    </div>
+
+    <div class="teams">
+      <div class="tm a">
+        <h3>الفريق الأول</h3>
+        <div class="mascots" id="m1"></div>
+        <input id="n1" type="text" maxlength="18" value="فريق الصقور" />
+      </div>
+      <div class="tm b">
+        <h3>الفريق الثاني</h3>
+        <div class="mascots" id="m2"></div>
+        <input id="n2" type="text" maxlength="18" value="فريق النمور" />
+      </div>
+    </div>
+
+    <div class="opts">
+      <div class="og"><h4>عدد أسئلة الجولة</h4><div class="seg" id="sQ"></div></div>
+      <div class="og"><h4>وقت السؤال</h4><div class="seg" id="sT"></div></div>
+      <div class="og"><h4>الفرصة الذهبية</h4><div class="seg" id="sG"></div></div>
+    </div>
+
+    <p class="bank">بنك الأسئلة: <b id="bankN">0</b> سؤال — كل جولة أسئلة جديدة، وترتيب الأسئلة والأجوبة بيتغيّر كل مرة</p>
+
+    <button class="go" id="goBtn" type="button">انطلاق البطولة 🏁</button>
+    <button class="try" id="tryBtn" type="button">جرّب الصوت قبل ما تبلّش 🔊</button>
+
+    <p class="keys">
+      للمعلّم: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> لاختيار الجواب ·
+      <kbd>مسافة</kbd> للسؤال الجاي · <kbd>F</kbd> ملء الشاشة · <kbd>M</kbd> الصوت
+    </p>
+  </div>
+</section>
+
+<!-- ============ PLAY ============ -->
+<section class="screen" id="scPlay">
+  <div class="board">
+    <div class="side a" id="sd1"><span class="em" id="e1">🦅</span><span class="nm" id="nm1">فريق 1</span></div>
+    <div class="pts">
+      <span id="p1">0</span><span class="sep">:</span><span id="p2">0</span>
+    </div>
+    <div class="side b" id="sd2"><span class="em" id="e2">🐆</span><span class="nm" id="nm2">فريق 2</span></div>
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 120 120">
+        <circle class="bgc" cx="60" cy="60" r="52"></circle>
+        <circle class="fg" id="ring" cx="60" cy="60" r="52"></circle>
+      </svg>
+      <div class="ring-n" id="ringN">25</div>
+    </div>
+  </div>
+
+  <p class="turnbar" id="turn"><span>دور الفريق</span></p>
+
+  <div class="qcard"><h2 id="qText">...</h2></div>
+
+  <div class="list" id="list"></div>
+
+  <p class="flash" id="flash">&nbsp;</p>
+  <button class="nxt hidden" id="nxtBtn" type="button">السؤال الجاي ←</button>
+</section>
+
+<!-- ============ END ============ -->
+<section class="screen" id="scEnd">
+  <div class="fin">
+    <div class="cup" id="cup">🏆</div>
+    <h2 id="winT">البطل</h2>
+    <p class="sub" id="winS"></p>
+    <div class="podium">
+      <div class="step" id="st1"><div class="rk" id="rk1">المركز الأول</div><div class="em" id="fe1">🦅</div><div class="nm" id="fn1">فريق 1</div><div class="sc" id="fp1">0</div></div>
+      <div class="step" id="st2"><div class="rk" id="rk2">المركز الثاني</div><div class="em" id="fe2">🐆</div><div class="nm" id="fn2">فريق 2</div><div class="sc" id="fp2">0</div></div>
+    </div>
+    <div class="fin-credit">
+      <span class="k">هدية ليوم النظافة العالمي</span>
+      <span class="v">🏅 من الطالب محمد رامي أسعد اغبارية 🌍</span>
+    </div>
+    <div class="fin-btns">
+      <button class="main" id="againBtn" type="button">جولة جديدة بنفس الفرق 🔁</button>
+      <button id="homeBtn" type="button">رجوع للإعدادات</button>
+    </div>
+  </div>
+</section>
+
+<script src="questions.js"></script>
+<script>
+/* =======================================================
+   بطولة النظافة — مسابقة صفّية على الشاشة
+   هدية ليوم النظافة العالمي من الطالب محمد رامي أسعد اغبارية
+   الأسئلة بملف questions.js · المؤثرات والموسيقى مولّدة داخل
+   المتصفح · التعليق الصوتي من ElevenLabs (روابط VO).
+   ======================================================= */
+
+const V = "https://d8j0ntlcm91z4.cloudfront.net/user_3GFqKKKXq5ngkGMrqNrzPKz5sgY/hf_20260919_163522_";
+const VO = {
+  hello:  [V + "1c9547bd-0afc-4645-917c-102c88fae47b.mp3",
+           V + "568a8bf4-ef9d-425c-87d6-d79f404dfefb.mp3"],
+  start:  [V + "c32b008f-07cb-4aca-b4f4-4a0e1ffc977a.mp3"],
+  right:  [V + "8e7b8058-65e4-483e-8ce8-decac282eeb9.mp3",
+           V + "229e7011-7843-493f-9a75-2e9ed4b0620d.mp3",
+           V + "d6f87fe2-cb68-4103-a302-e063f9115da9.mp3"],
+  wrong:  [V + "3f502c9a-4805-42b5-8fb5-4006fb5bec87.mp3",
+           V + "6d1a0c52-cb40-4914-b2ae-ed0e0c657574.mp3"],
+  golden: ["https://d8j0ntlcm91z4.cloudfront.net/user_3GFqKKKXq5ngkGMrqNrzPKz5sgY/hf_20260919_163538_5770b3d6-91ad-4d8e-bca9-1f90b7563a6b.mp3"],
+  timeup: [V + "95d507d9-2836-4a2e-9584-01557c586f52.mp3"],
+  last:   [V + "ad74de77-39a9-4067-ad86-3c578a9e9d82.mp3"],
+  win:    [V + "60fca91d-b18e-4bfd-8ffb-21187e73d895.mp3"]
+};
+
+const LETTERS = ["أ","ب","ج","د"];
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const R = 52, C = 2 * Math.PI * R;
+
+const S = {
+  names: ["فريق الصقور", "فريق النمور"],
+  emo: ["🦅", "🐆"],
+  score: [0, 0],
+  nQ: 10, secs: 25, steal: true,
+  list: [], i: 0, turn: 0,
+  left: 0, total: 25, timer: null, phase: "idle", golden: false
+};
+
+/* ================= الصوت ================= */
+let muted = false, AC = null, master = null, current = null;
+function audio() {
+  if (!AC) {
+    try {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      master = AC.createGain(); master.gain.value = .9; master.connect(AC.destination);
+    } catch { AC = null; }
+  }
+  if (AC && AC.state === "suspended") AC.resume().catch(() => {});
+  return AC;
+}
+function toneAt(f, t, dur, { type = "sine", peak = .16, to = null, dest = null } = {}) {
+  const ac = audio(); if (!ac || muted) return;
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t);
+  if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + Math.min(.03, dur / 3));
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(dest || master);
+  o.start(t); o.stop(t + dur + .02);
+}
+const tone = (f, at, dur, o = {}) => { const ac = audio(); if (ac) toneAt(f, ac.currentTime + at, dur, o); };
+let NB = null;
+function nbuf() {
+  const ac = audio(); if (!ac) return null;
+  if (!NB) {
+    NB = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+    const d = NB.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  return NB;
+}
+function noiseAt(t, dur, { freq = 1600, q = .8, peak = .2, type = "bandpass", dest = null } = {}) {
+  const ac = audio(); if (!ac || muted) return;
+  const buf = nbuf(); if (!buf) return;
+  const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+  const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+  const g = ac.createGain();
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + .012);
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  src.connect(f); f.connect(g); g.connect(dest || master);
+  src.start(t); src.stop(t + dur + .02);
+}
+const noise = (at, dur, o = {}) => { const ac = audio(); if (ac) noiseAt(ac.currentTime + at, dur, o); };
+
+const sfx = {
+  tap:    () => tone(880, 0, .06, { type: "square", peak: .07 }),
+  tick:   () => { tone(1320, 0, .045, { type: "square", peak: .055 }); noise(0, .03, { freq: 3400, peak: .04 }); },
+  swipe:  () => noise(0, .3, { freq: 900, q: .5, peak: .1, type: "lowpass" }),
+  right:  () => {
+    [587.33, 739.99, 880, 1174.66].forEach((f, i) => tone(f, i * .07, .34, { type: "triangle", peak: .16 }));
+    noise(.04, .3, { freq: 5200, q: .6, peak: .05 });
+  },
+  wrong:  () => { tone(233.08, 0, .34, { type: "square", peak: .12, to: 116 }); tone(220, .07, .3, { type: "sawtooth", peak: .08, to: 110 }); },
+  golden: () => { [1174.66, 1479.98, 1760, 2349.32].forEach((f, i) => tone(f, i * .055, .6, { type: "sine", peak: .1 })); noise(0, .55, { freq: 7000, q: .5, peak: .05 }); },
+  buzz:   () => { for (let i = 0; i < 2; i++) tone(196, i * .22, .18, { type: "sawtooth", peak: .14 }); },
+  whistle:() => { tone(1800, 0, .18, { type: "sine", peak: .1, to: 2400 }); tone(2100, .16, .22, { type: "sine", peak: .09, to: 1500 }); },
+  crowd:  (dur = 1.6) => {
+    noise(0, dur, { freq: 1900, q: .3, peak: .12 });
+    for (let i = 0; i < 28; i++) noise(Math.random() * dur * .9, .05, { freq: 1100 + Math.random() * 2800, q: 3, peak: .05 });
+  },
+  anthem: () => {
+    const c = [587.33, 739.99, 880, 1174.66];
+    c.forEach((f, i) => tone(f, i * .11, .5, { type: "triangle", peak: .15 }));
+    c.forEach(f => tone(f, .55, 1.2, { type: "triangle", peak: .11 }));
+    sfx.crowd(2.4);
+  }
+};
+
+const POOL = {};
+Object.keys(VO).forEach(k => { POOL[k] = VO[k].map(u => { const a = new Audio(u); a.preload = "auto"; return a; }); });
+function say(k) {
+  if (muted || !POOL[k] || !POOL[k].length) return;
+  try {
+    if (current) { current.pause(); current.currentTime = 0; }
+    const a = pick(POOL[k]); a.currentTime = 0;
+    const p = a.play(); if (p && p.catch) p.catch(() => {});
+    current = a; Music.duck();
+  } catch {}
+}
+const stopSay = () => { try { if (current) { current.pause(); current.currentTime = 0; } } catch {} };
+
+/* ================= الموسيقى ================= */
+const N = { D3:146.83, E3:164.81, F3:174.61, G3:196, A3:220, Bb3:233.08, C4:261.63, D4:293.66,
+            E4:329.63, F4:349.23, G4:392, A4:440, Bb4:466.16, C5:523.25, D5:587.33, E5:659.25,
+            F5:698.46, G5:783.99, A5:880, Bb5:932.33, D6:1174.66 };
+const MOODS = {
+  lobby:  { bpm: 74, vol: .15, steps: 8, bass: [N.D3,0,0,0,N.G3,0,0,0],
+            arp: [N.D5,N.F5,N.A5,N.F5,N.G5,N.Bb5,N.A5,N.F5], perc: [0,0,0,0,0,0,0,0] },
+  play:   { bpm: 104, vol: .12, steps: 8, bass: [N.D3,0,N.A3,0,N.Bb3,0,N.F3,0],
+            arp: [N.A4,0,N.D5,N.F5,0,N.A5,N.F5,N.D5], perc: [1,0,0,1,1,0,0,1] },
+  rush:   { bpm: 164, vol: .17, steps: 8, bass: [N.D3,N.D3,N.C4,N.C4,N.Bb3,N.Bb3,N.A3,N.A3],
+            arp: [N.D5,N.A4,N.D5,N.F5,N.D5,N.A4,N.D5,N.G5], perc: [1,1,1,1,1,1,1,1] },
+  golden: { bpm: 88, vol: .15, steps: 8, bass: [N.Bb3,0,0,0,N.F3,0,0,0],
+            arp: [N.D6,N.Bb5,N.F5,N.Bb5,N.D6,N.F5,N.Bb5,N.D6], perc: [0,0,0,0,0,0,0,0], bell: true },
+  win:    { bpm: 124, vol: .17, steps: 8, bass: [N.D3,0,N.A3,0,N.Bb3,0,N.F3,0],
+            arp: [N.D5,N.F5,N.A5,N.D6,N.A5,N.F5,N.A5,N.D6], perc: [1,0,1,1,1,0,1,1] }
+};
+const Music = {
+  on: true, mood: null, gain: null, step: 0, next: 0, loop: null, duckT: 0,
+  bus() { const ac = audio(); if (!ac) return null;
+    if (!this.gain) { this.gain = ac.createGain(); this.gain.gain.value = 0; this.gain.connect(master); }
+    return this.gain; },
+  vol(v, ramp = .6) { const ac = audio(), g = this.bus(); if (!ac || !g) return;
+    g.gain.cancelScheduledValues(ac.currentTime);
+    g.gain.setValueAtTime(Math.max(.0001, g.gain.value), ac.currentTime);
+    g.gain.linearRampToValueAtTime(v, ac.currentTime + ramp); },
+  set(name) {
+    if (this.mood === name) return;
+    this.mood = name;
+    const ac = audio(); if (!ac) return;
+    if (!name || !this.on || muted) { this.vol(0, .4); if (!name) this.stop(); return; }
+    if (!this.loop) { this.next = ac.currentTime + .1; this.step = 0; this.loop = setInterval(() => this.sched(), 30); }
+    this.vol(MOODS[name].vol);
+  },
+  stop() { clearInterval(this.loop); this.loop = null; this.step = 0; },
+  duck() { this.duckT = Date.now() + 2200; if (this.mood) this.vol(MOODS[this.mood].vol * .3, .25); },
+  sched() {
+    const ac = audio(); if (!ac || !this.mood) return;
+    const m = MOODS[this.mood];
+    if (this.duckT && Date.now() > this.duckT) { this.duckT = 0; this.vol(m.vol, .8); }
+    const spb = 60 / m.bpm / 2;
+    while (this.next < ac.currentTime + .18) {
+      const i = this.step % m.steps, t = this.next, d = this.bus();
+      if (m.bass[i]) toneAt(m.bass[i], t, spb * 1.7, { type: "sawtooth", peak: .1, dest: d });
+      if (m.arp[i]) toneAt(m.arp[i], t, spb * (m.bell ? 2.4 : 1.05), { type: m.bell ? "sine" : "square", peak: m.bell ? .1 : .055, dest: d });
+      if (m.perc[i]) noiseAt(t, .04, { freq: 7000, q: 1.2, peak: .05, dest: d });
+      if (i === 0 && !m.bell) noiseAt(t, .13, { freq: 160, q: .7, peak: .1, type: "lowpass", dest: d });
+      this.next += spb; this.step++;
+    }
+  }
+};
+
+function setPhase(p) {
+  document.body.dataset.phase = p;
+  Music.set(p === "setup" ? "lobby" : p === "end" ? "win" : p === "golden" ? "golden" : "play");
+}
+const setTeamBg = i => document.body.dataset.team = String(i + 1);
+
+$("#sndBtn").onclick = () => {
+  muted = !muted;
+  $("#sndBtn").textContent = muted ? "🔇" : "🔊";
+  $("#sndBtn").classList.toggle("off", muted);
+  if (muted) { stopSay(); Music.vol(0, .3); }
+  else { audio(); sfx.tap(); const m = Music.mood; Music.mood = null; Music.set(m || "lobby"); }
+};
+$("#musBtn").onclick = () => {
+  Music.on = !Music.on;
+  $("#musBtn").classList.toggle("off", !Music.on);
+  if (!Music.on) { Music.vol(0, .3); Music.stop(); }
+  else { const m = Music.mood; Music.mood = null; Music.set(m || "lobby"); }
+};
+$("#fsBtn").onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen?.();
+};
+$("#tryBtn").onclick = () => { audio(); sfx.right(); say("right"); };
+addEventListener("pointerdown", function once() {
+  removeEventListener("pointerdown", once);
+  audio();
+  if (document.body.dataset.phase === "setup") { Music.set("lobby"); setTimeout(greet, 250); }
+}, { once: true });
+
+/* ================= الأفاتار ================= */
+const HELLO = "أهلاً وسهلاً فيكم ببطولة النظافة! 🏅 هاللعبة هدية من الطالب محمد رامي أسعد اغبارية، بمناسبة اليوم العالمي للنظافة. جهّزوا فرقكم… وانطلقوا! 🏁";
+const HELLO_HTML = HELLO.replace("محمد رامي أسعد اغبارية", "<b>محمد رامي أسعد اغبارية</b>");
+const bub = $("#bub"), ava = $("#ava");
+let typing = null;
+function typeHello() {
+  clearInterval(typing);
+  bub.textContent = "";
+  let i = 0;
+  typing = setInterval(() => {
+    bub.textContent = HELLO.slice(0, ++i);
+    if (i >= HELLO.length) { clearInterval(typing); bub.innerHTML = HELLO_HTML; }
+  }, 28);
+}
+function greet() {
+  audio(); typeHello(); say("hello");
+  ava.classList.add("talk");
+  setTimeout(() => ava.classList.remove("talk"), 9000);
+}
+ava.onclick = greet;
+typeHello();
+
+/* أعلام متطايرة بالخلفية */
+(function flags() {
+  const box = $("#flag"); if (!box) return;
+  const ch = ["🏅","🏆","♻️","⭐","🥇","🎉","🌍","✨"];
+  box.innerHTML = ch.map((c, i) =>
+    `<i style="inset-inline-start:${5 + i * 12}%;animation-duration:${16 + i * 3}s;animation-delay:${i * 2}s">${c}</i>`).join("");
+})();
+
+/* ================= الإعدادات ================= */
+function show(id) { $$(".screen").forEach(s => s.classList.toggle("on", s.id === id)); }
+function seg(box, vals, cur, cb) {
+  box.innerHTML = vals.map(v => `<button type="button" data-v="${v[1]}"${v[1] === cur ? ' class="sel"' : ""}>${v[0]}</button>`).join("");
+  box.onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    [...box.children].forEach(c => c.classList.remove("sel"));
+    b.classList.add("sel"); cb(b.dataset.v); sfx.tap();
+  };
+}
+seg($("#sQ"), [["6","6"],["10","10"],["15","15"],["20","20"]], "10", v => S.nQ = +v);
+seg($("#sT"), [["15 ث","15"],["25 ث","25"],["40 ث","40"]], "25", v => S.secs = +v);
+seg($("#sG"), [["مفعّلة","1"],["مقفلة","0"]], "1", v => S.steal = v === "1");
+$("#bankN").textContent = BANK.length;
+
+const MASCOTS = ["🦅","🐆","🦁","🐺","🦈","🐉","⚽","🚀"];
+function mascotPicker(box, slot) {
+  box.innerHTML = MASCOTS.map(e => `<button type="button" data-e="${e}"${e === S.emo[slot] ? ' class="sel"' : ""}>${e}</button>`).join("");
+  box.onclick = ev => {
+    const b = ev.target.closest("button"); if (!b) return;
+    [...box.children].forEach(c => c.classList.remove("sel"));
+    b.classList.add("sel"); S.emo[slot] = b.dataset.e; sfx.tap();
+  };
+}
+mascotPicker($("#m1"), 0);
+mascotPicker($("#m2"), 1);
+
+function shuffle(a) {
+  const c = [...a];
+  for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; }
+  return c;
+}
+const SEEN = "wcd_m_seen";
+const loadSeen = () => { try { return (JSON.parse(localStorage.getItem(SEEN)) || []).filter(i => i < BANK.length); } catch { return []; } };
+const saveSeen = a => { try { localStorage.setItem(SEEN, JSON.stringify(a)); } catch {} };
+function prepQ(q) {
+  const order = shuffle(q[1].map((_, i) => i));
+  return [q[0], order.map(i => q[1][i]), order.indexOf(q[2])];
+}
+function pickRound(n) {
+  n = Math.min(n, BANK.length);
+  const all = BANK.map((_, i) => i);
+  let seen = loadSeen();
+  let fresh = all.filter(i => !seen.includes(i));
+  if (fresh.length < n) { seen = seen.slice(-Math.min(5, BANK.length - n)); fresh = all.filter(i => !seen.includes(i)); }
+  const chosen = shuffle(fresh).slice(0, n);
+  saveSeen([...seen, ...chosen].slice(-(BANK.length - 1)));
+  return chosen.map(i => prepQ(BANK[i]));
+}
+
+$("#goBtn").onclick = () => {
+  audio();
+  S.names[0] = $("#n1").value.trim() || "الفريق الأول";
+  S.names[1] = $("#n2").value.trim() || "الفريق الثاني";
+  sfx.whistle(); say("start");
+  newRound();
+};
+function newRound() {
+  audio();
+  S.score = [0, 0];
+  S.list = pickRound(S.nQ);
+  S.i = 0; S.turn = 0;
+  $("#nm1").textContent = S.names[0]; $("#nm2").textContent = S.names[1];
+  $("#e1").textContent = S.emo[0];    $("#e2").textContent = S.emo[1];
+  show("scPlay"); setPhase("play"); askQ(true);
+}
+
+/* ================= السؤال ================= */
+function askQ(first) {
+  const [q, a] = S.list[S.i];
+  S.phase = "ask"; S.golden = false;
+  $("#qText").textContent = q;
+  $("#qText").className = q.length <= 30 ? "s1" : q.length <= 46 ? "s2" : "s3";
+  $("#flash").innerHTML = "&nbsp;"; $("#flash").className = "flash";
+  $("#nxtBtn").classList.add("hidden");
+  $("#list").innerHTML = a.map((t, i) =>
+    `<button type="button" data-i="${i}"><span class="ch">${LETTERS[i]}</span><span>${t}</span></button>`).join("");
+  paintTurn(); paintScore(); setPhase("play");
+  if (!first) sfx.swipe();
+  if (S.i === S.list.length - 1 && S.list.length > 1) setTimeout(() => say("last"), first ? 1200 : 250);
+  startClock(S.secs);
+}
+function paintTurn() {
+  const t = $("#turn");
+  t.className = "turnbar " + (S.golden ? "tg" : "t" + (S.turn + 1));
+  t.innerHTML = `<span>${S.golden ? "⭐ الفرصة الذهبية: " : "الدور على "}${S.emo[S.turn]} ${S.names[S.turn]} · سؤال ${S.i + 1} من ${S.list.length}</span>`;
+  $("#sd1").classList.toggle("on", S.turn === 0);
+  $("#sd2").classList.toggle("on", S.turn === 1);
+  setTeamBg(S.turn);
+}
+function paintScore() { $("#p1").textContent = S.score[0]; $("#p2").textContent = S.score[1]; }
+
+/* ================= الوقت ================= */
+const ring = $("#ring");
+ring.style.strokeDasharray = C;
+function startClock(sec) {
+  clearInterval(S.timer);
+  S.left = sec; S.total = sec;
+  tickView();
+  S.timer = setInterval(() => {
+    S.left--; tickView();
+    if (S.left <= 5 && S.left > 0) sfx.tick();
+    if (S.left <= 0) { clearInterval(S.timer); timeUp(); }
+  }, 1000);
+}
+function tickView() {
+  const low = S.left <= 5 && S.left > 0 && S.phase === "ask";
+  $("#ringN").textContent = Math.max(0, S.left);
+  ring.style.strokeDashoffset = C * (1 - Math.max(0, S.left) / S.total);
+  document.body.classList.toggle("low", low);
+  if (low && Music.mood !== "rush" && Music.mood) Music.set("rush");
+}
+
+/* ================= الجواب ================= */
+$("#list").onclick = e => {
+  const b = e.target.closest("button[data-i]");
+  if (b && !b.disabled) answer(+b.dataset.i);
+};
+function answer(p) {
+  if (S.phase !== "ask") return;
+  clearInterval(S.timer);
+  const c = S.list[S.i][2];
+  const gain = Math.round((500 + 500 * (S.left / S.total)) / 10) * 10;
+
+  if (p === c) {
+    const pts = S.golden ? Math.round(gain / 2 / 10) * 10 : gain;
+    S.score[S.turn] += pts;
+    lock(p, c);
+    $("#flash").className = "flash ok";
+    $("#flash").textContent = `✅ إجابة صحيحة! ${S.names[S.turn]} +${pts} نقطة`;
+    sfx.right(); sfx.crowd(1.2); say("right");
+    return endQ();
+  }
+  if (S.steal && !S.golden) return toGolden("❌ إجابة غير صحيحة — الفرصة الذهبية للفريق الثاني بنص النقاط", p);
+
+  lock(p, c);
+  $("#flash").className = "flash no";
+  $("#flash").textContent = `❌ غلط — الإجابة الصحيحة: ${S.list[S.i][1][c]}`;
+  sfx.wrong(); say("wrong");
+  endQ();
+}
+function timeUp() {
+  if (S.phase !== "ask") return;
+  sfx.buzz();
+  if (S.steal && !S.golden) return toGolden("⏰ انتهى الوقت — الفرصة الذهبية للفريق الثاني بنص النقاط", -1);
+  lock(-1, S.list[S.i][2]);
+  $("#flash").className = "flash no";
+  $("#flash").textContent = `⏰ انتهى الوقت — الإجابة الصحيحة: ${S.list[S.i][1][S.list[S.i][2]]}`;
+  say("timeup"); endQ();
+}
+function toGolden(text, wrongPick) {
+  if (wrongPick >= 0) {
+    const b = $$("#list button")[wrongPick];
+    b.classList.add("bad"); b.disabled = true;
+    sfx.wrong();
+  }
+  S.golden = true; S.turn = 1 - S.turn; S.phase = "ask";
+  $("#flash").className = "flash no";
+  $("#flash").textContent = text;
+  paintTurn(); setPhase("golden");
+  setTimeout(() => sfx.golden(), 260);
+  say("golden");
+  startClock(Math.max(8, Math.round(S.secs / 2)));
+}
+function lock(p, c) {
+  $$("#list button").forEach((b, i) => {
+    b.disabled = true;
+    if (i === c) b.classList.add("right");
+    else if (i === p) b.classList.add("bad");
+    else b.classList.add("dim");
+  });
+}
+function endQ() {
+  S.phase = "done"; paintScore();
+  $("#nxtBtn").classList.remove("hidden");
+  $("#nxtBtn").textContent = S.i === S.list.length - 1 ? "إعلان البطل 🏆" : "السؤال الجاي ←";
+  $("#nxtBtn").focus();
+}
+$("#nxtBtn").onclick = nextQ;
+function nextQ() {
+  if (S.phase !== "done") return;
+  stopSay();
+  if (S.i === S.list.length - 1) return finish();
+  S.turn = S.golden ? S.turn : 1 - S.turn;
+  S.i++; askQ(false);
+}
+
+/* ================= النهاية ================= */
+function finish() {
+  clearInterval(S.timer);
+  S.phase = "end";
+  const [a, b] = S.score, w = a === b ? -1 : (a > b ? 0 : 1);
+  const order = w === 1 ? [1, 0] : [0, 1];
+  const st = [$("#st1"), $("#st2")];
+  order.forEach((team, slot) => {
+    st[slot].querySelector(".em").textContent = S.emo[team];
+    st[slot].querySelector(".nm").textContent = S.names[team];
+    st[slot].querySelector(".sc").textContent = S.score[team];
+    st[slot].querySelector(".rk").textContent = w === -1 ? "تعادل" : (slot === 0 ? "المركز الأول 🥇" : "المركز الثاني 🥈");
+    st[slot].className = "step " + (w === -1 ? "win" : slot === 0 ? "win" : "lose");
+  });
+  if (w === -1) {
+    $("#cup").textContent = "🤝";
+    $("#winT").textContent = "تعادل!";
+    $("#winS").textContent = "الفريقين نفس النقاط — كلكم أبطال اليوم.";
+  } else {
+    $("#cup").textContent = "🏆";
+    $("#winT").textContent = `${S.emo[w]} ${S.names[w]} بطل البطولة!`;
+    $("#winS").textContent = `بفارق ${Math.abs(a - b)} نقطة — مبروك، وشكرًا لكل اللي شارك.`;
+  }
+  show("scEnd");
+  document.body.classList.remove("low");
+  setPhase("end");
+  sfx.anthem();
+  setTimeout(() => say("win"), 700);
+  confetti();
+}
+$("#againBtn").onclick = () => { stopSay(); sfx.whistle(); newRound(); };
+$("#homeBtn").onclick = () => {
+  clearInterval(S.timer); stopSay(); S.phase = "idle";
+  document.body.classList.remove("low");
+  show("scSetup"); setPhase("setup"); typeHello();
+};
+
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ch = ["🎉","🏅","⭐","♻️","🥇","✨"];
+  for (let i = 0; i < 44; i++) {
+    const s = document.createElement("span");
+    s.textContent = ch[i % ch.length];
+    s.style.cssText = `position:fixed;z-index:50;pointer-events:none;font-size:${16 + Math.random() * 22}px;
+      left:${Math.random() * 100}vw;top:-40px;transition:transform 2.8s linear,opacity 2.8s linear`;
+    document.body.appendChild(s);
+    requestAnimationFrame(() => {
+      s.style.transform = `translateY(${innerHeight + 80}px) rotate(${Math.random() * 720 - 360}deg)`;
+      s.style.opacity = "0";
+    });
+    setTimeout(() => s.remove(), 3000);
+  }
+}
+
+setPhase("setup");
+
+/* ================= الكيبورد ================= */
+addEventListener("keydown", e => {
+  const k = e.key.toLowerCase();
+  if (k === "f") { e.preventDefault(); $("#fsBtn").click(); return; }
+  if (k === "m") { e.preventDefault(); $("#sndBtn").click(); return; }
+  if ($("#scSetup").classList.contains("on")) {
+    if (k === "enter" && document.activeElement.tagName !== "INPUT") $("#goBtn").click();
+    return;
+  }
+  if ($("#scEnd").classList.contains("on")) {
+    if (k === " " || k === "enter") { e.preventDefault(); $("#againBtn").click(); }
+    return;
+  }
+  if (S.phase === "ask" && ["1","2","3","4"].includes(k)) {
+    e.preventDefault();
+    const b = $$("#list button")[+k - 1];
+    if (b && !b.disabled) answer(+k - 1);
+  } else if (S.phase === "done" && (k === " " || k === "enter")) {
+    e.preventDefault(); nextQ();
+  }
+});
+</script>
+</body>
+</html>
