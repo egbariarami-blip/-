@@ -3,239 +3,553 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>يوم النظافة العالمي — صف جنى</title>
-<meta name="description" content="فعالية ومسابقة صفية ليوم النظافة العالمي: مهمات، فرق، نقاط، كويز، لعبة فرز، وشهادة مشاركة." />
-<meta name="theme-color" content="#0f7a4f" />
-<meta property="og:title" content="يوم النظافة العالمي — صف جنى" />
-<meta property="og:description" content="فعالية ومسابقة صفية: مهمات، فرق، نقاط، كويز، لعبة فرز، وشهادة مشاركة." />
-<meta property="og:type" content="website" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
+<title>تحدّي النظافة — مسابقة الصف</title>
+<meta name="description" content="مسابقة صفّية على الشاشة بين فريقين، بدون تلفونات. ممثل من كل فريق بيجاوب بالتناوب." />
+<meta name="theme-color" content="#06231c" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg1:#05231c; --bg2:#0a3d2e; --ink:#eafff5; --dim:#9fd7c2;
+  --a:#e8453c; --b:#2b7fd4; --c:#f0a02a; --d:#23a566;
+  --gold:#ffd23f; --panel:rgba(255,255,255,.07); --line:rgba(255,255,255,.16);
+  --f:"Baloo Bhaijaan 2",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--f);color:var(--ink);background:radial-gradient(1200px 800px at 70% -10%,var(--bg2),var(--bg1) 65%);
+  min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+button{font-family:var(--f);color:inherit;border:none;background:none;cursor:pointer}
+.screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;padding:clamp(14px,2.2vw,28px)}
+.screen.on{display:flex}
+.hidden{display:none!important}
+
+/* ---------- tools ---------- */
+.tools{position:fixed;top:10px;inset-inline-start:10px;display:flex;gap:6px;z-index:30}
+.tools button{width:40px;height:40px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-size:1.05rem}
+.tools button:hover{background:rgba(255,255,255,.16)}
+
+/* ---------- setup ---------- */
+.setup{max-width:1000px;margin:auto;width:100%;text-align:center}
+.logo{font-size:clamp(3rem,9vw,5.5rem);line-height:1}
+.setup h1{font-size:clamp(2rem,6vw,3.6rem);margin:.1em 0 .1em}
+.setup .tag{color:var(--dim);font-size:clamp(.95rem,2.2vw,1.2rem);margin-bottom:clamp(18px,3vw,34px)}
+.teams-in{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.tcard{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:18px}
+.tcard.t1{border-color:rgba(232,69,60,.6)}
+.tcard.t2{border-color:rgba(43,127,212,.6)}
+.tcard .em{font-size:2.4rem;line-height:1}
+.empick{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:4px}
+.empick button{font-size:1.5rem;line-height:1;width:44px;height:44px;border-radius:13px;
+  background:rgba(0,0,0,.25);border:2px solid transparent;transition:.15s}
+.empick button:hover{background:rgba(255,255,255,.14)}
+.empick button.sel{border-color:var(--gold);background:rgba(255,210,63,.2);transform:scale(1.08)}
+.tcard label{display:block;font-size:.85rem;color:var(--dim);margin:6px 0 6px}
+.tcard input{width:100%;text-align:center;font-family:var(--f);font-size:1.25rem;font-weight:700;color:var(--ink);
+  background:rgba(0,0,0,.28);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.tcard input:focus{outline:none;border-color:var(--gold)}
+.opts-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:26px}
+.opt-g{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 16px}
+.opt-g h3{font-size:.9rem;color:var(--dim);font-weight:500;margin-bottom:8px}
+.chips{display:flex;gap:6px;justify-content:center}
+.chip{padding:8px 16px;border-radius:999px;background:rgba(0,0,0,.25);border:2px solid transparent;font-size:1rem;font-weight:700}
+.chip.sel{background:var(--gold);color:#22160a;border-color:var(--gold)}
+.start{font-size:clamp(1.3rem,3.4vw,1.9rem);font-weight:800;padding:18px 60px;border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),#ffb01f);color:#2a1c05;box-shadow:0 14px 40px rgba(255,210,63,.3)}
+.start:hover{transform:translateY(-2px)}
+.hint{color:var(--dim);font-size:.88rem;margin-top:18px;line-height:2}
+.hint kbd{background:rgba(255,255,255,.12);border:1px solid var(--line);border-radius:7px;padding:2px 9px;font-family:var(--f)}
+
+/* ---------- play ---------- */
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.qnum{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 20px;font-size:clamp(.9rem,1.8vw,1.15rem);font-weight:700}
+.turn{flex:1;text-align:center;font-size:clamp(1.05rem,3vw,1.9rem);font-weight:800}
+.turn .who{padding:6px 22px;border-radius:999px;display:inline-block}
+.turn.is1 .who{background:var(--a)}
+.turn.is2 .who{background:var(--b)}
+.turn.steal .who{background:var(--gold);color:#241a04}
+.clock{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 18px;
+  font-size:clamp(1.1rem,2.6vw,1.7rem);font-weight:800;min-width:74px;text-align:center}
+.clock.low{background:var(--a);animation:pulse .8s infinite}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.track{height:10px;border-radius:10px;background:rgba(0,0,0,.3);overflow:hidden;margin-bottom:clamp(12px,2.4vw,24px)}
+.track i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--d),var(--gold));transition:width .25s linear}
+.qbox{flex:1;display:grid;place-items:center;text-align:center;padding:clamp(14px,3vw,34px);
+  background:var(--panel);border:1px solid var(--line);border-radius:26px;margin-bottom:clamp(12px,2.4vw,22px)}
+.qbox h2{font-size:clamp(1.5rem,4.6vw,3.2rem);line-height:1.45;max-width:20ch}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.4vw,14px);margin-bottom:clamp(12px,2vw,20px)}
+.ans button{display:flex;align-items:center;gap:14px;text-align:start;padding:clamp(14px,2.4vw,24px) clamp(16px,2.4vw,26px);
+  border-radius:20px;font-size:clamp(1.05rem,2.6vw,1.75rem);font-weight:700;transition:.15s;min-height:clamp(70px,11vh,120px)}
+.ans button .sh{font-size:1.3em;line-height:1;opacity:.85;flex:none}
+.ans button .n{background:rgba(0,0,0,.25);border-radius:9px;padding:1px 10px;font-size:.8em;flex:none}
+.ans button:nth-child(1){background:var(--a)}
+.ans button:nth-child(2){background:var(--b)}
+.ans button:nth-child(3){background:var(--c);color:#2b1c00}
+.ans button:nth-child(4){background:var(--d)}
+.ans button:hover:not(:disabled){transform:scale(1.02)}
+.ans button:disabled{cursor:default}
+.ans button.off{opacity:.22}
+.ans button.win{outline:5px solid #fff;outline-offset:-5px;animation:pulse .6s 2}
+.ans button.lose{opacity:.3;filter:grayscale(.7)}
+.foot{display:flex;align-items:stretch;gap:12px}
+.sc{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;border-radius:18px;
+  background:var(--panel);border:2px solid var(--line);transition:.2s}
+.sc.act{border-color:var(--gold);background:rgba(255,210,63,.14)}
+.sc .nm{display:flex;align-items:center;gap:9px;font-size:clamp(.95rem,2vw,1.35rem);font-weight:700;min-width:0}
+.sc .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc .pt{font-size:clamp(1.2rem,2.8vw,2rem);font-weight:800;color:var(--gold)}
+.msg{text-align:center;font-size:clamp(1rem,2.4vw,1.5rem);font-weight:700;min-height:1.6em;margin-bottom:10px}
+.msg.ok{color:#7dfcb8}
+.msg.no{color:#ff9a94}
+.next{align-self:center;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:800;padding:12px 44px;border-radius:999px;
+  background:#fff;color:#0a3d2e;margin-bottom:6px}
+.next:hover{transform:translateY(-2px)}
+
+/* ---------- end ---------- */
+.end{margin:auto;text-align:center;width:100%;max-width:900px}
+.trophy{font-size:clamp(4rem,13vw,8rem);line-height:1;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+.end h2{font-size:clamp(1.8rem,6vw,3.4rem);margin:.15em 0}
+.end .sub{color:var(--dim);font-size:clamp(1rem,2.4vw,1.3rem);margin-bottom:26px}
+.podium{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.pod{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:20px}
+.pod.won{border-color:var(--gold);background:rgba(255,210,63,.16)}
+.pod .em{font-size:2.6rem;line-height:1}
+.pod .nm{font-size:clamp(1.05rem,2.6vw,1.5rem);font-weight:700;margin:4px 0}
+.pod .pt{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;color:var(--gold)}
+.end-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.end-btns button{font-size:1.05rem;font-weight:800;padding:14px 32px;border-radius:999px;border:2px solid var(--line);background:var(--panel)}
+.end-btns button.main{background:var(--gold);color:#2a1c05;border-color:var(--gold)}
+.end-btns button:hover{transform:translateY(-2px)}
+
+@media (max-width:640px){
+  .teams-in,.ans,.podium{grid-template-columns:1fr}
+  .foot{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
 
-<a class="skip" href="#main">تخطَّ إلى المحتوى</a>
+<div class="tools">
+  <button id="fsBtn" type="button" title="ملء الشاشة" aria-label="ملء الشاشة">⛶</button>
+  <button id="sndBtn" type="button" title="الصوت" aria-label="الصوت">🔊</button>
+</div>
 
-<header class="nav" id="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="#top">
-      <span class="brand-globe" aria-hidden="true">🌍</span>
-      <span class="brand-txt">
-        <b>يوم النظافة العالمي</b>
-        <small data-cfg="classLine">صف جنى</small>
-      </span>
-    </a>
-    <nav class="links" aria-label="التنقل">
-      <a href="#about">عن اليوم</a>
-      <a href="#plan">برنامج اليوم</a>
-      <a href="#contest">المسابقة</a>
-      <a href="#missions">المهمات</a>
-      <a href="#quiz">الكويز</a>
-      <a href="#game">لعبة الفرز</a>
-      <a href="#certificate">الشهادة</a>
-    </nav>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="تبديل الوضع الليلي">🌗</button>
-    <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة" aria-expanded="false">☰</button>
-  </div>
-</header>
+<!-- ============ SETUP ============ -->
+<section class="screen on" id="scSetup">
+  <div class="setup">
+    <div class="logo">🏆♻️</div>
+    <h1>تحدّي النظافة</h1>
+    <p class="tag">مسابقة الصف على الشاشة — فريقين، ممثل من كل فريق بيجاوب بالتناوب. بدون تلفونات.</p>
 
-<main id="main">
+    <div class="teams-in">
+      <div class="tcard t1">
+        <div class="empick" id="e1"></div>
+        <label for="n1">اسم الفريق الأول</label>
+        <input id="n1" type="text" maxlength="18" value="فريق الزيتون" />
+      </div>
+      <div class="tcard t2">
+        <div class="empick" id="e2"></div>
+        <label for="n2">اسم الفريق الثاني</label>
+        <input id="n2" type="text" maxlength="18" value="فريق الياسمين" />
+      </div>
+    </div>
 
-<section class="hero" id="top">
-  <div class="blob b1" aria-hidden="true"></div>
-  <div class="blob b2" aria-hidden="true"></div>
-  <div class="leaves" aria-hidden="true">
-    <span>🍃</span><span>🌿</span><span>♻️</span><span>🍂</span><span>🌱</span><span>💧</span>
-  </div>
-  <div class="wrap hero-in">
-    <p class="pill reveal">السبت الثالث من أيلول · يوم عالمي</p>
-    <h1 class="reveal">نظّف مدرستك<br />تنظّف كوكبك 🌍</h1>
-    <p class="lead reveal">
-      فعالية صفّية كاملة ليوم النظافة العالمي: فرق، مهمات، نقاط، وتحدّي لطيف بين الجميع.<br />
-      كل كيس بنجمعه اليوم = مكان أنظف لإلنا ولإلّي بعدنا.
+    <div class="opts-row">
+      <div class="opt-g">
+        <h3>عدد الأسئلة</h3>
+        <div class="chips" id="chQ"></div>
+      </div>
+      <div class="opt-g">
+        <h3>وقت السؤال</h3>
+        <div class="chips" id="chT"></div>
+      </div>
+      <div class="opt-g">
+        <h3>فرصة السرقة</h3>
+        <div class="chips" id="chS"></div>
+      </div>
+    </div>
+
+    <button class="start" id="startBtn" type="button">يلا نبلّش 🚀</button>
+
+    <p class="hint">
+      للمعلّمة: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> لاختيار الجواب &nbsp;·&nbsp;
+      <kbd>مسافة</kbd> للسؤال الجاي &nbsp;·&nbsp; <kbd>F</kbd> ملء الشاشة &nbsp;·&nbsp; <kbd>M</kbd> الصوت
     </p>
-    <div class="cta reveal">
-      <a class="btn btn-main" href="#contest">ابدأ المسابقة</a>
-      <a class="btn btn-ghost" href="#missions">بطاقة المهمات</a>
-    </div>
-
-    <div class="countdown reveal" id="countdown" aria-live="polite">
-      <div class="cd-box"><b id="cdD">--</b><span>يوم</span></div>
-      <div class="cd-box"><b id="cdH">--</b><span>ساعة</span></div>
-      <div class="cd-box"><b id="cdM">--</b><span>دقيقة</span></div>
-      <div class="cd-box"><b id="cdS">--</b><span>ثانية</span></div>
-      <p class="cd-label" id="cdLabel">على انطلاق الفعالية</p>
-    </div>
-  </div>
-  <div class="wave" aria-hidden="true">
-    <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,90 1440,45 L1440,90 L0,90 Z"></path></svg>
   </div>
 </section>
 
-<section class="sec" id="about">
-  <div class="wrap">
-    <h2 class="reveal">شو هو يوم النظافة العالمي؟</h2>
-    <p class="sub reveal">
-      يوم بيلتقي فيه ملايين المتطوعين حول العالم بنفس اليوم، بينزلوا عالشوارع والشواطئ والساحات وبينظّفوها.
-      بلش سنة 2018، واليوم بيشارك فيه ناس من أكثر من 190 دولة. إحنا كمان جزء من هالقصة.
-    </p>
+<!-- ============ PLAY ============ -->
+<section class="screen" id="scPlay">
+  <div class="bar">
+    <div class="qnum" id="qNum">سؤال 1 / 10</div>
+    <div class="turn" id="turn"><span class="who">دور الفريق</span></div>
+    <div class="clock" id="clock">25</div>
+  </div>
+  <div class="track"><i id="track"></i></div>
 
-    <div class="stats">
-      <div class="stat reveal"><b class="count" data-to="190" data-suffix="+">0</b><span>دولة بتشارك</span></div>
-      <div class="stat reveal"><b class="count" data-to="2018">0</b><span>سنة الانطلاق</span></div>
-      <div class="stat reveal"><b class="count" data-to="450" data-suffix=" سنة">0</b><span>عمر قنينة بلاستيك بالطبيعة</span></div>
-      <div class="stat reveal"><b class="count" data-to="1" data-suffix=" يوم">0</b><span>يكفي ليصير فرق</span></div>
+  <div class="qbox"><h2 id="qText">...</h2></div>
+
+  <div class="ans" id="ans"></div>
+
+  <p class="msg" id="msg">&nbsp;</p>
+  <button class="next hidden" id="nextBtn" type="button">السؤال الجاي ←</button>
+
+  <div class="foot">
+    <div class="sc" id="sc1">
+      <span class="nm"><b id="se1">🦁</b> <span id="sn1">فريق 1</span></span>
+      <span class="pt" id="sp1">0</span>
     </div>
-
-    <div class="cards">
-      <article class="card reveal"><i>🌊</i><h3>النفايات بتسافر</h3><p>الكيس اللي بنرميه بالساحة بيوصل للوادي، ومن الوادي للبحر. المسافة أقصر مما بنتخيّل.</p></article>
-      <article class="card reveal"><i>♻️</i><h3>الفرز مش صعب</h3><p>ثواني بس: بلاستيك، ورق، زجاج ومعادن، وعضوي. كل حاوية إلها قصة تانية.</p></article>
-      <article class="card reveal"><i>🤝</i><h3>مع بعض أقوى</h3><p>طالب واحد بينظّف زاوية. صف كامل بينظّف مدرسة. مدرسة بتغيّر حارة.</p></article>
+    <div class="sc" id="sc2">
+      <span class="nm"><b id="se2">🦅</b> <span id="sn2">فريق 2</span></span>
+      <span class="pt" id="sp2">0</span>
     </div>
   </div>
 </section>
 
-<section class="sec alt" id="plan">
-  <div class="wrap">
-    <h2 class="reveal">برنامج اليوم</h2>
-    <p class="sub reveal">سبع محطات، من الصباح لحفل التكريم.</p>
-    <ol class="timeline" id="timeline"></ol>
-  </div>
-</section>
-
-<section class="sec" id="contest">
-  <div class="wrap">
-    <h2 class="reveal">المسابقة الصفّية 🏆</h2>
-    <p class="sub reveal">الصف بينقسم لأربع فرق. كل مهمة إلها نقاط، والفريق صاحب أعلى مجموع بآخر اليوم بياخد كأس النظافة.</p>
-
-    <div class="rules">
-      <div class="rule reveal"><b>10</b><p>نقاط لكل كيس نفايات مجموع ومربوط منيح</p></div>
-      <div class="rule reveal"><b>20</b><p>نقطة على الفرز الصحيح بكل الحاويات</p></div>
-      <div class="rule reveal"><b>15</b><p>نقطة على شعار أو ملصق توعوي من تصميم الفريق</p></div>
-      <div class="rule reveal"><b>15</b><p>نقطة على شغلة معاد تدويرها (إشي جديد من نفايات)</p></div>
-      <div class="rule reveal"><b>10</b><p>نقاط على إشراك العيلة: تنظيف صغير بالبيت أو الحارة</p></div>
-      <div class="rule reveal"><b>10</b><p>نقاط على الالتزام بالسلامة والنظام طول اليوم</p></div>
+<!-- ============ END ============ -->
+<section class="screen" id="scEnd">
+  <div class="end">
+    <div class="trophy" id="trophy">🏆</div>
+    <h2 id="winTitle">الفائز</h2>
+    <p class="sub" id="winSub"></p>
+    <div class="podium">
+      <div class="pod" id="pod1"><div class="em" id="ee1">🦁</div><div class="nm" id="en1">فريق 1</div><div class="pt" id="ep1">0</div></div>
+      <div class="pod" id="pod2"><div class="em" id="ee2">🦅</div><div class="nm" id="en2">فريق 2</div><div class="pt" id="ep2">0</div></div>
     </div>
-
-    <div class="board-head">
-      <h3>لوحة النقاط</h3>
-      <div class="board-tools">
-        <button class="btn-sm" id="editToggle" type="button" aria-pressed="false">وضع المعلّمة ✏️</button>
-        <button class="btn-sm ghost" id="resetBoard" type="button">تصفير</button>
-      </div>
-    </div>
-    <p class="note">النقاط بتنحفظ على هالجهاز بس (متصفح الشاشة اللي عارضة الموقع)، فبتضل موجودة لو رجعتي فتحتي الصفحة.</p>
-    <div class="board" id="board"></div>
-  </div>
-</section>
-
-<section class="sec alt" id="missions">
-  <div class="wrap">
-    <h2 class="reveal">بطاقة المهمات</h2>
-    <p class="sub reveal">علّم ✓ على كل مهمة بتخلّصها. التقدّم بينحفظ لحالو.</p>
-    <div class="prog"><div class="prog-bar"><span id="progBar"></span></div><b id="progTxt">0%</b></div>
-    <div class="missions" id="missionList"></div>
-  </div>
-</section>
-
-<section class="sec" id="quiz">
-  <div class="wrap narrow">
-    <h2 class="reveal">كويز النظافة ✨</h2>
-    <p class="sub reveal">سبع أسئلة سريعة. جاوب وشوف كم بتعرف.</p>
-    <div class="quiz-card" id="quizCard">
-      <div class="quiz-top"><span id="qNum">سؤال 1 من 7</span><span id="qScore">النقاط: 0</span></div>
-      <h3 id="qText">...</h3>
-      <div class="opts" id="qOpts"></div>
-      <div class="quiz-foot"><p id="qFeedback"></p><button class="btn btn-main" id="qNext" type="button" hidden>السؤال الجاي</button></div>
-    </div>
-    <div class="quiz-result" id="quizResult" hidden>
-      <b id="qResultEmoji">🎉</b>
-      <h3 id="qResultTitle"></h3>
-      <p id="qResultText"></p>
-      <button class="btn btn-ghost" id="qRestart" type="button">أعد الكويز</button>
+    <div class="end-btns">
+      <button class="main" id="againBtn" type="button">جولة جديدة بنفس الفرق 🔁</button>
+      <button id="homeBtn" type="button">رجوع للإعدادات</button>
     </div>
   </div>
 </section>
 
-<section class="sec alt" id="game">
-  <div class="wrap">
-    <h2 class="reveal">لعبة الفرز ♻️</h2>
-    <p class="sub reveal">اضغط على الحاوية الصح لكل غرض. عندك عشر أغراض.</p>
-    <div class="game">
-      <div class="game-stage">
-        <p class="game-count" id="gameCount">الغرض 1 من 10</p>
-        <div class="item" id="gameItem"><span id="gameEmoji">🍌</span><b id="gameName">قشرة موز</b></div>
-        <p class="game-msg" id="gameMsg">&nbsp;</p>
-      </div>
-      <div class="bins" id="bins"></div>
-      <div class="game-done" id="gameDone" hidden>
-        <h3 id="gameDoneTitle"></h3>
-        <p id="gameDoneText"></p>
-        <button class="btn btn-main" id="gameRestart" type="button">العب مرة تانية</button>
-      </div>
-    </div>
-  </div>
-</section>
+<script>
+/* =======================================================
+   تحدّي النظافة — مسابقة صفّية على الشاشة
+   الأسئلة كلها بمصفوفة BANK تحت. زيد أو عدّل براحتك.
+   ======================================================= */
 
-<section class="sec pledge" id="pledge">
-  <div class="wrap narrow center">
-    <h2 class="reveal">تعهّد الطالب</h2>
-    <blockquote class="reveal">
-      «أنا بتعهّد إني ما أرمي نفاياتي بالأرض، وأفرز اللي بقدر عليه، وأنبّه صاحبي بلطف، وأخلّي مكاني أنظف من قبل ما أوصله.»
-    </blockquote>
-    <button class="btn btn-main big" id="pledgeBtn" type="button">أنا بتعهّد ✋</button>
-    <p class="pledge-count">عدد التعهدات على هذا الجهاز: <b id="pledgeCount">0</b></p>
-  </div>
-</section>
+const BANK = [
+  ["وين بنرمي قنينة البلاستيك الفاضية؟", ["حاوية البلاستيك","حاوية الورق","النفايات العضوية","بالأرض ورا الشجرة"], 0],
+  ["قنينة البلاستيك كم بدها وقت لتتحلل بالطبيعة؟", ["أسبوع","سنة وحدة","عشر سنين","حوالي 450 سنة"], 3],
+  ["الجرايد والكرتون وين بيروحوا؟", ["حاوية الزجاج","حاوية الورق والكرتون","النفايات العضوية","حاوية البلاستيك"], 1],
+  ["شو أول إشي بنعمله قبل ما نبلّش التنظيف؟", ["نبلّش نلمّ بسرعة","نصوّر صور","نلبس القفازات","نوزّع الجوائز"], 2],
+  ["لقيت زجاج مكسور بالساحة، شو بتعمل؟", ["بلمّه بإيدي","بخبّر المعلّمة وما بلمسه","بركله بعيد","بتجاهله"], 1],
+  ["إيمتى بينحتفل باليوم العالمي للنظافة؟", ["أول يوم بالسنة","السبت الثالث من أيلول","آخر جمعة بأيار","كل يوم إثنين"], 1],
+  ["أحسن طريقة نقلّل فيها النفايات؟", ["نستهلك أقل ونعيد الاستخدام","نحرقها","ندفنها بالحديقة","نرميها ببلد تاني"], 0],
+  ["قشر الموز وبقايا الخضار وين بيروحوا؟", ["النفايات العضوية","حاوية الورق","حاوية الزجاج","حاوية البلاستيك"], 0],
+  ["شو معنى «إعادة التدوير»؟", ["نرمي النفايات بعيد","نحوّل النفايات لمواد جديدة","نحرق النفايات","نخبّي النفايات"], 1],
+  ["البطاريات المستعملة وين بنحطها؟", ["مع النفايات العادية","بالمي","صندوق خاص للنفايات الخطرة","بحاوية الورق"], 2],
+  ["الكيس اللي بينرمى بالشارع لوين بيوصل غالبًا؟", ["بيختفي لحاله","للوادي وبعدين للبحر","بيتحوّل تراب بيوم","بياخده الهوا للفضاء"], 1],
+  ["شو بيصير للسمك لما ياكل بلاستيك؟", ["بيكبر أسرع","بيتأذى وممكن يموت","ما بيصير إشي","بيصير لونه أحلى"], 1],
+  ["أي وحدة من هدول بتنعاد تدويرها؟", ["كيس الشيبس","علبة الألمنيوم","المحارم المستعملة","علكة"], 1],
+  ["الزجاج كم مرة بينفع ينعاد تدويره؟", ["ولا مرة","مرة وحدة بس","مرتين","مرات كتير بدون ما يخسر جودته"], 3],
+  ["شو أفضل بديل عن الأكياس البلاستيكية؟", ["كيس قماش بينعاد استخدامه","كيسين بلاستيك","كرتونة بترمى","ما في بديل"], 0],
+  ["لما نشوف حدا بيرمي زبالة عالأرض، شو بنعمل؟", ["بنتجاهله","بنصرّخ عليه","بننبّهه بلطف","بنرمي إحنا كمان"], 2],
+  ["«الكومبوست» شو هو؟", ["نوع بلاستيك","سماد طبيعي من بقايا الأكل","آلة تنظيف","حاوية زجاج"], 1],
+  ["شو بيوفّر أكثر إشي مي؟", ["نسكّر الحنفية وقت تنظيف الأسنان","نغسل السيارة كل يوم","نترك الحنفية مفتوحة","نستحمّى ساعة"], 0]
+];
 
-<section class="sec" id="safety">
-  <div class="wrap">
-    <h2 class="reveal">قوانين السلامة 🧤</h2>
-    <div class="safety" id="safety-list"></div>
-  </div>
-</section>
+const SHAPES = ["▲","◆","●","■"];
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 
-<section class="sec alt" id="certificate">
-  <div class="wrap narrow">
-    <h2 class="reveal">شهادة مشاركة</h2>
-    <p class="sub reveal">اكتب اسمك، واطبع شهادتك أو احفظها PDF.</p>
-    <div class="cert-form">
-      <label class="sr-only" for="certName">اسم الطالب</label>
-      <input id="certName" type="text" placeholder="اكتب اسمك هون" maxlength="40" autocomplete="off" />
-      <button class="btn btn-main" id="printBtn" type="button">اطبع الشهادة 🖨️</button>
-    </div>
+const S = {
+  names: ["فريق الزيتون", "فريق الياسمين"],
+  emo: ["🦁", "🦅"],
+  score: [0, 0],
+  nQ: 10, secs: 25, steal: true,
+  list: [], i: 0, turn: 0,
+  left: 0, timer: null, phase: "idle", stealing: false
+};
 
-    <div class="cert" id="cert">
-      <div class="cert-in">
-        <p class="cert-kicker">شهادة مشاركة</p>
-        <h3>يوم النظافة العالمي</h3>
-        <p class="cert-to">تُمنح هذه الشهادة إلى</p>
-        <p class="cert-name" id="certOut">اسم الطالب</p>
-        <p class="cert-body">تقديرًا للمشاركة الفعّالة في فعالية النظافة، والحرص على نظافة المدرسة والبيئة.</p>
-        <div class="cert-meta">
-          <span data-cfg="classLine">صف جنى</span>
-          <span class="cert-seal">🌍</span>
-          <span data-cfg="dateLine">أيلول</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+/* ---------- الأصوات ---------- */
+let AC = null, muted = false;
+function beep(freq, dur = .12, type = "sine", vol = .12) {
+  if (muted) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001, AC.currentTime + dur);
+    o.connect(g); g.connect(AC.destination);
+    o.start(); o.stop(AC.currentTime + dur);
+  } catch {}
+}
+const sTick  = () => beep(880, .05, "square", .05);
+const sRight = () => { beep(660, .12); setTimeout(() => beep(880, .18), 110); };
+const sWrong = () => beep(150, .3, "sawtooth", .1);
+const sWin   = () => [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, .22), i * 130));
 
-</main>
+$("#sndBtn").onclick = () => {
+  muted = !muted;
+  $("#sndBtn").textContent = muted ? "🔇" : "🔊";
+};
+$("#fsBtn").onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen?.();
+};
 
-<footer class="foot">
-  <div class="wrap foot-in">
-    <p><b>يوم النظافة العالمي</b> · <span data-cfg="classLine">صف جنى</span></p>
-    <p class="foot-sm">صُنع بحب لطلاب الصف 💚 خلّي المكان أنظف من قبل ما تجي.</p>
-  </div>
-</footer>
+/* ---------- شاشات ---------- */
+function show(id) { $$(".screen").forEach(s => s.classList.toggle("on", s.id === id)); }
 
-<button class="top-btn" id="topBtn" type="button" aria-label="ارجع للأعلى">↑</button>
+/* ---------- الإعدادات ---------- */
+function chips(box, vals, cur, onPick) {
+  box.innerHTML = vals.map(v =>
+    `<button class="chip${v[1] === cur ? " sel" : ""}" type="button" data-v="${v[1]}">${v[0]}</button>`).join("");
+  box.onclick = e => {
+    const b = e.target.closest(".chip");
+    if (!b) return;
+    [...box.children].forEach(c => c.classList.remove("sel"));
+    b.classList.add("sel");
+    onPick(b.dataset.v);
+    beep(700, .06, "sine", .07);
+  };
+}
+chips($("#chQ"), [["6","6"],["10","10"],["14","14"],["الكل","99"]], "10", v => S.nQ = +v);
+chips($("#chT"), [["15 ث","15"],["25 ث","25"],["40 ث","40"]], "25", v => S.secs = +v);
+chips($("#chS"), [["مفعّلة","1"],["مقفلة","0"]], "1", v => S.steal = v === "1");
 
-<script src="app.js"></script>
+const EMOJIS = ["🦁","🦅","🐬","🐝","🌿","⚡","🔥","⭐"];
+function emojiPicker(box, slot) {
+  box.innerHTML = EMOJIS.map(e =>
+    `<button type="button" data-e="${e}"${e === S.emo[slot] ? ' class="sel"' : ""}>${e}</button>`).join("");
+  box.onclick = ev => {
+    const b = ev.target.closest("button");
+    if (!b) return;
+    [...box.children].forEach(c => c.classList.remove("sel"));
+    b.classList.add("sel");
+    S.emo[slot] = b.dataset.e;
+    beep(760, .06, "sine", .07);
+  };
+}
+emojiPicker($("#e1"), 0);
+emojiPicker($("#e2"), 1);
+
+function shuffle(a) {
+  const c = [...a];
+  for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; }
+  return c;
+}
+
+$("#startBtn").onclick = () => {
+  S.names[0] = $("#n1").value.trim() || "الفريق الأول";
+  S.names[1] = $("#n2").value.trim() || "الفريق الثاني";
+  newRound();
+};
+function newRound() {
+  S.score = [0, 0];
+  S.list = shuffle(BANK).slice(0, Math.min(S.nQ, BANK.length));
+  S.i = 0; S.turn = 0;
+  $("#sn1").textContent = S.names[0];
+  $("#sn2").textContent = S.names[1];
+  $("#se1").textContent = S.emo[0];
+  $("#se2").textContent = S.emo[1];
+  show("scPlay");
+  askQ();
+}
+
+/* ---------- السؤال ---------- */
+function askQ() {
+  const [q, a] = S.list[S.i];
+  S.phase = "ask"; S.stealing = false;
+  $("#qNum").textContent = `سؤال ${S.i + 1} / ${S.list.length}`;
+  $("#qText").textContent = q;
+  $("#msg").innerHTML = "&nbsp;"; $("#msg").className = "msg";
+  $("#nextBtn").classList.add("hidden");
+  $("#ans").innerHTML = a.map((t, i) =>
+    `<button type="button" data-i="${i}"><span class="sh">${SHAPES[i]}</span><span class="n">${i + 1}</span><span>${t}</span></button>`).join("");
+  paintTurn();
+  paintScore();
+  startClock(S.secs);
+}
+function paintTurn() {
+  const t = $("#turn");
+  t.className = "turn " + (S.stealing ? "steal" : "is" + (S.turn + 1));
+  t.innerHTML = `<span class="who">${S.stealing ? "فرصة السرقة: " : "الدور على "}${S.emo[S.turn]} ${S.names[S.turn]}</span>`;
+  $("#sc1").classList.toggle("act", S.turn === 0);
+  $("#sc2").classList.toggle("act", S.turn === 1);
+}
+function paintScore() {
+  $("#sp1").textContent = S.score[0];
+  $("#sp2").textContent = S.score[1];
+}
+
+/* ---------- الوقت ---------- */
+function startClock(sec) {
+  clearInterval(S.timer);
+  S.left = sec; S.total = sec;
+  tickView();
+  S.timer = setInterval(() => {
+    S.left--;
+    tickView();
+    if (S.left <= 5 && S.left > 0) sTick();
+    if (S.left <= 0) { clearInterval(S.timer); timeUp(); }
+  }, 1000);
+}
+function tickView() {
+  $("#clock").textContent = Math.max(0, S.left);
+  $("#clock").classList.toggle("low", S.left <= 5);
+  $("#track").style.width = Math.max(0, S.left / S.total * 100) + "%";
+}
+
+/* ---------- الجواب ---------- */
+$("#ans").onclick = e => {
+  const b = e.target.closest("button[data-i]");
+  if (b && !b.disabled) answer(+b.dataset.i);
+};
+function answer(pick) {
+  if (S.phase !== "ask") return;
+  clearInterval(S.timer);
+  const c = S.list[S.i][2];
+  const gain = Math.round((500 + 500 * (S.left / S.total)) / 10) * 10;
+
+  if (pick === c) {
+    const pts = S.stealing ? Math.round(gain / 2 / 10) * 10 : gain;
+    S.score[S.turn] += pts;
+    lock(pick, c);
+    $("#msg").className = "msg ok";
+    $("#msg").textContent = `✅ صح! ${S.names[S.turn]} +${pts} نقطة`;
+    sRight();
+    endQ();
+    return;
+  }
+
+  if (S.steal && !S.stealing) {
+    // فرصة سرقة للفريق التاني
+    $$("#ans button")[pick].classList.add("lose");
+    $$("#ans button")[pick].disabled = true;
+    S.stealing = true;
+    S.turn = 1 - S.turn;
+    S.phase = "ask";
+    $("#msg").className = "msg no";
+    $("#msg").textContent = "❌ جواب غلط — الفرصة صارت للفريق التاني بنص النقاط";
+    sWrong();
+    paintTurn();
+    startClock(Math.max(8, Math.round(S.secs / 2)));
+    return;
+  }
+
+  lock(pick, c);
+  $("#msg").className = "msg no";
+  $("#msg").textContent = `❌ غلط — الجواب الصح: ${S.list[S.i][1][c]}`;
+  sWrong();
+  endQ();
+}
+function timeUp() {
+  if (S.phase !== "ask") return;
+  if (S.steal && !S.stealing) {
+    S.stealing = true;
+    S.turn = 1 - S.turn;
+    $("#msg").className = "msg no";
+    $("#msg").textContent = "⏰ خلص الوقت — الفرصة للفريق التاني بنص النقاط";
+    sWrong();
+    paintTurn();
+    startClock(Math.max(8, Math.round(S.secs / 2)));
+    return;
+  }
+  lock(-1, S.list[S.i][2]);
+  $("#msg").className = "msg no";
+  $("#msg").textContent = `⏰ خلص الوقت — الجواب الصح: ${S.list[S.i][1][S.list[S.i][2]]}`;
+  sWrong();
+  endQ();
+}
+function lock(pick, c) {
+  $$("#ans button").forEach((b, i) => {
+    b.disabled = true;
+    if (i === c) b.classList.add("win");
+    else if (i === pick) b.classList.add("lose");
+    else b.classList.add("off");
+  });
+}
+function endQ() {
+  S.phase = "done";
+  paintScore();
+  $("#nextBtn").classList.remove("hidden");
+  $("#nextBtn").textContent = S.i === S.list.length - 1 ? "إعلان الفائز 🏆" : "السؤال الجاي ←";
+  $("#nextBtn").focus();
+}
+$("#nextBtn").onclick = nextQ;
+function nextQ() {
+  if (S.phase !== "done") return;
+  if (S.i === S.list.length - 1) return finish();
+  // الدور بينتقل للفريق اللي ما كان السؤال إله
+  S.turn = S.stealing ? S.turn : 1 - S.turn;
+  S.i++;
+  askQ();
+}
+
+/* ---------- النهاية ---------- */
+function finish() {
+  clearInterval(S.timer);
+  S.phase = "end";
+  const [a, b] = S.score;
+  $("#en1").textContent = S.names[0]; $("#ep1").textContent = a; $("#ee1").textContent = S.emo[0];
+  $("#en2").textContent = S.names[1]; $("#ep2").textContent = b; $("#ee2").textContent = S.emo[1];
+  $("#pod1").classList.toggle("won", a > b);
+  $("#pod2").classList.toggle("won", b > a);
+  if (a === b) {
+    $("#trophy").textContent = "🤝";
+    $("#winTitle").textContent = "تعادل!";
+    $("#winSub").textContent = "الفريقين نفس النقاط — كلكم فايزين اليوم.";
+  } else {
+    const w = a > b ? 0 : 1;
+    $("#trophy").textContent = "🏆";
+    $("#winTitle").textContent = `${S.emo[w]} ${S.names[w]} هو الفائز!`;
+    $("#winSub").textContent = `بفارق ${Math.abs(a - b)} نقطة — مبروك، وشكرًا لكل اللي شارك.`;
+  }
+  show("scEnd");
+  sWin();
+  confetti();
+}
+$("#againBtn").onclick = newRound;
+$("#homeBtn").onclick = () => { clearInterval(S.timer); S.phase = "idle"; show("scSetup"); };
+
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ch = ["🎉","✨","🍃","♻️","⭐","💚"];
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement("span");
+    s.textContent = ch[i % ch.length];
+    s.style.cssText = `position:fixed;z-index:50;pointer-events:none;font-size:${16 + Math.random() * 22}px;
+      left:${Math.random() * 100}vw;top:-40px;transition:transform 2.8s linear,opacity 2.8s linear`;
+    document.body.appendChild(s);
+    requestAnimationFrame(() => {
+      s.style.transform = `translateY(${innerHeight + 80}px) rotate(${Math.random() * 720 - 360}deg)`;
+      s.style.opacity = "0";
+    });
+    setTimeout(() => s.remove(), 3000);
+  }
+}
+
+/* ---------- الكيبورد ---------- */
+addEventListener("keydown", e => {
+  const k = e.key.toLowerCase();
+  if (k === "f") { e.preventDefault(); $("#fsBtn").click(); return; }
+  if (k === "m") { e.preventDefault(); $("#sndBtn").click(); return; }
+  if ($("#scSetup").classList.contains("on")) {
+    if (k === "enter" && document.activeElement.tagName !== "INPUT") $("#startBtn").click();
+    return;
+  }
+  if ($("#scEnd").classList.contains("on")) {
+    if (k === " " || k === "enter") { e.preventDefault(); $("#againBtn").click(); }
+    return;
+  }
+  if (S.phase === "ask" && ["1","2","3","4"].includes(k)) {
+    e.preventDefault();
+    const b = $$("#ans button")[+k - 1];
+    if (b && !b.disabled) answer(+k - 1);
+  } else if (S.phase === "done" && (k === " " || k === "enter")) {
+    e.preventDefault(); nextQ();
+  }
+});
+</script>
 </body>
 </html>
