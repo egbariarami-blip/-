@@ -4,11 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>تحدّي النظافة — مسابقة الصف</title>
-<meta name="description" content="مسابقة صفّية على الشاشة بين فريقين، بدون تلفونات. ممثل من كل فريق بيجاوب بالتناوب." />
+<meta name="description" content="مسابقة صفّية على الشاشة بين فريقين، بدون تلفونات. هدية ليوم النظافة العالمي من الطالبة جنى رامي أسعد اغبارية." />
 <meta name="theme-color" content="#06231c" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&display=swap" rel="stylesheet" />
 <style>
 :root{
@@ -24,44 +25,59 @@ body{
   min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
 button{font-family:var(--f);color:inherit;border:none;background:none;cursor:pointer}
-.screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;padding:clamp(14px,2.2vw,28px)}
+.screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;
+  padding:clamp(14px,2.2vw,28px);padding-bottom:clamp(58px,7vh,72px)}
 .screen.on{display:flex}
 .hidden{display:none!important}
 
+/* ---------- gift ribbon ---------- */
+.gift{position:fixed;bottom:0;inset-inline:0;z-index:40;text-align:center;
+  background:linear-gradient(90deg,#ffb01f,var(--gold),#ffb01f);color:#2a1c05;
+  font-weight:800;font-size:clamp(.8rem,1.7vw,1.05rem);padding:7px 14px;
+  box-shadow:0 -6px 22px rgba(255,210,63,.28)}
+.gift b{white-space:nowrap}
+.gift-card{background:linear-gradient(135deg,rgba(255,210,63,.2),rgba(255,176,31,.1));
+  border:2px solid var(--gold);border-radius:20px;padding:14px 22px;margin:0 auto clamp(16px,2.6vw,26px);
+  max-width:640px;line-height:1.7}
+.gift-card .k{display:block;font-size:.85rem;color:var(--gold);letter-spacing:2px}
+.gift-card .v{display:block;font-size:clamp(1.05rem,2.6vw,1.4rem);font-weight:800}
+
 /* ---------- tools ---------- */
-.tools{position:fixed;top:10px;inset-inline-start:10px;display:flex;gap:6px;z-index:30}
+.tools{position:fixed;top:10px;inset-inline-start:10px;display:flex;gap:6px;z-index:45}
 .tools button{width:40px;height:40px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-size:1.05rem}
 .tools button:hover{background:rgba(255,255,255,.16)}
 
 /* ---------- setup ---------- */
 .setup{max-width:1000px;margin:auto;width:100%;text-align:center}
-.logo{font-size:clamp(3rem,9vw,5.5rem);line-height:1}
-.setup h1{font-size:clamp(2rem,6vw,3.6rem);margin:.1em 0 .1em}
-.setup .tag{color:var(--dim);font-size:clamp(.95rem,2.2vw,1.2rem);margin-bottom:clamp(18px,3vw,34px)}
-.teams-in{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
-.tcard{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:18px}
+.logo{font-size:clamp(2.6rem,8vw,4.6rem);line-height:1}
+.setup h1{font-size:clamp(1.9rem,5.6vw,3.3rem);margin:.1em 0 .1em}
+.setup .tag{color:var(--dim);font-size:clamp(.92rem,2.1vw,1.15rem);margin-bottom:clamp(14px,2.4vw,24px)}
+.teams-in{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.tcard{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:16px}
 .tcard.t1{border-color:rgba(232,69,60,.6)}
 .tcard.t2{border-color:rgba(43,127,212,.6)}
-.tcard .em{font-size:2.4rem;line-height:1}
 .empick{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:4px}
 .empick button{font-size:1.5rem;line-height:1;width:44px;height:44px;border-radius:13px;
   background:rgba(0,0,0,.25);border:2px solid transparent;transition:.15s}
 .empick button:hover{background:rgba(255,255,255,.14)}
 .empick button.sel{border-color:var(--gold);background:rgba(255,210,63,.2);transform:scale(1.08)}
 .tcard label{display:block;font-size:.85rem;color:var(--dim);margin:6px 0 6px}
-.tcard input{width:100%;text-align:center;font-family:var(--f);font-size:1.25rem;font-weight:700;color:var(--ink);
-  background:rgba(0,0,0,.28);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.tcard input{width:100%;text-align:center;font-family:var(--f);font-size:1.2rem;font-weight:700;color:var(--ink);
+  background:rgba(0,0,0,.28);border:2px solid var(--line);border-radius:14px;padding:9px 12px}
 .tcard input:focus{outline:none;border-color:var(--gold)}
-.opts-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:26px}
-.opt-g{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 16px}
-.opt-g h3{font-size:.9rem;color:var(--dim);font-weight:500;margin-bottom:8px}
+.opts-row{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-bottom:22px}
+.opt-g{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:11px 15px}
+.opt-g h3{font-size:.88rem;color:var(--dim);font-weight:500;margin-bottom:8px}
 .chips{display:flex;gap:6px;justify-content:center}
-.chip{padding:8px 16px;border-radius:999px;background:rgba(0,0,0,.25);border:2px solid transparent;font-size:1rem;font-weight:700}
+.chip{padding:8px 15px;border-radius:999px;background:rgba(0,0,0,.25);border:2px solid transparent;font-size:1rem;font-weight:700}
 .chip.sel{background:var(--gold);color:#22160a;border-color:var(--gold)}
-.start{font-size:clamp(1.3rem,3.4vw,1.9rem);font-weight:800;padding:18px 60px;border-radius:999px;
+.start{font-size:clamp(1.25rem,3.2vw,1.8rem);font-weight:800;padding:16px 56px;border-radius:999px;
   background:linear-gradient(135deg,var(--gold),#ffb01f);color:#2a1c05;box-shadow:0 14px 40px rgba(255,210,63,.3)}
 .start:hover{transform:translateY(-2px)}
-.hint{color:var(--dim);font-size:.88rem;margin-top:18px;line-height:2}
+.test{display:block;margin:14px auto 0;font-size:.95rem;font-weight:700;padding:9px 22px;border-radius:999px;
+  background:var(--panel);border:1px solid var(--line)}
+.test:hover{background:rgba(255,255,255,.16)}
+.hint{color:var(--dim);font-size:.86rem;margin-top:14px;line-height:2}
 .hint kbd{background:rgba(255,255,255,.12);border:1px solid var(--line);border-radius:7px;padding:2px 9px;font-family:var(--f)}
 
 /* ---------- play ---------- */
@@ -71,7 +87,9 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 .turn .who{padding:6px 22px;border-radius:999px;display:inline-block}
 .turn.is1 .who{background:var(--a)}
 .turn.is2 .who{background:var(--b)}
-.turn.steal .who{background:var(--gold);color:#241a04}
+.turn.golden .who{background:linear-gradient(135deg,var(--gold),#ffb01f);color:#241a04;
+  box-shadow:0 0 0 4px rgba(255,210,63,.25);animation:glow 1.2s infinite}
+@keyframes glow{50%{box-shadow:0 0 0 12px rgba(255,210,63,0)}}
 .clock{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 18px;
   font-size:clamp(1.1rem,2.6vw,1.7rem);font-weight:800;min-width:74px;text-align:center}
 .clock.low{background:var(--a);animation:pulse .8s infinite}
@@ -83,7 +101,7 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 .qbox h2{font-size:clamp(1.5rem,4.6vw,3.2rem);line-height:1.45;max-width:20ch}
 .ans{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.4vw,14px);margin-bottom:clamp(12px,2vw,20px)}
 .ans button{display:flex;align-items:center;gap:14px;text-align:start;padding:clamp(14px,2.4vw,24px) clamp(16px,2.4vw,26px);
-  border-radius:20px;font-size:clamp(1.05rem,2.6vw,1.75rem);font-weight:700;transition:.15s;min-height:clamp(70px,11vh,120px)}
+  border-radius:20px;font-size:clamp(1.05rem,2.6vw,1.75rem);font-weight:700;transition:.15s;min-height:clamp(66px,10vh,116px)}
 .ans button .sh{font-size:1.3em;line-height:1;opacity:.85;flex:none}
 .ans button .n{background:rgba(0,0,0,.25);border-radius:9px;padding:1px 10px;font-size:.8em;flex:none}
 .ans button:nth-child(1){background:var(--a)}
@@ -96,7 +114,7 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 .ans button.win{outline:5px solid #fff;outline-offset:-5px;animation:pulse .6s 2}
 .ans button.lose{opacity:.3;filter:grayscale(.7)}
 .foot{display:flex;align-items:stretch;gap:12px}
-.sc{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;border-radius:18px;
+.sc{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 18px;border-radius:18px;
   background:var(--panel);border:2px solid var(--line);transition:.2s}
 .sc.act{border-color:var(--gold);background:rgba(255,210,63,.14)}
 .sc .nm{display:flex;align-items:center;gap:9px;font-size:clamp(.95rem,2vw,1.35rem);font-weight:700;min-width:0}
@@ -111,12 +129,12 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 
 /* ---------- end ---------- */
 .end{margin:auto;text-align:center;width:100%;max-width:900px}
-.trophy{font-size:clamp(4rem,13vw,8rem);line-height:1;animation:pop .5s ease}
+.trophy{font-size:clamp(3.4rem,11vw,7rem);line-height:1;animation:pop .5s ease}
 @keyframes pop{from{transform:scale(.4);opacity:0}}
 .end h2{font-size:clamp(1.8rem,6vw,3.4rem);margin:.15em 0}
-.end .sub{color:var(--dim);font-size:clamp(1rem,2.4vw,1.3rem);margin-bottom:26px}
-.podium{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
-.pod{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:20px}
+.end .sub{color:var(--dim);font-size:clamp(1rem,2.4vw,1.3rem);margin-bottom:22px}
+.podium{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.pod{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:18px}
 .pod.won{border-color:var(--gold);background:rgba(255,210,63,.16)}
 .pod .em{font-size:2.6rem;line-height:1}
 .pod .nm{font-size:clamp(1.05rem,2.6vw,1.5rem);font-weight:700;margin:4px 0}
@@ -129,6 +147,7 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 @media (max-width:640px){
   .teams-in,.ans,.podium{grid-template-columns:1fr}
   .foot{flex-direction:column}
+  .gift b{white-space:normal}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -140,12 +159,19 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
   <button id="sndBtn" type="button" title="الصوت" aria-label="الصوت">🔊</button>
 </div>
 
+<div class="gift">🎁 <b>هدية ليوم النظافة العالمي — من الطالبة جنى رامي أسعد اغبارية</b></div>
+
 <!-- ============ SETUP ============ -->
 <section class="screen on" id="scSetup">
   <div class="setup">
     <div class="logo">🏆♻️</div>
     <h1>تحدّي النظافة</h1>
     <p class="tag">مسابقة الصف على الشاشة — فريقين، ممثل من كل فريق بيجاوب بالتناوب. بدون تلفونات.</p>
+
+    <div class="gift-card">
+      <span class="k">هدية ليوم النظافة العالمي</span>
+      <span class="v">🎁 من الطالبة جنى رامي أسعد اغبارية 🌍</span>
+    </div>
 
     <div class="teams-in">
       <div class="tcard t1">
@@ -170,12 +196,13 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
         <div class="chips" id="chT"></div>
       </div>
       <div class="opt-g">
-        <h3>فرصة السرقة</h3>
+        <h3>الفرصة الذهبية</h3>
         <div class="chips" id="chS"></div>
       </div>
     </div>
 
     <button class="start" id="startBtn" type="button">يلا نبلّش 🚀</button>
+    <button class="test" id="testBtn" type="button">جرّب الصوت قبل ما تبلّش 🔊</button>
 
     <p class="hint">
       للمعلّمة: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> لاختيار الجواب &nbsp;·&nbsp;
@@ -222,6 +249,10 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
       <div class="pod" id="pod1"><div class="em" id="ee1">🦁</div><div class="nm" id="en1">فريق 1</div><div class="pt" id="ep1">0</div></div>
       <div class="pod" id="pod2"><div class="em" id="ee2">🦅</div><div class="nm" id="en2">فريق 2</div><div class="pt" id="ep2">0</div></div>
     </div>
+    <div class="gift-card">
+      <span class="k">هدية ليوم النظافة العالمي</span>
+      <span class="v">🎁 من الطالبة جنى رامي أسعد اغبارية 🌍</span>
+    </div>
     <div class="end-btns">
       <button class="main" id="againBtn" type="button">جولة جديدة بنفس الفرق 🔁</button>
       <button id="homeBtn" type="button">رجوع للإعدادات</button>
@@ -232,7 +263,9 @@ button{font-family:var(--f);color:inherit;border:none;background:none;cursor:poi
 <script>
 /* =======================================================
    تحدّي النظافة — مسابقة صفّية على الشاشة
-   الأسئلة كلها بمصفوفة BANK تحت. زيد أو عدّل براحتك.
+   هدية ليوم النظافة العالمي من الطالبة جنى رامي أسعد اغبارية
+   الأسئلة كلها بمصفوفة BANK. المؤثرات الصوتية مولّدة داخل
+   المتصفح، والتعليق الصوتي من ElevenLabs (روابط VO).
    ======================================================= */
 
 const BANK = [
@@ -256,9 +289,25 @@ const BANK = [
   ["شو بيوفّر أكثر إشي مي؟", ["نسكّر الحنفية وقت تنظيف الأسنان","نغسل السيارة كل يوم","نترك الحنفية مفتوحة","نستحمّى ساعة"], 0]
 ];
 
+/* التعليق الصوتي (ElevenLabs) — بدّل الروابط إذا بدك أصوات تانية */
+const CDN = "https://d8j0ntlcm91z4.cloudfront.net/user_3GFqKKKXq5ngkGMrqNrzPKz5sgY/hf_20260919_111318_";
+const VO = {
+  start:  [CDN + "496b4466-6701-4c72-90cf-bffee400859a.mp3"],
+  right:  [CDN + "048a63e3-6ed6-4d6d-9a99-71c729fd4f43.mp3",
+           CDN + "04b9b9e6-2ad4-4cc8-82c6-439952fb979e.mp3",
+           CDN + "4a547c3b-a818-45c1-b8a8-c905c42da4d7.mp3"],
+  wrong:  [CDN + "f33e6dc1-86c3-4e3d-bd72-7aa50ffdfefc.mp3",
+           CDN + "307a2bc3-31b3-493d-810d-f69c073fb6ac.mp3"],
+  golden: [CDN + "2c74179d-04e4-4c7e-8c36-0134c9d9779c.mp3"],
+  timeup: [CDN + "9c3d50b1-27f7-49ef-8482-e8b25de083e3.mp3"],
+  last:   [CDN + "d74a0aed-310e-44f7-a784-e0d108831bba.mp3"],
+  win:    [CDN + "758606ef-2976-4f03-aeb9-bb7503c470bf.mp3"]
+};
+
 const SHAPES = ["▲","◆","●","■"];
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
+const pick = a => a[Math.floor(Math.random() * a.length)];
 
 const S = {
   names: ["فريق الزيتون", "فريق الياسمين"],
@@ -266,41 +315,136 @@ const S = {
   score: [0, 0],
   nQ: 10, secs: 25, steal: true,
   list: [], i: 0, turn: 0,
-  left: 0, timer: null, phase: "idle", stealing: false
+  left: 0, total: 25, timer: null, phase: "idle", golden: false
 };
 
-/* ---------- الأصوات ---------- */
-let AC = null, muted = false;
-function beep(freq, dur = .12, type = "sine", vol = .12) {
-  if (muted) return;
+/* ================= الصوت ================= */
+let muted = false, AC = null, master = null, current = null;
+
+function audio() {
+  if (!AC) {
+    try {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      master = AC.createGain();
+      master.gain.value = .9;
+      master.connect(AC.destination);
+    } catch { AC = null; }
+  }
+  if (AC && AC.state === "suspended") AC.resume().catch(() => {});
+  return AC;
+}
+
+/* --- لبنات المؤثرات --- */
+function tone(freq, at, dur, { type = "sine", peak = .16, to = null } = {}) {
+  const ac = audio(); if (!ac || muted) return;
+  const t = ac.currentTime + at;
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, t);
+  if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + Math.min(.03, dur / 3));
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(master);
+  o.start(t); o.stop(t + dur + .02);
+}
+let NOISE = null;
+function noiseBuf() {
+  const ac = audio(); if (!ac) return null;
+  if (!NOISE) {
+    NOISE = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+    const d = NOISE.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  return NOISE;
+}
+function noise(at, dur, { freq = 1600, q = .8, peak = .2, type = "bandpass" } = {}) {
+  const ac = audio(); if (!ac || muted) return;
+  const buf = noiseBuf(); if (!buf) return;
+  const t = ac.currentTime + at;
+  const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+  const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+  const g = ac.createGain();
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + .012);
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  src.connect(f); f.connect(g); g.connect(master);
+  src.start(t); src.stop(t + dur + .02);
+}
+
+/* --- المؤثرات --- */
+const sfx = {
+  click:  () => tone(760, 0, .07, { type: "sine", peak: .09 }),
+  tick:   () => { tone(1500, 0, .04, { type: "square", peak: .05 }); noise(0, .03, { freq: 3000, peak: .04 }); },
+  whoosh: () => noise(0, .35, { freq: 500, q: .5, peak: .12, type: "lowpass" }),
+  correct: () => {
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, i * .075, .3, { peak: .16 }));
+    tone(1567.98, .3, .5, { peak: .08, type: "triangle" });
+    noise(.05, .25, { freq: 5000, q: .6, peak: .05 });
+  },
+  wrong: () => {
+    tone(196, 0, .38, { type: "sawtooth", peak: .14, to: 98 });
+    tone(185, .06, .32, { type: "square", peak: .07, to: 92 });
+  },
+  golden: () => {
+    [1046.5, 1318.5, 1567.98, 2093].forEach((f, i) => tone(f, i * .06, .55, { type: "triangle", peak: .11 }));
+    noise(0, .5, { freq: 6000, q: .5, peak: .05 });
+  },
+  timeup: () => {
+    for (let i = 0; i < 3; i++) { tone(880, i * .18, .12, { type: "square", peak: .13 }); tone(660, i * .18 + .09, .1, { type: "square", peak: .11 }); }
+  },
+  start: () => {
+    tone(220, 0, .5, { type: "sawtooth", peak: .08, to: 880 });
+    [523.25, 659.25, 783.99].forEach((f, i) => tone(f, .45 + i * .06, .5, { peak: .14 }));
+    noise(.4, .5, { freq: 2500, q: .4, peak: .06 });
+  },
+  applause: (dur = 1.6) => {
+    noise(0, dur, { freq: 2200, q: .35, peak: .11 });
+    for (let i = 0; i < 26; i++) noise(Math.random() * dur * .9, .05, { freq: 1200 + Math.random() * 2600, q: 3, peak: .05 });
+  },
+  fanfare: () => {
+    const c = [523.25, 659.25, 783.99, 1046.5];
+    c.forEach((f, i) => tone(f, i * .1, .45, { type: "triangle", peak: .15 }));
+    c.forEach(f => tone(f, .5, 1.1, { type: "triangle", peak: .12 }));
+    tone(1318.5, .5, 1.2, { type: "sine", peak: .1 });
+    sfx.applause(2.2);
+  }
+};
+
+/* --- التعليق الصوتي --- */
+const POOL = {};
+(function preload() {
+  Object.keys(VO).forEach(k => {
+    POOL[k] = VO[k].map(u => { const a = new Audio(u); a.preload = "auto"; a.volume = 1; return a; });
+  });
+})();
+function say(key) {
+  if (muted || !POOL[key] || !POOL[key].length) return;
   try {
-    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
-    const o = AC.createOscillator(), g = AC.createGain();
-    o.type = type; o.frequency.value = freq;
-    g.gain.setValueAtTime(vol, AC.currentTime);
-    g.gain.exponentialRampToValueAtTime(.0001, AC.currentTime + dur);
-    o.connect(g); g.connect(AC.destination);
-    o.start(); o.stop(AC.currentTime + dur);
+    if (current) { current.pause(); current.currentTime = 0; }
+    const a = pick(POOL[key]);
+    a.currentTime = 0;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => {});
+    current = a;
   } catch {}
 }
-const sTick  = () => beep(880, .05, "square", .05);
-const sRight = () => { beep(660, .12); setTimeout(() => beep(880, .18), 110); };
-const sWrong = () => beep(150, .3, "sawtooth", .1);
-const sWin   = () => [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, .22), i * 130));
+function stopSay() { try { if (current) { current.pause(); current.currentTime = 0; } } catch {} }
 
 $("#sndBtn").onclick = () => {
   muted = !muted;
   $("#sndBtn").textContent = muted ? "🔇" : "🔊";
+  if (muted) stopSay(); else { audio(); sfx.click(); }
 };
 $("#fsBtn").onclick = () => {
   if (document.fullscreenElement) document.exitFullscreen();
   else document.documentElement.requestFullscreen?.();
 };
+$("#testBtn").onclick = () => { audio(); sfx.correct(); say("right"); };
 
-/* ---------- شاشات ---------- */
+/* ================= شاشات ================= */
 function show(id) { $$(".screen").forEach(s => s.classList.toggle("on", s.id === id)); }
 
-/* ---------- الإعدادات ---------- */
 function chips(box, vals, cur, onPick) {
   box.innerHTML = vals.map(v =>
     `<button class="chip${v[1] === cur ? " sel" : ""}" type="button" data-v="${v[1]}">${v[0]}</button>`).join("");
@@ -310,7 +454,7 @@ function chips(box, vals, cur, onPick) {
     [...box.children].forEach(c => c.classList.remove("sel"));
     b.classList.add("sel");
     onPick(b.dataset.v);
-    beep(700, .06, "sine", .07);
+    sfx.click();
   };
 }
 chips($("#chQ"), [["6","6"],["10","10"],["14","14"],["الكل","99"]], "10", v => S.nQ = +v);
@@ -327,7 +471,7 @@ function emojiPicker(box, slot) {
     [...box.children].forEach(c => c.classList.remove("sel"));
     b.classList.add("sel");
     S.emo[slot] = b.dataset.e;
-    beep(760, .06, "sine", .07);
+    sfx.click();
   };
 }
 emojiPicker($("#e1"), 0);
@@ -340,11 +484,15 @@ function shuffle(a) {
 }
 
 $("#startBtn").onclick = () => {
+  audio();
   S.names[0] = $("#n1").value.trim() || "الفريق الأول";
   S.names[1] = $("#n2").value.trim() || "الفريق الثاني";
+  sfx.start();
+  say("start");
   newRound();
 };
 function newRound() {
+  audio();
   S.score = [0, 0];
   S.list = shuffle(BANK).slice(0, Math.min(S.nQ, BANK.length));
   S.i = 0; S.turn = 0;
@@ -353,13 +501,13 @@ function newRound() {
   $("#se1").textContent = S.emo[0];
   $("#se2").textContent = S.emo[1];
   show("scPlay");
-  askQ();
+  askQ(true);
 }
 
-/* ---------- السؤال ---------- */
-function askQ() {
+/* ================= السؤال ================= */
+function askQ(first) {
   const [q, a] = S.list[S.i];
-  S.phase = "ask"; S.stealing = false;
+  S.phase = "ask"; S.golden = false;
   $("#qNum").textContent = `سؤال ${S.i + 1} / ${S.list.length}`;
   $("#qText").textContent = q;
   $("#msg").innerHTML = "&nbsp;"; $("#msg").className = "msg";
@@ -368,12 +516,14 @@ function askQ() {
     `<button type="button" data-i="${i}"><span class="sh">${SHAPES[i]}</span><span class="n">${i + 1}</span><span>${t}</span></button>`).join("");
   paintTurn();
   paintScore();
+  if (!first) sfx.whoosh();
+  if (S.i === S.list.length - 1 && S.list.length > 1) setTimeout(() => say("last"), first ? 1200 : 250);
   startClock(S.secs);
 }
 function paintTurn() {
   const t = $("#turn");
-  t.className = "turn " + (S.stealing ? "steal" : "is" + (S.turn + 1));
-  t.innerHTML = `<span class="who">${S.stealing ? "فرصة السرقة: " : "الدور على "}${S.emo[S.turn]} ${S.names[S.turn]}</span>`;
+  t.className = "turn " + (S.golden ? "golden" : "is" + (S.turn + 1));
+  t.innerHTML = `<span class="who">${S.golden ? "⭐ الفرصة الذهبية: " : "الدور على "}${S.emo[S.turn]} ${S.names[S.turn]}</span>`;
   $("#sc1").classList.toggle("act", S.turn === 0);
   $("#sc2").classList.toggle("act", S.turn === 1);
 }
@@ -382,7 +532,7 @@ function paintScore() {
   $("#sp2").textContent = S.score[1];
 }
 
-/* ---------- الوقت ---------- */
+/* ================= الوقت ================= */
 function startClock(sec) {
   clearInterval(S.timer);
   S.left = sec; S.total = sec;
@@ -390,7 +540,7 @@ function startClock(sec) {
   S.timer = setInterval(() => {
     S.left--;
     tickView();
-    if (S.left <= 5 && S.left > 0) sTick();
+    if (S.left <= 5 && S.left > 0) sfx.tick();
     if (S.left <= 0) { clearInterval(S.timer); timeUp(); }
   }, 1000);
 }
@@ -400,72 +550,70 @@ function tickView() {
   $("#track").style.width = Math.max(0, S.left / S.total * 100) + "%";
 }
 
-/* ---------- الجواب ---------- */
+/* ================= الجواب ================= */
 $("#ans").onclick = e => {
   const b = e.target.closest("button[data-i]");
   if (b && !b.disabled) answer(+b.dataset.i);
 };
-function answer(pick) {
+function answer(p) {
   if (S.phase !== "ask") return;
   clearInterval(S.timer);
   const c = S.list[S.i][2];
   const gain = Math.round((500 + 500 * (S.left / S.total)) / 10) * 10;
 
-  if (pick === c) {
-    const pts = S.stealing ? Math.round(gain / 2 / 10) * 10 : gain;
+  if (p === c) {
+    const pts = S.golden ? Math.round(gain / 2 / 10) * 10 : gain;
     S.score[S.turn] += pts;
-    lock(pick, c);
+    lock(p, c);
     $("#msg").className = "msg ok";
     $("#msg").textContent = `✅ صح! ${S.names[S.turn]} +${pts} نقطة`;
-    sRight();
+    sfx.correct();
+    sfx.applause(1.2);
+    say("right");
     endQ();
     return;
   }
 
-  if (S.steal && !S.stealing) {
-    // فرصة سرقة للفريق التاني
-    $$("#ans button")[pick].classList.add("lose");
-    $$("#ans button")[pick].disabled = true;
-    S.stealing = true;
-    S.turn = 1 - S.turn;
-    S.phase = "ask";
-    $("#msg").className = "msg no";
-    $("#msg").textContent = "❌ جواب غلط — الفرصة صارت للفريق التاني بنص النقاط";
-    sWrong();
-    paintTurn();
-    startClock(Math.max(8, Math.round(S.secs / 2)));
-    return;
-  }
+  if (S.steal && !S.golden) { toGolden("❌ جواب غلط — الفرصة الذهبية للفريق التاني بنص النقاط", p); return; }
 
-  lock(pick, c);
+  lock(p, c);
   $("#msg").className = "msg no";
   $("#msg").textContent = `❌ غلط — الجواب الصح: ${S.list[S.i][1][c]}`;
-  sWrong();
+  sfx.wrong();
+  say("wrong");
   endQ();
 }
 function timeUp() {
   if (S.phase !== "ask") return;
-  if (S.steal && !S.stealing) {
-    S.stealing = true;
-    S.turn = 1 - S.turn;
-    $("#msg").className = "msg no";
-    $("#msg").textContent = "⏰ خلص الوقت — الفرصة للفريق التاني بنص النقاط";
-    sWrong();
-    paintTurn();
-    startClock(Math.max(8, Math.round(S.secs / 2)));
-    return;
-  }
+  sfx.timeup();
+  if (S.steal && !S.golden) { toGolden("⏰ خلص الوقت — الفرصة الذهبية للفريق التاني بنص النقاط", -1); return; }
   lock(-1, S.list[S.i][2]);
   $("#msg").className = "msg no";
   $("#msg").textContent = `⏰ خلص الوقت — الجواب الصح: ${S.list[S.i][1][S.list[S.i][2]]}`;
-  sWrong();
+  say("timeup");
   endQ();
 }
-function lock(pick, c) {
+function toGolden(text, wrongPick) {
+  if (wrongPick >= 0) {
+    const b = $$("#ans button")[wrongPick];
+    b.classList.add("lose"); b.disabled = true;
+    sfx.wrong();
+  }
+  S.golden = true;
+  S.turn = 1 - S.turn;
+  S.phase = "ask";
+  $("#msg").className = "msg no";
+  $("#msg").textContent = text;
+  paintTurn();
+  setTimeout(() => sfx.golden(), 260);
+  say("golden");
+  startClock(Math.max(8, Math.round(S.secs / 2)));
+}
+function lock(p, c) {
   $$("#ans button").forEach((b, i) => {
     b.disabled = true;
     if (i === c) b.classList.add("win");
-    else if (i === pick) b.classList.add("lose");
+    else if (i === p) b.classList.add("lose");
     else b.classList.add("off");
   });
 }
@@ -479,14 +627,14 @@ function endQ() {
 $("#nextBtn").onclick = nextQ;
 function nextQ() {
   if (S.phase !== "done") return;
+  stopSay();
   if (S.i === S.list.length - 1) return finish();
-  // الدور بينتقل للفريق اللي ما كان السؤال إله
-  S.turn = S.stealing ? S.turn : 1 - S.turn;
+  S.turn = S.golden ? S.turn : 1 - S.turn;
   S.i++;
-  askQ();
+  askQ(false);
 }
 
-/* ---------- النهاية ---------- */
+/* ================= النهاية ================= */
 function finish() {
   clearInterval(S.timer);
   S.phase = "end";
@@ -506,11 +654,12 @@ function finish() {
     $("#winSub").textContent = `بفارق ${Math.abs(a - b)} نقطة — مبروك، وشكرًا لكل اللي شارك.`;
   }
   show("scEnd");
-  sWin();
+  sfx.fanfare();
+  setTimeout(() => say("win"), 700);
   confetti();
 }
-$("#againBtn").onclick = newRound;
-$("#homeBtn").onclick = () => { clearInterval(S.timer); S.phase = "idle"; show("scSetup"); };
+$("#againBtn").onclick = () => { stopSay(); sfx.start(); newRound(); };
+$("#homeBtn").onclick = () => { clearInterval(S.timer); stopSay(); S.phase = "idle"; show("scSetup"); };
 
 function confetti() {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -529,7 +678,7 @@ function confetti() {
   }
 }
 
-/* ---------- الكيبورد ---------- */
+/* ================= الكيبورد ================= */
 addEventListener("keydown", e => {
   const k = e.key.toLowerCase();
   if (k === "f") { e.preventDefault(); $("#fsBtn").click(); return; }
