@@ -113,7 +113,7 @@ td .notes{color:var(--soft);font-size:13px;max-width:260px}
       </div>
     </div>
 
-    <div class="banner" id="noDb" hidden>قاعدة البيانات غير متصلة بعد، لذلك لا تظهر طلبات تسجيل. حتى يتم الربط تصل الطلبات عبر واتساب. للربط: شغّل الملف <code>supabase/setup.sql</code> في مشروع Supabase، ثم ضع الرابط والمفتاح العام في <code>config.js</code>.</div>
+    <div class="banner" id="noDb" hidden>قاعدة البيانات غير متصلة بعد، لذلك لا تظهر طلبات تسجيل. حتى يتم الربط تصل الطلبات عبر واتساب. للربط: ضع رابط مشروع Supabase ومفتاحه العام في <code>config.js</code>.</div>
 
     <div class="kpis">
       <div class="kpi"><span><i style="background:#fff"></i>كل الطلبات</span><b id="kTotal">0</b></div>
@@ -167,7 +167,7 @@ function rpc(fn, body){
 
 function login(p){
   $("loginBtn").disabled=true; $("loginErr").textContent="";
-  var check = DB ? rpc("admin_list_registrations",{p_password:p}).then(function(rows){ data=rows||[]; return true; })
+  var check = DB ? rpc("chatgpt26_admin_list",{p_password:p}).then(function(rows){ data=rows||[]; return true; })
                  : sha256(p).then(function(h){ if(h!==PASS_SHA256) throw {auth:true}; data=[]; return true; });
   return check.then(function(){
     pw=p; try{ sessionStorage.setItem("adm",p); }catch(e){}
@@ -182,7 +182,7 @@ try{ var saved=sessionStorage.getItem("adm"); if(saved) login(saved); }catch(e){
 
 function reload(){
   if(!DB){ render(); return; }
-  rpc("admin_list_registrations",{p_password:pw}).then(function(rows){ data=rows||[]; render(); toast("تم التحديث"); }).catch(function(){ toast("تعذّر التحديث"); });
+  rpc("chatgpt26_admin_list",{p_password:pw}).then(function(rows){ data=rows||[]; render(); toast("تم التحديث"); }).catch(function(){ toast("تعذّر التحديث"); });
 }
 $("refresh").addEventListener("click",reload);
 $("logout").addEventListener("click",function(){ try{ sessionStorage.removeItem("adm"); }catch(e){} pw=""; data=[]; $("dash").hidden=true; $("login").hidden=false; $("pw").value=""; });
@@ -227,7 +227,7 @@ function renderRows(){
     var stc=el("td"); var sel=el("select","st"); sel.setAttribute("aria-label","حالة الطلب");
     Object.keys(STATUS).forEach(function(k){ var o=el("option",null,STATUS[k]); o.value=k; sel.appendChild(o); });
     sel.value=r.status; sel.dataset.v=r.status;
-    sel.addEventListener("change",function(){ var v=sel.value, old=r.status; sel.dataset.v=v; rpc("admin_set_status",{p_password:pw,p_id:r.id,p_status:v}).then(function(){ r.status=v; render(); toast("تم تحديث الحالة"); }).catch(function(){ sel.value=old; sel.dataset.v=old; toast("تعذّر تحديث الحالة"); }); });
+    sel.addEventListener("change",function(){ var v=sel.value, old=r.status; sel.dataset.v=v; rpc("chatgpt26_admin_set_status",{p_password:pw,p_id:r.id,p_status:v}).then(function(){ r.status=v; render(); toast("تم تحديث الحالة"); }).catch(function(){ sel.value=old; sel.dataset.v=old; toast("تعذّر تحديث الحالة"); }); });
     stc.appendChild(sel); tr.appendChild(stc);
     var ac=el("td"); var box=el("div","rowacts");
     var digits=r.phone.replace(/\D/g,""); if(digits.charAt(0)==="0") digits="972"+digits.slice(1);
@@ -235,7 +235,7 @@ function renderRows(){
     var del=el("button",null,"حذف"); del.type="button";
     del.addEventListener("click",function(){
       box.innerHTML=""; var cf=el("span","confirm","متأكد؟ "); var y=el("button",null,"نعم، احذف"); y.type="button"; var n=el("button",null,"إلغاء"); n.type="button"; n.style.background="rgba(255,255,255,.08)"; n.style.color="var(--ink)";
-      y.addEventListener("click",function(){ rpc("admin_delete_registration",{p_password:pw,p_id:r.id}).then(function(){ data=data.filter(function(x){ return x.id!==r.id; }); render(); toast("تم الحذف"); }).catch(function(){ toast("تعذّر الحذف"); renderRows(); }); });
+      y.addEventListener("click",function(){ rpc("chatgpt26_admin_delete",{p_password:pw,p_id:r.id}).then(function(){ data=data.filter(function(x){ return x.id!==r.id; }); render(); toast("تم الحذف"); }).catch(function(){ toast("تعذّر الحذف"); renderRows(); }); });
       n.addEventListener("click",renderRows);
       cf.appendChild(y); cf.appendChild(n); box.appendChild(cf);
     });

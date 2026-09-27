@@ -292,6 +292,59 @@ form.card{padding:26px;border-radius:22px;background:rgba(16,23,74,.9);box-shado
 .sub-note p{color:var(--soft);font-size:16px}
 .sub-note p strong{color:var(--ink)}
 @media (max-width:560px){.sub-note{grid-template-columns:1fr;text-align:center}}
+/* announcement strip */
+.promo{position:relative;z-index:21;display:block;text-align:center;text-decoration:none;padding:9px 16px;font-weight:700;font-size:14.5px;color:#1B1440;background:linear-gradient(90deg,var(--sun),#FFB23F,var(--sun));background-size:200% 100%;animation:shine 6s linear infinite}
+.promo u{text-underline-offset:3px}
+@keyframes shine{to{background-position:-200% 0}}
+
+/* bundle */
+.bundle{border-radius:28px;padding:34px 30px;background:linear-gradient(160deg,#1A0F4A,#0C1240 60%);box-shadow:inset 0 0 0 1.5px rgba(255,210,63,.55),0 30px 80px -30px rgba(255,210,63,.45);display:grid;gap:26px}
+.bundle-top{display:grid;grid-template-columns:1.2fr 1fr;gap:26px;align-items:center}
+.bundle h2{font-family:var(--display);font-weight:400;font-size:clamp(32px,4.6vw,52px)}
+.bundle h2 .hi{color:var(--sun)}
+.bundle .intro{color:var(--soft);font-size:17.5px;margin-top:8px}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tier{border-radius:16px;padding:14px 10px;text-align:center;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--line)}
+.tier b{display:block;font-family:var(--display);font-size:34px;line-height:1.1;color:var(--ink)}
+.tier span{font-size:13.5px;color:var(--soft)}
+.tier.top{background:linear-gradient(160deg,rgba(255,210,63,.25),rgba(255,154,31,.12));box-shadow:inset 0 0 0 2px var(--sun)}
+.tier.top b{color:var(--sun)}
+.xsell{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.xc{--c:var(--orange);border-radius:18px;padding:18px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 60%,transparent);display:flex;flex-direction:column;gap:10px;transition:transform .2s}
+.xc:hover{transform:translateY(-4px)}
+.xc .hd{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.xc .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--c)}
+.xc .tagn{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--c);color:#1B1440}
+.xc h3{font-size:18px}
+.xc ul{margin:0;padding-inline-start:18px;color:var(--soft);font-size:14.5px;display:grid;gap:4px}
+.xc .pr{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;padding-top:10px;border-top:1px dashed rgba(255,255,255,.15);font-size:14px;color:var(--soft)}
+.xc .pr b{font-family:var(--mono);font-size:20px;color:var(--ink)}
+.example{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:16px 20px;border-radius:16px;background:rgba(255,210,63,.1);box-shadow:inset 0 0 0 1px rgba(255,210,63,.4)}
+.example .calc{font-size:15px}
+.example .calc s{color:var(--soft)}
+.example .calc b{color:var(--sun);font-family:var(--mono);font-size:19px}
+@media (max-width:900px){.bundle-top{grid-template-columns:1fr}.xsell{grid-template-columns:1fr}}
+@media (max-width:420px){.tiers{grid-template-columns:1fr}}
+
+/* pre-payment step */
+.prepay{scroll-margin-top:90px;padding:26px;border-radius:22px;background:rgba(16,23,74,.95);box-shadow:inset 0 0 0 2px var(--sun),0 30px 70px -30px rgba(255,210,63,.6);display:grid;gap:14px}
+.prepay .ok{color:var(--green);font-weight:700}
+.prepay h3{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.2}
+.prepay p{color:var(--soft)}
+.pick{display:grid;gap:8px}
+.pick label{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;background:#0A0F33;border:1.5px solid var(--line);cursor:pointer;font-weight:700}
+.pick label:has(input:checked){border-color:var(--sun);background:rgba(255,210,63,.08)}
+.pick label.fixed{cursor:default;opacity:.9}
+.pick input{width:18px;height:18px;accent-color:#FFD23F}
+.pick .pp{font-family:var(--mono);font-size:14px;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.pick .pp s{color:var(--soft);font-weight:500;margin-inline-end:6px}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:14px 16px;border-radius:14px;background:rgba(255,210,63,.1)}
+.total b{font-family:var(--mono);font-size:26px;color:var(--sun)}
+.total span{color:var(--soft);font-size:14px}
+.save{font-weight:700;color:var(--green);min-height:1.4em}
+.prepay .acts{display:flex;flex-wrap:wrap;gap:10px}
+.prepay .small{font-size:13px;color:var(--soft)}
+
 /* whatsapp float */
 .wa-float{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;width:62px;height:62px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 12px 30px -6px rgba(37,211,102,.7);text-decoration:none}
 .wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--wa);animation:ring 2s ease-out infinite}
@@ -311,6 +364,7 @@ footer a{color:var(--soft)}
 </head>
 <body>
 
+<a class="promo" href="https://rami-courses.vercel.app/index.html#courses" target="_blank" rel="noopener">🎁 أضف دورة كلاود أو جوجل سبارك مع ChatGPT 2026 ووفّر حتى <b>20%</b> — <u>شوف الدورات</u></a>
 <header class="bar">
   <div class="wrap">
     <div class="brand"><span class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg></span>ChatGPT 2026</div>
@@ -337,6 +391,7 @@ footer a{color:var(--soft)}
       <p class="lead">لن نتعلم كيف نتحدث مع ChatGPT فقط؛ سنتعلم كيف نجعله <strong>يصمم، ينتج الفيديو، يعدّل الصور، يبني المواقع والتطبيقات ثلاثية الأبعاد، يعمل عبر المتصفح، وينفذ سلسلة كاملة من المهام.</strong></p>
       <div class="cta-row">
         <a class="btn" href="#register">احجز مكانك الآن</a>
+        <a class="btn line" href="#bundle">🎁 وفّر حتى 20%</a>
         <a class="btn line" href="#simulator">شاهد المحاكاة</a>
       </div>
       <div class="countdown" id="countdown" aria-label="العد التنازلي للقاء الأول">
@@ -415,10 +470,42 @@ footer a{color:var(--soft)}
 
 <section style="padding-top:10px">
   <div class="wrap">
-    <div class="offer reveal">
-      <div class="gift" aria-hidden="true">🎁</div>
-      <div><h3>انضم لأكثر من دورة</h3><p>واحصل على تخفيض خاص على كل الدورات التي تسجّل لها.</p></div>
-      <div class="pct">20%</div>
+    <div class="bundle reveal" id="bundle">
+      <div class="bundle-top">
+        <div>
+          <h2>سجّل بأكثر من دورة ووفّر <span class="hi">حتى 20%</span></h2>
+          <p class="intro">ChatGPT 2026 هي البداية. أضف إليها دورات كلاود وجوجل سبارك، والخصم ينحسب تلقائيًا عند التسجيل في موقع الدورات.</p>
+        </div>
+        <div class="tiers">
+          <div class="tier"><b>—</b><span>الدورة الأولى<br>بالسعر الكامل</span></div>
+          <div class="tier"><b>10%</b><span>خصم على<br>الدورة الثانية</span></div>
+          <div class="tier top"><b>20%</b><span>خصم على الثالثة<br>فما فوق</span></div>
+        </div>
+      </div>
+      <div class="xsell">
+        <article class="xc" style="--c:#F59E0B">
+          <div class="hd"><span class="ic" aria-hidden="true">⚡</span><span class="tagn">جديد</span></div>
+          <h3>دورة كلاود (Claude) للمبتدئين</h3>
+          <ul><li>بيئة Cowork وجدول مهام تلقائية</li><li>التحكم بالحاسوب وترتيب الملفات</li><li>أتمتة n8n وفيديوهات بكبسة زر</li></ul>
+          <div class="pr"><span>5 لقاءات</span><b>650 ₪</b></div>
+        </article>
+        <article class="xc" style="--c:#D97706">
+          <div class="hd"><span class="ic" aria-hidden="true">🚀</span><span class="tagn">جديد</span></div>
+          <h3>دورة كلاود (Claude) للمتقدمين</h3>
+          <ul><li>بناء بوت تلغرام كامل من الصفر</li><li>منظومات مركبة تشتغل لحالها</li><li>لقاءات جديدة تصلك باستمرار</li></ul>
+          <div class="pr"><span>تتحدّث باستمرار</span><b>650 ₪</b></div>
+        </article>
+        <article class="xc" style="--c:#3B82F6">
+          <div class="hd"><span class="ic" aria-hidden="true">✨</span><span class="tagn">جديد</span></div>
+          <h3>دورة جوجل سبارك (Google Spark)</h3>
+          <ul><li>Ask Gemini مع يوتيوب وشيت وسلايدز</li><li>داش بورد احترافي بخطط علاجية</li><li>لقاءات جديدة تصلك باستمرار</li></ul>
+          <div class="pr"><span>لكل المستويات</span><b>650 ₪</b></div>
+        </article>
+      </div>
+      <div class="example">
+        <div class="calc">مثال: ChatGPT 2026 + كلاود + جوجل سبارك = <s>2020 ₪</s> ← <b>1825 ₪</b> · توفير 195 ₪</div>
+        <a class="btn" href="https://rami-courses.vercel.app/index.html#courses" target="_blank" rel="noopener">اختر دوراتك واحصل على الخصم</a>
+      </div>
     </div>
     <div class="sub-note reveal">
       <div class="price">$20<small>شهريًا</small></div>
@@ -434,7 +521,7 @@ footer a{color:var(--soft)}
   <div class="wrap reg">
     <div class="reg-info">
       <h2>جاهز تبني مشروعك الأول مع <span class="grad-text">ChatGPT 2026</span>؟</h2>
-      <p>عبّئ النموذج ونعود إليك لتأكيد التسجيل، أو تواصل معنا مباشرة بالهاتف أو واتساب.</p>
+      <p>عبّئ النموذج، ثم اختر إن كنت تريد إضافة دورة أخرى بخصم قبل الدفع. أو تواصل معنا مباشرة بالهاتف أو واتساب.</p>
       <div class="phone-box">
         <div class="lbl">للتسجيل والاستفسار</div>
         <div class="phone" id="phone">052-671-0819</div>
@@ -463,6 +550,20 @@ footer a{color:var(--soft)}
       <button class="btn" type="submit" id="submitBtn">أرسل طلب التسجيل</button>
       <div class="form-msg" id="formMsg" aria-live="polite"></div>
     </form>
+
+    <div class="prepay" id="prepay" hidden>
+      <div class="ok" id="prepayOk">✓ تم استلام بياناتك</div>
+      <h3>قبل الدفع: أضف دورة ووفّر حتى 20%</h3>
+      <p>من يسجّل الآن مع ChatGPT 2026 يحصل على خصم تلقائي على الدورة الثانية والثالثة. اختر ما يناسبك:</p>
+      <div class="pick" id="pick"></div>
+      <div class="total"><span>المجموع</span><b id="total">720 ₪</b></div>
+      <div class="save" id="save" aria-live="polite"></div>
+      <div class="acts">
+        <a class="btn" href="https://rami-courses.vercel.app/index.html#courses" target="_blank" rel="noopener">أكمل التسجيل والدفع</a>
+        <a class="btn wa" id="prepayWa" href="https://wa.me/972526710819" target="_blank" rel="noopener">أرسل اختياري عبر واتساب</a>
+      </div>
+      <div class="small">الدفع يتم في موقع الدورات، والخصم ينحسب تلقائيًا عند التسجيل بنفس البريد. الأسعار بالشيكل.</div>
+    </div>
   </div>
 </section>
 </main>
@@ -760,24 +861,56 @@ $("copyBtn").addEventListener("click",function(){
   try{ navigator.clipboard.writeText("0526710819").then(function(){ msg.textContent="تم نسخ الرقم"; },fallback); }catch(e){ fallback(); }
 });
 
-/* ---------- registration ---------- */
+/* ---------- registration + pre-payment upsell ---------- */
+var COURSES = [
+  {id:"chatgpt",name:"ChatGPT 2026 — الأقوى",price:720,fixed:true},
+  {id:"claude",name:"كلاود (Claude) للمبتدئين",price:650},
+  {id:"claude-adv",name:"كلاود (Claude) للمتقدمين",price:650},
+  {id:"spark",name:"جوجل سبارك (Google Spark)",price:650}
+];
+var lead = null;
+function discountFor(nth){ return nth>=3?20:(nth===2?10:0); }
+function renderPick(){
+  var pick=$("pick"); pick.innerHTML="";
+  COURSES.forEach(function(c){
+    var lb=el("label",c.fixed?"fixed":null); var cb=el("input"); cb.type="checkbox"; cb.id="c-"+c.id; cb.value=c.id;
+    if(c.fixed){ cb.checked=true; cb.disabled=true; } else { cb.addEventListener("change",calc); }
+    lb.appendChild(cb); lb.appendChild(el("span",null,c.name)); var pp=el("span","pp"); pp.id="pp-"+c.id; lb.appendChild(pp);
+    pick.appendChild(lb);
+  });
+  calc();
+}
+function calc(){
+  // full price on the priciest course, then 10% on the 2nd and 20% on the 3rd onward (cheaper ones get the bigger discount)
+  var chosen=COURSES.filter(function(c){ return $("c-"+c.id).checked; }).sort(function(a,b){ return b.price-a.price; });
+  var full=0,total=0;
+  COURSES.forEach(function(c){ $("pp-"+c.id).textContent="₪"+c.price; });
+  chosen.forEach(function(c,i){ var off=discountFor(i+1), p=Math.round(c.price*(100-off)/100); full+=c.price; total+=p;
+    var pp=$("pp-"+c.id); pp.textContent=""; if(off){ pp.appendChild(el("s",null,c.price+"")); } pp.appendChild(document.createTextNode(" ₪"+p+(off?"  −"+off+"%":""))); });
+  $("total").textContent=total+" ₪";
+  var n=chosen.length;
+  $("save").textContent = n===1 ? "أضف دورة واحدة ووفّر 10% عليها، أو دورتين ووفّر حتى 20%." : "رائع! وفّرت "+(full-total)+" ₪"+(n===2?" · أضف دورة ثالثة ووفّر 20% عليها":"");
+  var names=chosen.map(function(c){ return c.name; }).join("، ");
+  var txt="مرحبًا، أريد التسجيل"+(lead?"\nالاسم: "+lead.full_name+"\nالهاتف: "+lead.phone+"\nالمرحلة: "+lead.level:"")+"\nالدورات: "+names+"\nالمجموع بعد الخصم: "+total+" ₪";
+  $("prepayWa").href=waLink(txt);
+}
+function showPrepay(msg){
+  $("prepayOk").textContent=msg;
+  $("regForm").hidden=true; $("prepay").hidden=false; renderPick();
+  $("prepay").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+}
 $("regForm").addEventListener("submit",function(e){
   e.preventDefault();
   var f=e.target, msg=$("formMsg"), btn=$("submitBtn");
   var data={ full_name:f.full_name.value.trim(), phone:f.phone.value.trim(), level:f.level.value, school:f.school.value.trim()||null, notes:f.notes.value.trim()||null };
   if(data.full_name.length<2){ msg.className="form-msg err"; msg.textContent="اكتب الاسم الكامل."; f.full_name.focus(); return; }
   if(data.phone.replace(/\D/g,"").length<9){ msg.className="form-msg err"; msg.textContent="اكتب رقم هاتف صحيح (9 أرقام على الأقل)."; f.phone.focus(); return; }
-  var waText = "مرحبًا، أريد التسجيل لدورة ChatGPT 2026\nالاسم: "+data.full_name+"\nالهاتف: "+data.phone+"\nالمرحلة: "+data.level+(data.school?"\nالمؤسسة: "+data.school:"")+(data.notes?"\nملاحظات: "+data.notes:"");
-  function showWa(prefix){
-    msg.className="form-msg ok"; msg.textContent=prefix+" ";
-    var a=el("a",null,"أرسل التفاصيل عبر واتساب"); a.href=waLink(waText); a.target="_blank"; a.rel="noopener"; a.style.color="var(--wa)"; a.style.fontWeight="700";
-    msg.appendChild(a);
-  }
-  if(!CFG.supabaseUrl || !CFG.supabaseAnonKey){ showWa("خطوة أخيرة:"); return; }
+  lead=data;
+  if(!CFG.supabaseUrl || !CFG.supabaseAnonKey){ showPrepay("✓ خطوة أخيرة قبل الدفع"); return; }
   btn.disabled=true; btn.textContent="جارٍ الإرسال…";
-  fetch(CFG.supabaseUrl.replace(/\/$/,"")+"/rest/v1/registrations",{method:"POST",headers:{"Content-Type":"application/json","apikey":CFG.supabaseAnonKey,"Authorization":"Bearer "+CFG.supabaseAnonKey,"Prefer":"return=minimal"},body:JSON.stringify(data)})
-    .then(function(r){ if(!r.ok) throw new Error(r.status); f.reset(); showWa("تم استلام طلبك، سنتواصل معك قريبًا. لتسريع التأكيد:"); })
-    .catch(function(){ showWa("لم نتمكن من حفظ الطلب الآن. أرسله مباشرة:"); })
+  fetch(CFG.supabaseUrl.replace(/\/$/,"")+"/rest/v1/chatgpt26_registrations",{method:"POST",headers:{"Content-Type":"application/json","apikey":CFG.supabaseAnonKey,"Authorization":"Bearer "+CFG.supabaseAnonKey,"Prefer":"return=minimal"},body:JSON.stringify(data)})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); showPrepay("✓ تم استلام بياناتك، سنتواصل معك قريبًا"); })
+    .catch(function(){ showPrepay("✓ خطوة أخيرة: أكمل التسجيل أو أرسل اختيارك عبر واتساب"); })
     .then(function(){ btn.disabled=false; btn.textContent="أرسل طلب التسجيل"; });
 });
 
