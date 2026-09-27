@@ -326,6 +326,21 @@ form.card{padding:26px;border-radius:22px;background:rgba(16,23,74,.9);box-shado
 @media (max-width:900px){.bundle-top{grid-template-columns:1fr}.xsell{grid-template-columns:1fr}}
 @media (max-width:420px){.tiers{grid-template-columns:1fr}}
 
+/* returning participant */
+.prev{display:grid;gap:8px}
+.prev .q{font-weight:700;font-size:14.5px}
+.yn{display:flex;gap:8px;flex-wrap:wrap}
+.yn label{display:flex;gap:8px;align-items:center;padding:10px 16px;border-radius:999px;background:#0A0F33;border:1.5px solid var(--line);cursor:pointer;font-weight:700;font-size:15px}
+.yn label:has(input:checked){border-color:var(--sun);background:rgba(255,210,63,.1)}
+.yn input{accent-color:#FFD23F;width:17px;height:17px}
+.code-card{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px;border-radius:16px;background:linear-gradient(120deg,rgba(255,210,63,.22),rgba(255,79,209,.14));box-shadow:inset 0 0 0 2px var(--sun);animation:pop .45s ease}
+.code-card .gift{font-size:30px;line-height:1}
+.code-card b{display:block;font-size:15px}
+.code-card span{font-size:13.5px;color:var(--soft)}
+.code-card .code{font-family:var(--mono);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--sun);direction:ltr;user-select:all;padding:6px 12px;border-radius:10px;border:2px dashed var(--sun);background:rgba(0,0,0,.25);cursor:pointer}
+@keyframes pop{from{transform:scale(.94);opacity:.4}to{transform:none;opacity:1}}
+@media (max-width:520px){.code-card{grid-template-columns:1fr;text-align:center;justify-items:center}}
+
 /* pre-payment step */
 .prepay{scroll-margin-top:90px;padding:26px;border-radius:22px;background:rgba(16,23,74,.95);box-shadow:inset 0 0 0 2px var(--sun),0 30px 70px -30px rgba(255,210,63,.6);display:grid;gap:14px}
 .prepay .ok{color:var(--green);font-weight:700}
@@ -546,6 +561,18 @@ footer a{color:var(--soft)}
           </select></div>
         <div class="field"><label for="f-school">المدرسة / المؤسسة</label><input id="f-school" name="school" maxlength="160" placeholder="اختياري"></div>
       </div>
+      <div class="prev" role="radiogroup" aria-labelledby="prevQ">
+        <div class="q" id="prevQ">هل شاركت في دورة سابقة معنا؟</div>
+        <div class="yn">
+          <label><input type="radio" name="prev" id="prev-yes" value="yes"> نعم، شاركت من قبل</label>
+          <label><input type="radio" name="prev" id="prev-no" value="no"> لا، هذه أول دورة</label>
+        </div>
+        <div class="code-card" id="codeCard" hidden>
+          <span class="gift" aria-hidden="true">🎁</span>
+          <div><b>أهلًا بعودتك! خصم 20% لك</b><span>كود الخصم محفوظ مع طلبك، ويُطبَّق عند تأكيد التسجيل والدفع.</span></div>
+          <button type="button" class="code" id="codeBtn" title="نسخ الكود">RAMI20</button>
+        </div>
+      </div>
       <div class="field"><label for="f-notes">ملاحظات</label><textarea id="f-notes" name="notes" rows="3" maxlength="1000" placeholder="مثلًا: أريد التسجيل مع زميلة، أو أهتم بدورة أخرى أيضًا"></textarea></div>
       <button class="btn" type="submit" id="submitBtn">أرسل طلب التسجيل</button>
       <div class="form-msg" id="formMsg" aria-live="polite"></div>
@@ -554,7 +581,7 @@ footer a{color:var(--soft)}
     <div class="prepay" id="prepay" hidden>
       <div class="ok" id="prepayOk">✓ تم استلام بياناتك</div>
       <h3>قبل الدفع: أضف دورة ووفّر حتى 20%</h3>
-      <p>من يسجّل الآن مع ChatGPT 2026 يحصل على خصم تلقائي على الدورة الثانية والثالثة. اختر ما يناسبك:</p>
+      <p id="prepayIntro">من يسجّل الآن مع ChatGPT 2026 يحصل على خصم تلقائي على الدورة الثانية والثالثة. اختر ما يناسبك:</p>
       <div class="pick" id="pick"></div>
       <div class="total"><span>المجموع</span><b id="total">720 ₪</b></div>
       <div class="save" id="save" aria-live="polite"></div>
@@ -869,7 +896,8 @@ var COURSES = [
   {id:"spark",name:"جوجل سبارك (Google Spark)",price:650}
 ];
 var lead = null;
-function discountFor(nth){ return nth>=3?20:(nth===2?10:0); }
+var RETURNING_CODE="RAMI20";
+function discountFor(nth){ if(lead && lead.prev_participant) return 20; return nth>=3?20:(nth===2?10:0); }
 function renderPick(){
   var pick=$("pick"); pick.innerHTML="";
   COURSES.forEach(function(c){
@@ -889,22 +917,30 @@ function calc(){
     var pp=$("pp-"+c.id); pp.textContent=""; if(off){ pp.appendChild(el("s",null,c.price+"")); } pp.appendChild(document.createTextNode(" ₪"+p+(off?"  −"+off+"%":""))); });
   $("total").textContent=total+" ₪";
   var n=chosen.length;
-  $("save").textContent = n===1 ? "أضف دورة واحدة ووفّر 10% عليها، أو دورتين ووفّر حتى 20%." : "رائع! وفّرت "+(full-total)+" ₪"+(n===2?" · أضف دورة ثالثة ووفّر 20% عليها":"");
+  var ret = lead && lead.prev_participant;
+  $("save").textContent = ret ? "كود "+RETURNING_CODE+": وفّرت "+(full-total)+" ₪ · خصم 20% على كل دورة تضيفها" : (n===1 ? "أضف دورة واحدة ووفّر 10% عليها، أو دورتين ووفّر حتى 20%." : "رائع! وفّرت "+(full-total)+" ₪"+(n===2?" · أضف دورة ثالثة ووفّر 20% عليها":""));
   var names=chosen.map(function(c){ return c.name; }).join("، ");
-  var txt="مرحبًا، أريد التسجيل"+(lead?"\nالاسم: "+lead.full_name+"\nالهاتف: "+lead.phone+"\nالمرحلة: "+lead.level:"")+"\nالدورات: "+names+"\nالمجموع بعد الخصم: "+total+" ₪";
+  var txt="مرحبًا، أريد التسجيل"+(lead?"\nالاسم: "+lead.full_name+"\nالهاتف: "+lead.phone+"\nالمرحلة: "+lead.level:"")+(lead&&lead.discount_code?"\nكود الخصم: "+lead.discount_code+" (مشارك/ة سابق/ة)":"")+"\nالدورات: "+names+"\nالمجموع بعد الخصم: "+total+" ₪";
   $("prepayWa").href=waLink(txt);
 }
 function showPrepay(msg){
   $("prepayOk").textContent=msg;
-  $("regForm").hidden=true; $("prepay").hidden=false; renderPick();
+  $("regForm").hidden=true; $("prepay").hidden=false;
+  if(lead && lead.prev_participant){ $("prepayIntro").textContent="كمشارك/ة سابق/ة لك خصم 20% على كل دورة بكود "+RETURNING_CODE+"، بما فيها ChatGPT 2026. أضف دورات أخرى بنفس الخصم:"; }
+  renderPick();
   $("prepay").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
 }
+function togglePrev(){ $("codeCard").hidden=!$("prev-yes").checked; $("formMsg").textContent=""; }
+$("prev-yes").addEventListener("change",togglePrev); $("prev-no").addEventListener("change",togglePrev);
+$("codeBtn").addEventListener("click",function(){ var b=this; try{ navigator.clipboard.writeText(RETURNING_CODE).then(function(){ b.textContent="✓ نُسخ"; setTimeout(function(){ b.textContent=RETURNING_CODE; },1400); }); }catch(e){} });
 $("regForm").addEventListener("submit",function(e){
   e.preventDefault();
   var f=e.target, msg=$("formMsg"), btn=$("submitBtn");
-  var data={ full_name:f.full_name.value.trim(), phone:f.phone.value.trim(), level:f.level.value, school:f.school.value.trim()||null, notes:f.notes.value.trim()||null };
+  var isPrev=$("prev-yes").checked;
+  var data={ full_name:f.full_name.value.trim(), phone:f.phone.value.trim(), level:f.level.value, school:f.school.value.trim()||null, notes:f.notes.value.trim()||null, prev_participant:isPrev, discount_code:isPrev?RETURNING_CODE:null };
   if(data.full_name.length<2){ msg.className="form-msg err"; msg.textContent="اكتب الاسم الكامل."; f.full_name.focus(); return; }
   if(data.phone.replace(/\D/g,"").length<9){ msg.className="form-msg err"; msg.textContent="اكتب رقم هاتف صحيح (9 أرقام على الأقل)."; f.phone.focus(); return; }
+  if(!$("prev-yes").checked && !$("prev-no").checked){ msg.className="form-msg err"; msg.textContent="أجب: هل شاركت في دورة سابقة معنا؟"; $("prev-yes").focus(); return; }
   lead=data;
   if(!CFG.supabaseUrl || !CFG.supabaseAnonKey){ showPrepay("✓ خطوة أخيرة قبل الدفع"); return; }
   btn.disabled=true; btn.textContent="جارٍ الإرسال…";

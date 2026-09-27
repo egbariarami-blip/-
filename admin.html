@@ -44,7 +44,7 @@ button,input,select{font-family:inherit}
 .top .acts{display:flex;flex-wrap:wrap;gap:8px}
 .banner{padding:14px 16px;border-radius:14px;background:rgba(255,154,31,.12);box-shadow:inset 0 0 0 1px rgba(255,154,31,.5);color:#FFD9A8;font-size:14.5px;margin-bottom:16px}
 .banner code{font-family:var(--mono);font-size:13px;color:#fff;direction:ltr;unicode-bidi:isolate}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
 .kpi{padding:16px;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 .kpi span{font-size:13px;color:var(--soft);display:flex;gap:6px;align-items:center}
 .kpi span i{width:9px;height:9px;border-radius:50%;display:inline-block}
@@ -84,6 +84,7 @@ td .notes{color:var(--soft);font-size:13px;max-width:260px}
 .rowacts a,.rowacts button{font:700 12.5px var(--body);padding:6px 10px;border-radius:8px;border:0;cursor:pointer;text-decoration:none}
 .rowacts a{background:var(--wa);color:#05290F}
 .rowacts button{background:rgba(255,107,129,.15);color:var(--red)}
+.badge{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,210,63,.18);color:#FFD23F;font-family:var(--mono)}
 .empty{padding:34px;text-align:center;color:var(--soft)}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:12.5px}
 .toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#fff;color:#0B1136;font-weight:700;padding:10px 16px;border-radius:12px;box-shadow:0 10px 30px -10px rgba(0,0,0,.6);font-size:14px}
@@ -121,6 +122,7 @@ td .notes{color:var(--soft);font-size:13px;max-width:260px}
       <div class="kpi"><span><i style="background:var(--orange)"></i>تم التواصل</span><b id="kCont">0</b></div>
       <div class="kpi"><span><i style="background:var(--green)"></i>دفع</span><b id="kPaid">0</b></div>
       <div class="kpi"><span><i style="background:var(--purple)"></i>آخر 7 أيام</span><b id="kWeek">0</b></div>
+      <div class="kpi"><span><i style="background:#FFD23F"></i>مشاركون سابقون (RAMI20)</span><b id="kPrev">0</b></div>
     </div>
 
     <div class="grid2">
@@ -194,7 +196,7 @@ function fmtDate(s){ var d=new Date(s); return d.toLocaleDateString("en-GB",{day
 function render(){
   var c={new:0,contacted:0,paid:0,cancelled:0}, week=0, now=Date.now();
   data.forEach(function(r){ c[r.status]=(c[r.status]||0)+1; if(now-Date.parse(r.created_at)<7*864e5) week++; });
-  $("kTotal").textContent=data.length; $("kNew").textContent=c.new; $("kCont").textContent=c.contacted; $("kPaid").textContent=c.paid; $("kWeek").textContent=week;
+  $("kTotal").textContent=data.length; $("kNew").textContent=c.new; $("kCont").textContent=c.contacted; $("kPaid").textContent=c.paid; $("kWeek").textContent=week; $("kPrev").textContent=data.filter(function(r){ return r.prev_participant; }).length;
   $("lastSync").textContent = DB ? "آخر تحديث: "+new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}) : "وضع بدون قاعدة بيانات";
   // bars
   var by={}; data.forEach(function(r){ var k=r.level||"أخرى"; by[k]=(by[k]||0)+1; });
@@ -220,7 +222,7 @@ function renderRows(){
   list.forEach(function(r){
     var tr=el("tr");
     tr.appendChild(el("td","dt",fmtDate(r.created_at)));
-    var nm=el("td"); nm.appendChild(el("b",null,r.full_name)); tr.appendChild(nm);
+    var nm=el("td"); nm.appendChild(el("b",null,r.full_name)); if(r.prev_participant){ nm.appendChild(document.createElement("br")); nm.appendChild(el("span","badge","مشارك سابق · "+(r.discount_code||"RAMI20"))); } tr.appendChild(nm);
     tr.appendChild(el("td","ph",r.phone));
     tr.appendChild(el("td",null,r.level||"—"));
     var inf=el("td"); inf.appendChild(el("div",null,r.school||"—")); if(r.notes) inf.appendChild(el("div","notes",r.notes)); tr.appendChild(inf);
@@ -246,7 +248,7 @@ function renderRows(){
 
 $("csv").addEventListener("click",function(){
   if(!data.length){ toast("لا توجد بيانات للتصدير"); return; }
-  var cols=["created_at","full_name","phone","level","school","notes","status"];
+  var cols=["created_at","full_name","phone","level","school","notes","prev_participant","discount_code","status"];
   var esc=function(v){ v=v==null?"":String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
   var csv="﻿"+cols.join(",")+"\n"+data.map(function(r){ return cols.map(function(c){ return esc(c==="status"?STATUS[r[c]]||r[c]:r[c]); }).join(","); }).join("\n");
   var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="chatgpt2026-registrations.csv"; document.body.appendChild(a); a.click(); a.remove();

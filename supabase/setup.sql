@@ -12,7 +12,9 @@ create table if not exists public.chatgpt26_registrations (
   level text check (char_length(level) <= 60),
   school text check (char_length(school) <= 160),
   notes text check (char_length(notes) <= 1000),
-  status text not null default 'new' check (status in ('new','contacted','paid','cancelled'))
+  status text not null default 'new' check (status in ('new','contacted','paid','cancelled')),
+  prev_participant boolean not null default false,
+  discount_code text check (discount_code is null or discount_code in ('RAMI20'))
 );
 
 alter table public.chatgpt26_registrations enable row level security;
