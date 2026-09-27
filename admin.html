@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>إدارة دورة ChatGPT 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#060A22;--card:#10174A;--card2:#0A0F33;--ink:#F3F5FF;--soft:#AAB2E6;--line:rgba(170,178,230,.16);
+  --pink:#FF3D8B;--purple:#9B5CFF;--cyan:#22D3F5;--green:#1FE0A0;--orange:#FF9A1F;--red:#FF6B81;--wa:#25D366;
+  --display:"Lalezar","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(700px 400px at 90% -10%,rgba(155,92,255,.25),transparent 60%),radial-gradient(600px 400px at 0% 100%,rgba(34,211,245,.12),transparent 60%)}
+.wrap{position:relative;max-width:1180px;margin-inline:auto;padding-inline:18px;padding-block:22px 60px}
+h1,h2{margin:0;line-height:1.2}
+button,input,select{font-family:inherit}
+:focus-visible{outline:3px solid #FFD23F;outline-offset:2px;border-radius:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;cursor:pointer;font:700 14px/1 var(--body);padding:11px 16px;border-radius:999px;color:#fff;background:linear-gradient(90deg,var(--purple),#FF4FD1);text-decoration:none}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28)}
+.btn.sm{padding:7px 11px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* login */
+.login{max-width:420px;margin:12vh auto 0;padding:30px;border-radius:22px;background:var(--card);box-shadow:inset 0 0 0 1.5px rgba(155,92,255,.5),0 30px 70px -30px rgba(155,92,255,.8);display:grid;gap:14px}
+.login h1{font-family:var(--display);font-weight:400;font-size:34px}
+.login p{color:var(--soft);font-size:14.5px}
+.login input{font:500 17px var(--body);color:var(--ink);background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;width:100%;direction:ltr;text-align:right}
+.err{color:var(--red);min-height:1.4em;font-size:14px}
+
+/* dashboard */
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.top h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,4vw,40px)}
+.top .sub{color:var(--soft);font-size:14px}
+.top .acts{display:flex;flex-wrap:wrap;gap:8px}
+.banner{padding:14px 16px;border-radius:14px;background:rgba(255,154,31,.12);box-shadow:inset 0 0 0 1px rgba(255,154,31,.5);color:#FFD9A8;font-size:14.5px;margin-bottom:16px}
+.banner code{font-family:var(--mono);font-size:13px;color:#fff;direction:ltr;unicode-bidi:isolate}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi{padding:16px;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.kpi span{font-size:13px;color:var(--soft);display:flex;gap:6px;align-items:center}
+.kpi span i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.kpi b{display:block;font-family:var(--mono);font-size:30px;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:4px}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-bottom:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.panel{padding:18px;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.panel h2{font-size:16px;margin-bottom:12px}
+.bars{display:grid;gap:9px}
+.bar{display:grid;grid-template-columns:110px 1fr 34px;gap:10px;align-items:center;font-size:13.5px}
+.bar .tr{height:12px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--purple),var(--cyan))}
+.bar b{font-family:var(--mono);text-align:left;font-variant-numeric:tabular-nums}
+.sched{display:grid;gap:6px}
+.srow{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.04);font-size:13.5px}
+.srow .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:12px;color:#0B1136}
+.srow .d{font-family:var(--mono);direction:ltr;color:var(--soft);font-size:12.5px;white-space:nowrap}
+.srow.past{opacity:.45}
+.srow.next{box-shadow:inset 0 0 0 1.5px var(--green)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.tools input,.tools select{font:500 14.5px var(--body);color:var(--ink);background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px}
+.tools input{flex:1 1 220px}
+.tbl-wrap{overflow-x:auto;border-radius:16px;box-shadow:inset 0 0 0 1px var(--line);background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:820px;font-size:14px}
+th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12.5px;color:var(--soft);font-weight:700;background:rgba(255,255,255,.03);position:sticky;top:0}
+td.ph{font-family:var(--mono);direction:ltr;text-align:right;white-space:nowrap}
+td.dt{font-family:var(--mono);font-size:12.5px;color:var(--soft);white-space:nowrap}
+td .notes{color:var(--soft);font-size:13px;max-width:260px}
+.st{font:700 12.5px var(--body);border-radius:999px;padding:5px 8px;border:0;color:#0B1136;cursor:pointer}
+.st[data-v="new"]{background:var(--cyan)}
+.st[data-v="contacted"]{background:var(--orange)}
+.st[data-v="paid"]{background:var(--green)}
+.st[data-v="cancelled"]{background:#6B7199;color:#fff}
+.rowacts{display:flex;gap:6px;white-space:nowrap}
+.rowacts a,.rowacts button{font:700 12.5px var(--body);padding:6px 10px;border-radius:8px;border:0;cursor:pointer;text-decoration:none}
+.rowacts a{background:var(--wa);color:#05290F}
+.rowacts button{background:rgba(255,107,129,.15);color:var(--red)}
+.empty{padding:34px;text-align:center;color:var(--soft)}
+.confirm{display:inline-flex;gap:6px;align-items:center;font-size:12.5px}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#fff;color:#0B1136;font-weight:700;padding:10px 16px;border-radius:12px;box-shadow:0 10px 30px -10px rgba(0,0,0,.6);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <form class="login" id="login" autocomplete="off">
+    <h1>لوحة الإدارة</h1>
+    <p>دورة ChatGPT 2026 — أدخل كلمة السر لمتابعة طلبات التسجيل.</p>
+    <label for="pw" style="font-weight:700;font-size:14px">كلمة السر</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit" id="loginBtn">دخول</button>
+    <div class="err" id="loginErr" aria-live="polite"></div>
+    <a href="index.html" style="color:var(--soft);font-size:13.5px">← العودة للموقع</a>
+  </form>
+
+  <div id="dash" hidden>
+    <div class="top">
+      <div><h1>لوحة إدارة الدورة</h1><div class="sub" id="lastSync"></div></div>
+      <div class="acts">
+        <button class="btn line" type="button" id="refresh">تحديث</button>
+        <button class="btn line" type="button" id="csv">تصدير CSV</button>
+        <a class="btn line" href="index.html">الموقع</a>
+        <button class="btn line" type="button" id="logout">خروج</button>
+      </div>
+    </div>
+
+    <div class="banner" id="noDb" hidden>قاعدة البيانات غير متصلة بعد، لذلك لا تظهر طلبات تسجيل. حتى يتم الربط تصل الطلبات عبر واتساب. للربط: شغّل الملف <code>supabase/setup.sql</code> في مشروع Supabase، ثم ضع الرابط والمفتاح العام في <code>config.js</code>.</div>
+
+    <div class="kpis">
+      <div class="kpi"><span><i style="background:#fff"></i>كل الطلبات</span><b id="kTotal">0</b></div>
+      <div class="kpi"><span><i style="background:var(--cyan)"></i>جديد</span><b id="kNew">0</b></div>
+      <div class="kpi"><span><i style="background:var(--orange)"></i>تم التواصل</span><b id="kCont">0</b></div>
+      <div class="kpi"><span><i style="background:var(--green)"></i>دفع</span><b id="kPaid">0</b></div>
+      <div class="kpi"><span><i style="background:var(--purple)"></i>آخر 7 أيام</span><b id="kWeek">0</b></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel"><h2>الطلبات حسب المرحلة</h2><div class="bars" id="bars"></div></div>
+      <div class="panel"><h2>مواعيد اللقاءات</h2><div class="sched" id="sched"></div></div>
+    </div>
+
+    <div class="tools">
+      <input id="q" type="search" placeholder="بحث بالاسم، الهاتف أو المدرسة">
+      <select id="fStatus" aria-label="تصفية حسب الحالة">
+        <option value="">كل الحالات</option><option value="new">جديد</option><option value="contacted">تم التواصل</option><option value="paid">دفع</option><option value="cancelled">ملغى</option>
+      </select>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>التاريخ</th><th>الاسم</th><th>الهاتف</th><th>المرحلة</th><th>المؤسسة / ملاحظات</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+var CFG = window.SITE_CONFIG || {};
+var DB = !!(CFG.supabaseUrl && CFG.supabaseAnonKey);
+var BASE = DB ? CFG.supabaseUrl.replace(/\/$/,"") : "";
+// Without a database the gate is only a client-side hash check; with one, the password is verified by the server.
+var PASS_SHA256 = "6c147dd9a7dc507184f7eeb0cdc4fe1f89b4e3a7a12eb525b776ce2e99466181";
+var STATUS = {new:"جديد",contacted:"تم التواصل",paid:"دفع",cancelled:"ملغى"};
+var LEVELS = ["رياض الأطفال","الابتدائي","الإعدادي","الثانوي","الجامعة / الكلية","إدارة / إرشاد","أخرى"];
+var SESS = [["4.10.2026","18:30","#3B8BFF","ابدأ بقوة ChatGPT الحديث"],["11.10.2026","18:30","#FF3D8B","إنتاج فيديوهات بكبسة زر"],["18.10.2026","18:30","#1FE0A0","تعديل فيديوهات"],["25.10.2026","18:30","#FF9A1F","صور ومواد دراسية"],["1.11.2026","17:30","#9B5CFF","موقع إنترنت حديث"],["8.11.2026","17:30","#22D3F5","تطبيقات ثلاثية الأبعاد"],["15.11.2026","17:30","#FF4FD1","المشروع الكبير والتكامل"]];
+var pw = "", data = [];
+function $(id){ return document.getElementById(id); }
+function el(t,c,x){ var e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e; }
+function toast(t){ var d=el("div","toast",t); document.body.appendChild(d); setTimeout(function(){ d.remove(); },2200); }
+
+function sha256(s){ return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function(b){ return Array.from(new Uint8Array(b)).map(function(x){ return x.toString(16).padStart(2,"0"); }).join(""); }); }
+function rpc(fn, body){
+  return fetch(BASE+"/rest/v1/rpc/"+fn,{method:"POST",headers:{"Content-Type":"application/json","apikey":CFG.supabaseAnonKey,"Authorization":"Bearer "+CFG.supabaseAnonKey},body:JSON.stringify(body)})
+    .then(function(r){ if(r.status===401||r.status===403) throw {auth:true}; return r.text().then(function(t){ var j=t?JSON.parse(t):null; if(!r.ok){ if(j && /unauthorized/.test(j.message||"")) throw {auth:true}; throw new Error(r.status); } return j; }); });
+}
+
+function login(p){
+  $("loginBtn").disabled=true; $("loginErr").textContent="";
+  var check = DB ? rpc("admin_list_registrations",{p_password:p}).then(function(rows){ data=rows||[]; return true; })
+                 : sha256(p).then(function(h){ if(h!==PASS_SHA256) throw {auth:true}; data=[]; return true; });
+  return check.then(function(){
+    pw=p; try{ sessionStorage.setItem("adm",p); }catch(e){}
+    $("login").hidden=true; $("dash").hidden=false; $("noDb").hidden=DB; render();
+  }).catch(function(e){
+    try{ sessionStorage.removeItem("adm"); }catch(_){}
+    $("loginErr").textContent = e && e.auth ? "كلمة السر غير صحيحة." : "تعذّر الاتصال بقاعدة البيانات. حاول مرة أخرى.";
+  }).then(function(){ $("loginBtn").disabled=false; });
+}
+$("login").addEventListener("submit",function(e){ e.preventDefault(); login($("pw").value); });
+try{ var saved=sessionStorage.getItem("adm"); if(saved) login(saved); }catch(e){}
+
+function reload(){
+  if(!DB){ render(); return; }
+  rpc("admin_list_registrations",{p_password:pw}).then(function(rows){ data=rows||[]; render(); toast("تم التحديث"); }).catch(function(){ toast("تعذّر التحديث"); });
+}
+$("refresh").addEventListener("click",reload);
+$("logout").addEventListener("click",function(){ try{ sessionStorage.removeItem("adm"); }catch(e){} pw=""; data=[]; $("dash").hidden=true; $("login").hidden=false; $("pw").value=""; });
+$("q").addEventListener("input",renderRows);
+$("fStatus").addEventListener("change",renderRows);
+
+function fmtDate(s){ var d=new Date(s); return d.toLocaleDateString("en-GB",{day:"2-digit",month:"2-digit"})+" "+d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}); }
+
+function render(){
+  var c={new:0,contacted:0,paid:0,cancelled:0}, week=0, now=Date.now();
+  data.forEach(function(r){ c[r.status]=(c[r.status]||0)+1; if(now-Date.parse(r.created_at)<7*864e5) week++; });
+  $("kTotal").textContent=data.length; $("kNew").textContent=c.new; $("kCont").textContent=c.contacted; $("kPaid").textContent=c.paid; $("kWeek").textContent=week;
+  $("lastSync").textContent = DB ? "آخر تحديث: "+new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}) : "وضع بدون قاعدة بيانات";
+  // bars
+  var by={}; data.forEach(function(r){ var k=r.level||"أخرى"; by[k]=(by[k]||0)+1; });
+  var max=Math.max(1,Math.max.apply(null,LEVELS.map(function(l){ return by[l]||0; })));
+  var bars=$("bars"); bars.innerHTML="";
+  LEVELS.forEach(function(l){ var r=el("div","bar"); r.appendChild(el("span",null,l)); var tr=el("div","tr"); var i=el("i"); i.style.width=((by[l]||0)/max*100)+"%"; tr.appendChild(i); r.appendChild(tr); r.appendChild(el("b",null,String(by[l]||0))); bars.appendChild(r); });
+  // schedule
+  var sc=$("sched"); sc.innerHTML=""; var nextMarked=false;
+  SESS.forEach(function(s,i){
+    var p=s[0].split("."); var t=Date.parse(p[2]+"-"+p[1].padStart(2,"0")+"-"+p[0].padStart(2,"0")+"T"+s[1]+":00+0"+(i<4?"3":"2")+":00");
+    var row=el("div","srow"); var n=el("span","n",String(i+1)); n.style.background=s[2];
+    row.appendChild(n); row.appendChild(el("span",null,s[3])); row.appendChild(el("span","d",s[0]+" · "+s[1]));
+    if(t+90*60000<now) row.classList.add("past"); else if(!nextMarked){ row.classList.add("next"); nextMarked=true; }
+    sc.appendChild(row);
+  });
+  renderRows();
+}
+
+function renderRows(){
+  var q=$("q").value.trim().toLowerCase(), fs=$("fStatus").value, tb=$("rows"); tb.innerHTML="";
+  var list=data.filter(function(r){ return (!fs||r.status===fs) && (!q || [r.full_name,r.phone,r.school,r.notes].join(" ").toLowerCase().indexOf(q)>-1); });
+  if(!list.length){ var tr=el("tr"); var td=el("td","empty", DB ? (data.length?"لا توجد نتائج مطابقة.":"لا توجد طلبات تسجيل بعد.") : "لا توجد بيانات: قاعدة البيانات غير متصلة."); td.colSpan=7; tr.appendChild(td); tb.appendChild(tr); return; }
+  list.forEach(function(r){
+    var tr=el("tr");
+    tr.appendChild(el("td","dt",fmtDate(r.created_at)));
+    var nm=el("td"); nm.appendChild(el("b",null,r.full_name)); tr.appendChild(nm);
+    tr.appendChild(el("td","ph",r.phone));
+    tr.appendChild(el("td",null,r.level||"—"));
+    var inf=el("td"); inf.appendChild(el("div",null,r.school||"—")); if(r.notes) inf.appendChild(el("div","notes",r.notes)); tr.appendChild(inf);
+    var stc=el("td"); var sel=el("select","st"); sel.setAttribute("aria-label","حالة الطلب");
+    Object.keys(STATUS).forEach(function(k){ var o=el("option",null,STATUS[k]); o.value=k; sel.appendChild(o); });
+    sel.value=r.status; sel.dataset.v=r.status;
+    sel.addEventListener("change",function(){ var v=sel.value, old=r.status; sel.dataset.v=v; rpc("admin_set_status",{p_password:pw,p_id:r.id,p_status:v}).then(function(){ r.status=v; render(); toast("تم تحديث الحالة"); }).catch(function(){ sel.value=old; sel.dataset.v=old; toast("تعذّر تحديث الحالة"); }); });
+    stc.appendChild(sel); tr.appendChild(stc);
+    var ac=el("td"); var box=el("div","rowacts");
+    var digits=r.phone.replace(/\D/g,""); if(digits.charAt(0)==="0") digits="972"+digits.slice(1);
+    var wa=el("a",null,"واتساب"); wa.href="https://wa.me/"+digits+"?text="+encodeURIComponent("مرحبًا "+r.full_name+"، بخصوص تسجيلك لدورة ChatGPT 2026"); wa.target="_blank"; wa.rel="noopener";
+    var del=el("button",null,"حذف"); del.type="button";
+    del.addEventListener("click",function(){
+      box.innerHTML=""; var cf=el("span","confirm","متأكد؟ "); var y=el("button",null,"نعم، احذف"); y.type="button"; var n=el("button",null,"إلغاء"); n.type="button"; n.style.background="rgba(255,255,255,.08)"; n.style.color="var(--ink)";
+      y.addEventListener("click",function(){ rpc("admin_delete_registration",{p_password:pw,p_id:r.id}).then(function(){ data=data.filter(function(x){ return x.id!==r.id; }); render(); toast("تم الحذف"); }).catch(function(){ toast("تعذّر الحذف"); renderRows(); }); });
+      n.addEventListener("click",renderRows);
+      cf.appendChild(y); cf.appendChild(n); box.appendChild(cf);
+    });
+    box.appendChild(wa); box.appendChild(del); ac.appendChild(box); tr.appendChild(ac);
+    tb.appendChild(tr);
+  });
+}
+
+$("csv").addEventListener("click",function(){
+  if(!data.length){ toast("لا توجد بيانات للتصدير"); return; }
+  var cols=["created_at","full_name","phone","level","school","notes","status"];
+  var esc=function(v){ v=v==null?"":String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  var csv="﻿"+cols.join(",")+"\n"+data.map(function(r){ return cols.map(function(c){ return esc(c==="status"?STATUS[r[c]]||r[c]:r[c]); }).join(","); }).join("\n");
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="chatgpt2026-registrations.csv"; document.body.appendChild(a); a.click(); a.remove();
+});
+})();
+</script>
+</body>
+</html>

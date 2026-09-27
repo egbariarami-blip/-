@@ -4,192 +4,320 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دورة ChatGPT 2026</title>
-<meta name="description" content="دورة ChatGPT 2026 — من الفكرة إلى التنفيذ: 7 لقاءات × 90 دقيقة. محتوى، فيديو، صور، مواقع، تطبيقات 3D، والتحكم بالمتصفح والحاسوب — في مشروع تعليمي واحد متكامل.">
+<meta name="description" content="ChatGPT 2026 — من الفكرة إلى التنفيذ. دورة عيانية للمعلمين والمربيات: 7 لقاءات، فيديو، صور، مواقع، تطبيقات ثلاثية الأبعاد ومشروع متكامل.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
+/* Single deliberate look: the poster's night-neon world. Colors are set explicitly for every surface. */
 :root{
-  --ground:#F4F3EE;
-  --surface:#FFFFFF;
-  --ink:#16143A;
-  --ink-soft:#4A4870;
-  --line:#DCDAE6;
-  --accent:#E23E64;
-  --accent-ink:#FFFFFF;
-  --sun:#F4B324;
-  --panel:#16143A;
-  --panel-ink:#F4F3EE;
-  --panel-soft:#A9A7CC;
+  color-scheme:dark;
+  --bg:#060A22;
+  --bg2:#0B1136;
+  --card:#10174A;
+  --ink:#F3F5FF;
+  --soft:#AAB2E6;
+  --line:rgba(170,178,230,.16);
+  --pink:#FF3D8B;
+  --magenta:#FF4FD1;
+  --purple:#9B5CFF;
+  --cyan:#22D3F5;
+  --blue:#3B8BFF;
+  --green:#1FE0A0;
+  --orange:#FF9A1F;
+  --sun:#FFD23F;
+  --wa:#25D366;
   --display:"Lalezar","IBM Plex Sans Arabic",system-ui,sans-serif;
   --body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --ground:#100F26;
-    --surface:#1A1938;
-    --ink:#EEEDF7;
-    --ink-soft:#A9A7CC;
-    --line:#2E2C55;
-    --accent:#FF5C80;
-    --accent-ink:#16143A;
-    --panel:#0A0919;
-    --panel-ink:#EEEDF7;
-    --panel-soft:#8F8DB8;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --ground:#100F26;
-  --surface:#1A1938;
-  --ink:#EEEDF7;
-  --ink-soft:#A9A7CC;
-  --line:#2E2C55;
-  --accent:#FF5C80;
-  --accent-ink:#16143A;
-  --panel:#0A0919;
-  --panel-ink:#EEEDF7;
-  --panel-soft:#8F8DB8;
+  --grad:linear-gradient(90deg,var(--pink),var(--purple) 50%,var(--cyan));
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.75}
-.wrap{max-width:1120px;margin-inline:auto;padding-inline:20px}
-a{color:inherit}
-h1,h2,h3{text-wrap:balance;margin:0;line-height:1.25}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.75;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 500px at 85% -10%,rgba(155,92,255,.28),transparent 60%),
+             radial-gradient(700px 500px at 0% 30%,rgba(34,211,245,.14),transparent 60%),
+             radial-gradient(800px 600px at 60% 110%,rgba(255,61,139,.16),transparent 60%)}
+main,header,footer{position:relative;z-index:1}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:20px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.2}
 p{margin:0}
-.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate}
-:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:6px}
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:8px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* top bar */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(6,10,34,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
-.brand{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:.02em;direction:ltr}
-.brand b{color:var(--accent)}
-.nav{display:flex;gap:20px;font-size:15px}
-.nav a{text-decoration:none;color:var(--ink-soft)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;direction:ltr}
+.brand .logo{width:34px;height:34px;border-radius:10px;background:#0B1136;box-shadow:0 0 0 1.5px var(--purple),0 0 18px rgba(155,92,255,.6);display:grid;place-items:center}
+.nav{display:flex;gap:22px;font-size:15px}
+.nav a{text-decoration:none;color:var(--soft)}
 .nav a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font:700 16px/1 var(--body);padding:14px 22px;border-radius:999px;background:var(--accent);color:var(--accent-ink);transition:transform .15s}
-.btn:hover{transform:translateY(-2px)}
-.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
-.btn.sm{padding:10px 16px;font-size:14px}
-@media (max-width:760px){.nav{display:none}}
+@media (max-width:860px){.nav{display:none}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font:700 16px/1 var(--body);padding:15px 24px;border-radius:999px;color:#fff;background:linear-gradient(90deg,var(--purple),var(--magenta));box-shadow:0 10px 30px -8px rgba(255,79,209,.65),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .18s,box-shadow .18s}
+.btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 16px 40px -8px rgba(255,79,209,.8)}
+.btn.sm{padding:10px 18px;font-size:14px}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 2px rgba(255,255,255,.28)}
+.btn.wa{background:var(--wa);color:#05290F;box-shadow:0 10px 30px -8px rgba(37,211,102,.6)}
 
 /* hero */
-.hero{padding-block:56px 40px}
-.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
-.eyebrow{display:inline-flex;gap:10px;align-items:center;font-size:14px;font-weight:700;color:var(--ink-soft);letter-spacing:.02em}
-.eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 22%,transparent)}
-.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,7.4vw,92px);line-height:1.05;margin-block:18px 8px}
-.hero h1 .en{font-family:var(--mono);font-weight:700;font-size:.62em;letter-spacing:-.02em;display:block;direction:ltr;text-align:right;color:var(--accent)}
-.hero .sub{font-family:var(--display);font-size:clamp(26px,3.4vw,38px);color:var(--ink-soft);margin-bottom:20px}
-.hero .lead{font-size:19px;max-width:34em;color:var(--ink)}
-.hero .lead strong{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--sun) 55%,transparent) 62%)}
-.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero{padding-block:44px 30px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center}
+.badge-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:linear-gradient(90deg,rgba(155,92,255,.9),rgba(255,79,209,.9));font-weight:700;font-size:15px;color:#fff;box-shadow:0 0 24px rgba(155,92,255,.5)}
+.pill.ghost{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px var(--line);color:var(--soft);font-weight:500}
+.hero h1{margin-block:18px 6px}
+.hero h1 .t1{display:block;font-family:var(--mono);font-weight:700;font-size:clamp(44px,7.2vw,86px);letter-spacing:-.03em;direction:ltr;text-align:right;line-height:1}
+.hero h1 .t1 .yr{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(255,79,209,.45))}
+.hero h1 .t2{display:block;font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1.1;margin-top:10px}
+.slogan{font-size:19px;color:var(--soft);margin-top:10px}
+.slogan b{color:var(--ink)}
+.lead{font-size:18.5px;max-width:34em;margin-top:18px}
+.lead strong{color:var(--sun)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 
-/* workflow console */
-.console{background:var(--panel);color:var(--panel-ink);border-radius:18px;padding:22px 22px 18px;font-family:var(--mono);font-size:13.5px;direction:ltr;box-shadow:0 30px 60px -30px rgba(22,20,58,.55)}
-.console .hd{display:flex;gap:7px;margin-bottom:16px;align-items:center}
-.console .hd i{width:11px;height:11px;border-radius:50%;background:#3A3866}
-.console .hd i:first-child{background:var(--accent)}
-.console .hd span{margin-left:auto;color:var(--panel-soft);font-size:12px}
-.console ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.console li{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:7px 10px;border-radius:8px;opacity:.38;transition:opacity .4s,background .4s}
-.console li .ar{font-family:var(--body);direction:rtl;text-align:right;font-size:14px}
-.console li .st{color:var(--panel-soft);font-size:11.5px}
-.console li.done{opacity:1}
-.console li.done .ic{color:var(--sun)}
-.console li.now{opacity:1;background:rgba(255,255,255,.07)}
-.console li.now .ic{color:var(--accent)}
-.console .ft{margin-top:14px;padding-top:12px;border-top:1px dashed #3A3866;color:var(--panel-soft);font-size:12px;display:flex;justify-content:space-between;gap:10px}
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+.countdown{display:flex;gap:10px;margin-top:26px;align-items:stretch;flex-wrap:wrap}
+.countdown .lbl{font-size:14px;color:var(--soft);align-self:center;margin-inline-end:6px}
+.cd{min-width:70px;padding:10px 8px;text-align:center;border-radius:14px;background:rgba(16,23,74,.85);box-shadow:inset 0 0 0 1px var(--line)}
+.cd b{display:block;font-family:var(--mono);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.cd span{font-size:12px;color:var(--soft)}
 
-/* facts */
-.facts{border-block:1px solid var(--line);background:var(--surface)}
-.facts .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.fact{padding:22px 18px;border-inline-start:1px solid var(--line)}
-.fact:first-child{border-inline-start:0}
-.fact b{display:block;font-family:var(--display);font-weight:400;font-size:40px;line-height:1.1;font-variant-numeric:tabular-nums}
-.fact span{font-size:14.5px;color:var(--ink-soft)}
-@media (max-width:700px){.facts .wrap{grid-template-columns:repeat(2,1fr)}.fact:nth-child(3){border-inline-start:0}.fact:nth-child(n+3){border-top:1px solid var(--line)}}
+.stage{position:relative;aspect-ratio:1/1;max-width:100%;min-height:320px}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage .fallback{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FF4FD1,#9B5CFF 45%,#22D3F5 80%);filter:blur(2px);opacity:.75;animation:spin 14s linear infinite}
+.stage.gl .fallback{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sticky{position:absolute;top:6%;left:0;width:150px;padding:16px 16px 14px;background:#FFF3A6;color:#1B1440;font-family:var(--display);font-size:25px;line-height:1.3;transform:rotate(-7deg);box-shadow:0 18px 30px -12px rgba(0,0,0,.6);border-radius:3px}
+.sticky::after{content:"";display:block;height:4px;width:70%;margin-top:6px;background:var(--pink);border-radius:4px;transform:rotate(-3deg)}
+.floaty{position:absolute;padding:8px 12px;border-radius:12px;background:rgba(16,23,74,.9);box-shadow:inset 0 0 0 1px var(--line),0 10px 30px -10px rgba(0,0,0,.6);font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center;animation:bob 5s ease-in-out infinite}
+.floaty i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.f1{bottom:12%;right:2%}
+.f2{bottom:30%;left:4%;animation-delay:-2s}
+.f3{top:14%;right:8%;animation-delay:-3.5s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+@media (max-width:920px){.hero .wrap{grid-template-columns:1fr}.stage{max-width:520px;margin-inline:auto;width:100%}}
 
-section{padding-block:72px}
-.sec-head{max-width:720px;margin-bottom:36px}
-.sec-head .k{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.08em;direction:ltr;display:inline-block}
-.sec-head h2{font-family:var(--display);font-weight:400;font-size:clamp(32px,4.6vw,52px);margin-block:6px 12px}
-.sec-head p{color:var(--ink-soft);font-size:18px}
+/* ticker */
+.ticker{border-block:1px solid var(--line);background:rgba(11,17,54,.7);overflow:hidden;white-space:nowrap;direction:ltr}
+.ticker .row{display:inline-flex;gap:38px;padding-block:14px;animation:tick 38s linear infinite;font-family:var(--mono);font-weight:700;font-size:14px;color:var(--soft)}
+.ticker .row span::before{content:"◆";margin-right:14px;color:var(--magenta)}
+@keyframes tick{to{transform:translateX(-50%)}}
 
-/* chain */
-.chain{display:flex;flex-wrap:wrap;gap:10px;align-items:center;counter-reset:c}
-.chain .node{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;font-weight:700;font-size:16px;display:flex;align-items:center;gap:10px}
-.chain .node small{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);font-weight:500}
-.chain .node.first{border-color:var(--ink);}
-.chain .node.last{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.chain .node.last small{color:inherit;opacity:.8}
-.chain .arr{color:var(--accent);font-size:22px;font-weight:700}
-.quote{margin-top:40px;background:var(--panel);color:var(--panel-ink);border-radius:20px;padding:34px 32px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
-.quote .q{font-family:var(--display);font-size:90px;line-height:.7;color:var(--sun)}
-.quote p{font-size:clamp(19px,2.3vw,24px);line-height:1.7}
-.quote p b{color:var(--sun);font-weight:700}
-@media (max-width:600px){.quote{grid-template-columns:1fr;padding:26px 22px}.quote .q{font-size:64px}}
+section{padding-block:76px}
+.sec-head{max-width:760px;margin-bottom:34px}
+.sec-head .k{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--cyan);direction:ltr;display:inline-block}
+.sec-head h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4.8vw,56px);margin-block:6px 12px}
+.sec-head p{color:var(--soft);font-size:18px}
 
 /* sessions */
-.sessions{display:grid;gap:0;border-top:2px solid var(--ink)}
-.s{display:grid;grid-template-columns:92px 1.1fr 1.4fr;gap:28px;padding-block:28px;border-bottom:1px solid var(--line);align-items:start}
-.s .num{font-family:var(--display);font-size:68px;line-height:.9;color:var(--ink);font-variant-numeric:tabular-nums;position:relative}
-.s .num small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.1em;margin-top:8px}
-.s h3{font-size:23px;font-weight:700;margin-bottom:12px;display:flex;gap:10px;align-items:baseline}
-.s h3 .emo{font-size:22px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;direction:ltr;justify-content:flex-end}
-.tag{font-family:var(--mono);font-size:12px;font-weight:700;padding:5px 10px;border-radius:6px;background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
-.s .app{color:var(--ink-soft);font-size:16.5px}
-.s .adds{margin-top:14px;display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:700;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);padding:6px 12px;border-radius:999px}
-.s.final{background:var(--surface);margin-inline:-20px;padding-inline:20px;border-radius:0 0 16px 16px}
-.s.final .num{color:var(--accent)}
-@media (max-width:820px){.s{grid-template-columns:64px 1fr;gap:10px 18px}.s .num{font-size:50px}.s .right{grid-column:2}.tags{justify-content:flex-start;direction:rtl}}
+.sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;perspective:1200px}
+.sc{--c:var(--blue);position:relative;border-radius:22px;padding:22px 20px 18px;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 20%,#10174A),#0C1240 70%);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent),0 0 30px -8px color-mix(in srgb,var(--c) 70%,transparent);transform-style:preserve-3d;transition:transform .25s ease,box-shadow .25s;display:flex;flex-direction:column;gap:12px}
+.sc:hover{box-shadow:inset 0 0 0 2px var(--c),0 0 50px -6px var(--c)}
+.sc .n{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:24px;background:#0B1136;box-shadow:0 0 0 3px var(--c),0 0 22px var(--c);transform:translateZ(30px)}
+.sc h3{font-size:21px;font-weight:700;transform:translateZ(20px)}
+.sc .d{color:var(--soft);font-size:15px}
+.sc .tags{display:flex;flex-wrap:wrap;gap:6px;direction:ltr;justify-content:flex-end}
+.sc .tag{font-family:var(--mono);font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--ink)}
+.sc .when{margin-top:auto;display:flex;justify-content:space-between;gap:8px;align-items:center;padding-top:12px;border-top:1px dashed rgba(255,255,255,.15);font-size:14px}
+.sc .when b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sc .when span{color:var(--soft)}
+.sc .sim-go{display:flex;flex-wrap:wrap;gap:6px}
+.sc .sim-go button{font:700 12.5px/1 var(--body);padding:7px 10px;border-radius:999px;border:0;cursor:pointer;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--ink)}
+.sc .sim-go button:hover{background:var(--c);color:#0B1136}
+.sc.final{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;gap:18px 28px}
+.sc.final > div:not(.n){flex:1 1 300px}
+.sc .n{flex:none}
+.sc.final .when{margin-top:0;border-top:0;padding-top:0;flex-direction:column;align-items:flex-start}
 
-/* levels */
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
-.tab{font:700 15px/1 var(--body);padding:12px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.tab[aria-selected="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
-.level{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:30px}
-.level h3{font-family:var(--display);font-weight:400;font-size:32px;margin-bottom:6px}
-.level .desc{color:var(--ink-soft);margin-bottom:22px}
-.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;list-style:none;margin:0;padding:0}
-.flow li{display:flex;align-items:center;gap:8px}
-.flow li span{padding:10px 14px;border-radius:10px;background:var(--ground);border:1px solid var(--line);font-weight:700;font-size:15.5px}
-.flow li:last-child span{background:var(--sun);border-color:var(--sun);color:#16143A}
-.flow li + li::before{content:"←";color:var(--accent);font-weight:700}
+/* simulator */
+.sim-controls{display:grid;gap:14px;margin-bottom:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{--c:var(--purple);font:700 14.5px/1 var(--body);padding:11px 16px;border-radius:999px;border:0;cursor:pointer;background:rgba(255,255,255,.06);color:var(--ink);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 55%,transparent)}
+.chip[aria-pressed="true"]{background:var(--c);color:#0B1136;box-shadow:0 0 24px -4px var(--c)}
+.chips-label{font-size:13.5px;color:var(--soft);font-weight:700;margin-bottom:6px}
+.sim{--c:var(--blue);display:grid;grid-template-columns:1fr 1.15fr;border-radius:24px;overflow:hidden;background:#0A0F33;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 60%,transparent),0 30px 80px -30px color-mix(in srgb,var(--c) 70%,transparent)}
+.sim .chat{padding:22px;border-inline-end:1px solid var(--line);display:flex;flex-direction:column;gap:14px;min-width:0}
+.sim .win{display:flex;gap:6px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--soft);direction:ltr}
+.sim .win i{width:10px;height:10px;border-radius:50%;background:#2A3170}
+.sim .win i:first-child{background:var(--pink)}
+.sim .win span{margin-left:auto}
+.msg{background:rgba(255,255,255,.06);border-radius:16px 16px 4px 16px;padding:14px 16px;font-size:15.5px;min-height:5.5em}
+.msg .who{font-size:12.5px;font-weight:700;color:var(--c);margin-bottom:4px;display:block}
+.caret{display:inline-block;width:2px;height:1.1em;background:var(--c);vertical-align:-.2em;margin-inline-start:2px;animation:blink .9s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.steps li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:center;font-size:14.5px;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.035);opacity:.35;transition:opacity .35s}
+.steps li.on{opacity:1}
+.steps .ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:rgba(255,255,255,.08)}
+.steps li.run .ic{border:2px solid var(--c);border-top-color:transparent;background:none;animation:spin .8s linear infinite}
+.steps li.ok .ic{background:var(--c);color:#0B1136;font-weight:700}
+.sim .replay{align-self:flex-start;background:none;border:0;color:var(--soft);cursor:pointer;font:700 14px/1 var(--body);padding:6px 0}
+.sim .replay:hover{color:var(--ink)}
+.sim .out{padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0;background:radial-gradient(500px 300px at 50% 0%,color-mix(in srgb,var(--c) 18%,transparent),transparent 70%)}
+.out-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.out-h b{font-size:18px}
+.out-h span{font-size:13px;color:var(--soft)}
+.view{flex:1;min-height:280px;border-radius:16px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px var(--line);padding:16px;opacity:0;transform:translateY(8px) scale(.98);transition:opacity .5s,transform .5s;overflow:hidden}
+.view.show{opacity:1;transform:none}
+@media (max-width:860px){.sim{grid-template-columns:1fr}.sim .chat{border-inline-end:0;border-bottom:1px solid var(--line)}}
 
-/* contact */
-.contact{background:var(--panel);color:var(--panel-ink);border-radius:28px;padding:48px 40px;display:grid;grid-template-columns:1.2fr 1fr;gap:36px;align-items:center}
-.contact h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,5vw,56px);margin-bottom:12px}
-.contact p{color:var(--panel-soft);font-size:18px}
-.phone-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:22px}
-.phone-card .lbl{font-size:14px;color:var(--panel-soft);margin-bottom:4px}
-.phone{font-family:var(--mono);font-weight:700;font-size:clamp(30px,4.6vw,42px);letter-spacing:.03em;direction:ltr;text-align:right;user-select:all;font-variant-numeric:tabular-nums}
-.phone-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.phone-actions .btn.ghost{color:var(--panel-ink);box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
-.copied{font-size:14px;color:var(--sun);min-height:1.5em;margin-top:8px}
-@media (max-width:820px){.contact{grid-template-columns:1fr;padding:34px 22px}}
+/* result views */
+.v-list{display:grid;gap:8px}
+.v-list .it{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.05);font-size:14.5px}
+.v-list .it::before{content:"✓";width:22px;height:22px;flex:none;border-radius:6px;display:grid;place-items:center;background:var(--c);color:#0B1136;font-weight:700;font-size:13px}
+.v-browser{margin-top:12px;border-radius:10px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.v-browser .url{direction:ltr;font-family:var(--mono);font-size:12px;padding:7px 10px;background:rgba(255,255,255,.07);color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v-browser .pg{position:relative;height:74px;background:rgba(255,255,255,.03);display:flex;gap:8px;padding:10px}
+.v-browser .pg i{flex:1;border-radius:6px;background:rgba(255,255,255,.08)}
+.cursor{position:absolute;width:18px;height:18px;animation:clicker 3s ease-in-out infinite}
+@keyframes clicker{0%{top:48px;left:80%}40%{top:20px;left:22%}50%{top:22px;left:22%;transform:scale(.8)}60%{transform:none}100%{top:48px;left:80%}}
 
-footer{padding-block:34px 44px;color:var(--ink-soft);font-size:14px}
+.v-story{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.frame{aspect-ratio:16/10;max-width:100%;border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;padding:10px;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 55%,#10174A),#10174A);position:relative;overflow:hidden}
+.frame .em{font-size:34px;line-height:1;animation:bob 3s ease-in-out infinite}
+.frame .cap{font-size:12.5px;font-weight:700;background:rgba(0,0,0,.35);border-radius:6px;padding:2px 7px;align-self:flex-start}
+.frame .no{position:absolute;top:8px;left:10px;font-family:var(--mono);font-size:11px;opacity:.7}
+.player{margin-top:10px;display:flex;align-items:center;gap:10px;direction:ltr}
+.player .pl{width:30px;height:30px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#0B1136;font-size:12px}
+.player .bar2{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}
+.player .bar2 i{display:block;height:100%;width:0;background:var(--c);animation:prog 6s linear infinite}
+@keyframes prog{to{width:100%}}
+.player .t{font-family:var(--mono);font-size:12px;color:var(--soft)}
+
+.v-edit .ba{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;height:110px;position:relative}
+.v-edit .ba div{display:flex;align-items:flex-end;padding:8px;font-size:12.5px;font-weight:700}
+.v-edit .ba .b{background:linear-gradient(135deg,#3A3F5E,#232744);filter:saturate(.4) blur(.6px);color:#C9CBE0}
+.v-edit .ba .a{background:linear-gradient(135deg,color-mix(in srgb,var(--c) 70%,#10174A),#1B2266)}
+.v-edit .ba::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;box-shadow:0 0 12px #fff}
+.tracks{margin-top:12px;display:grid;gap:6px;direction:ltr}
+.track{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--soft)}
+.track .lane{height:16px;border-radius:5px;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
+.track .lane i{position:absolute;top:2px;bottom:2px;border-radius:4px;background:var(--c);opacity:.85}
+.v-edit .fx{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.v-edit .fx span{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--c) 22%,transparent)}
+
+.v-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;perspective:800px}
+.pc{border-radius:12px;padding:12px;background:#F7F4FF;color:#1B1440;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;box-shadow:0 12px 24px -12px rgba(0,0,0,.7);transform:rotateY(-8deg) rotate(-1.5deg)}
+.pc:nth-child(even){transform:rotateY(8deg) rotate(1.5deg)}
+.pc .art{width:100%;aspect-ratio:4/3;max-width:100%;border-radius:8px;display:grid;place-items:center;font-size:40px;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 45%,#fff),#fff)}
+.pc b{font-size:13px;line-height:1.35}
+
+.v-site{border-radius:12px;overflow:hidden;background:#F5F6FF;color:#141A4A}
+.v-site .top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;background:#fff;border-bottom:1px solid #E3E5F5;font-size:12.5px}
+.v-site .top b{font-size:14px;color:color-mix(in srgb,var(--c) 70%,#141A4A)}
+.v-site .top span{display:flex;gap:10px;color:#6A6F9A}
+.v-site .heroS{padding:18px 14px;background:linear-gradient(120deg,color-mix(in srgb,var(--c) 75%,#fff),#fff);font-family:var(--display);font-size:24px;line-height:1.2}
+.v-site .heroS small{display:block;font-family:var(--body);font-size:12.5px;margin-top:4px;color:#2A2F5E}
+.v-site .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:12px}
+.v-site .grid div{background:#fff;border-radius:8px;padding:10px;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(20,26,74,.08)}
+.v-site .grid div::before{content:"";display:block;height:28px;border-radius:5px;margin-bottom:6px;background:color-mix(in srgb,var(--c) 30%,#EEF0FF)}
+
+.v-3d{display:grid;place-items:center;gap:10px;height:100%;min-height:250px;perspective:700px;cursor:grab;touch-action:none;user-select:none}
+.cube{position:relative;width:130px;height:130px;transform-style:preserve-3d;transform:rotateX(-22deg) rotateY(30deg)}
+.cube.auto{animation:cube 10s linear infinite}
+@keyframes cube{from{transform:rotateX(-22deg) rotateY(0)}to{transform:rotateX(-22deg) rotateY(360deg)}}
+.cube div{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:700;font-size:15px;padding:6px;border-radius:10px;background:color-mix(in srgb,var(--c) 38%,rgba(11,17,54,.7));box-shadow:inset 0 0 0 2px var(--c),0 0 24px color-mix(in srgb,var(--c) 60%,transparent);backface-visibility:visible}
+.cube .f1{transform:translateZ(65px)}
+.cube .f2{transform:rotateY(90deg) translateZ(65px)}
+.cube .f3{transform:rotateY(180deg) translateZ(65px)}
+.cube .f4{transform:rotateY(-90deg) translateZ(65px)}
+.cube .f5{transform:rotateX(90deg) translateZ(65px)}
+.cube .f6{transform:rotateX(-90deg) translateZ(65px)}
+.v-3d .hint{font-size:12.5px;color:var(--soft)}
+.v-3d .name{font-family:var(--display);font-size:22px}
+
+.v-final .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.v-final .tile{border-radius:12px;padding:12px 8px;text-align:center;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--line);font-size:13px;font-weight:700;display:grid;gap:4px}
+.v-final .tile i{font-style:normal;font-size:24px}
+.v-final .flow{margin-top:12px;padding:12px;border-radius:12px;background:color-mix(in srgb,var(--c) 18%,transparent);font-size:14px;display:flex;gap:10px;align-items:center}
+.v-final .flow b{color:var(--sun)}
+.v-final .proj{font-family:var(--display);font-size:24px;margin-bottom:10px}
+
+/* schedule */
+.sched{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.day{--c:var(--blue);border-radius:16px;padding:14px 10px;text-align:center;background:rgba(16,23,74,.8);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 55%,transparent)}
+.day .dn{font-size:13px;color:var(--soft)}
+.day .dt{font-family:var(--mono);font-weight:700;font-size:18px;direction:ltr;font-variant-numeric:tabular-nums}
+.day .tm{font-family:var(--mono);font-size:13px;direction:ltr;color:var(--c)}
+.day .no{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c);color:#0B1136;font-weight:700;font-family:var(--mono);margin-bottom:6px}
+@media (max-width:960px){.sched{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:520px){.sched{grid-template-columns:repeat(2,1fr)}}
+.seasons{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.season{display:flex;gap:14px;align-items:center;padding:16px 18px;border-radius:16px;background:rgba(16,23,74,.8);box-shadow:inset 0 0 0 1px var(--line)}
+.season .sy{font-size:34px;line-height:1}
+.season b{display:block;font-size:17px}
+.season span{font-size:14px;color:var(--soft)}
+.season .tm{margin-inline-start:auto;font-family:var(--mono);font-weight:700;direction:ltr;white-space:nowrap}
+@media (max-width:700px){.seasons{grid-template-columns:1fr}}
+
+/* offer */
+.offer{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:26px 30px;border-radius:26px;background:linear-gradient(100deg,#B3122F,#E0245E 55%,#FF5A36);box-shadow:0 30px 70px -30px rgba(224,36,94,.8);position:relative;overflow:hidden}
+.offer::before{content:"";position:absolute;inset:-40% -10% auto auto;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,210,63,.35),transparent 70%)}
+.offer .gift{font-size:64px;line-height:1;animation:bob 3s ease-in-out infinite}
+.offer h3{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.4vw,38px)}
+.offer p{font-size:17px;opacity:.92}
+.offer .pct{font-family:var(--display);font-size:clamp(56px,8vw,96px);line-height:1;color:var(--sun);text-shadow:0 4px 0 #7A0C21;direction:ltr}
+@media (max-width:700px){.offer{grid-template-columns:1fr;text-align:center;justify-items:center}}
+
+/* register */
+.reg{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:start}
+.reg-info h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4.8vw,56px);margin-bottom:12px}
+.reg-info p{color:var(--soft);font-size:18px}
+.phone-box{margin-top:22px;padding:20px;border-radius:18px;background:rgba(16,23,74,.85);box-shadow:inset 0 0 0 1px var(--line)}
+.phone-box .lbl{font-size:14px;color:var(--soft)}
+.phone{font-family:var(--mono);font-weight:700;font-size:clamp(28px,4vw,40px);direction:ltr;text-align:right;user-select:all;font-variant-numeric:tabular-nums}
+.phone-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.note{font-size:14px;color:var(--sun);min-height:1.5em;margin-top:8px}
+form.card{padding:26px;border-radius:22px;background:rgba(16,23,74,.9);box-shadow:inset 0 0 0 1.5px rgba(155,92,255,.5),0 30px 70px -40px rgba(155,92,255,.9);display:grid;gap:14px}
+.field{display:grid;gap:6px}
+.field label{font-weight:700;font-size:14.5px}
+.field input,.field select,.field textarea{font:500 16px/1.4 var(--body);color:var(--ink);background:#0A0F33;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(155,92,255,.3)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;gap:6px;align-items:center;font-size:14px;padding:8px 12px;border-radius:999px;background:#0A0F33;border:1.5px solid var(--line);cursor:pointer}
+.form-msg{font-size:15px;min-height:1.4em}
+.form-msg.ok{color:var(--green)}
+.form-msg.err{color:#FF8FA8}
+@media (max-width:860px){.reg{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+
+.sub-note{margin-top:16px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:20px 24px;border-radius:20px;background:rgba(16,23,74,.9);box-shadow:inset 0 0 0 1.5px rgba(31,224,160,.55),0 0 30px -10px rgba(31,224,160,.6)}
+.sub-note .price{font-family:var(--mono);font-weight:700;font-size:34px;color:var(--green);direction:ltr;line-height:1;text-align:center}
+.sub-note .price small{display:block;font-size:12px;color:var(--soft);margin-top:4px;font-family:var(--body)}
+.sub-note b{font-size:18px;display:block;margin-bottom:2px}
+.sub-note p{color:var(--soft);font-size:16px}
+.sub-note p strong{color:var(--ink)}
+@media (max-width:560px){.sub-note{grid-template-columns:1fr;text-align:center}}
+/* whatsapp float */
+.wa-float{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;width:62px;height:62px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 12px 30px -6px rgba(37,211,102,.7);text-decoration:none}
+.wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--wa);animation:ring 2s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.8}to{transform:scale(1.6);opacity:0}}
+.wa-float span{position:absolute;left:72px;white-space:nowrap;background:#fff;color:#0B1136;font-weight:700;font-size:14px;padding:7px 12px;border-radius:10px;box-shadow:0 8px 20px -8px rgba(0,0,0,.6)}
+@media (max-width:600px){.wa-float span{display:none}}
+
+footer{padding-block:30px 100px;border-top:1px solid var(--line);color:var(--soft);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer a{color:var(--soft)}
 
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+.reveal{transition:transform .7s ease,opacity .7s ease}
+.reveal.pre{transform:translateY(24px);opacity:.85}
+
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
 <header class="bar">
   <div class="wrap">
-    <div class="brand">ChatGPT<b>·</b>2026</div>
+    <div class="brand"><span class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg></span>ChatGPT 2026</div>
     <nav class="nav" aria-label="أقسام الصفحة">
-      <a href="#project">المشروع</a>
       <a href="#sessions">اللقاءات</a>
-      <a href="#levels">حسب المرحلة</a>
+      <a href="#simulator">المحاكاة</a>
+      <a href="#schedule">المواعيد</a>
       <a href="#register">التسجيل</a>
     </nav>
     <a class="btn sm" href="#register">سجّل الآن</a>
@@ -197,257 +325,520 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 </header>
 
 <main>
-<section class="hero" style="padding-block:56px 44px">
+<section class="hero" aria-label="الدورة">
   <div class="wrap">
     <div>
-      <div class="eyebrow"><span class="dot"></span>دورة عملية · 7 لقاءات × 90 دقيقة</div>
-      <h1><span class="en">ChatGPT 2026</span>من الفكرة إلى التنفيذ</h1>
-      <p class="sub">دورة تختلف كليًا عمّا عرفته في الذكاء الاصطناعي</p>
+      <div class="badge-row">
+        <span class="pill">دورة عيانية للمعلمين والمربيات</span>
+        <span class="pill ghost">7 لقاءات × 90 دقيقة</span>
+      </div>
+      <h1><span class="t1">ChatGPT <span class="yr">2026</span></span><span class="t2">من الفكرة إلى التنفيذ</span></h1>
+      <p class="slogan"><b>أدوات حديثة</b> ... <b>نتائج حقيقية</b> ... <b>تطبيق عملي</b></p>
       <p class="lead">لن نتعلم كيف نتحدث مع ChatGPT فقط؛ سنتعلم كيف نجعله <strong>يصمم، ينتج الفيديو، يعدّل الصور، يبني المواقع والتطبيقات ثلاثية الأبعاد، يعمل عبر المتصفح، وينفذ سلسلة كاملة من المهام.</strong></p>
       <div class="cta-row">
-        <a class="btn" href="#register">احجز مكانك ←</a>
-        <a class="btn ghost" href="#sessions">برنامج اللقاءات</a>
+        <a class="btn" href="#register">احجز مكانك الآن</a>
+        <a class="btn line" href="#simulator">شاهد المحاكاة</a>
+      </div>
+      <div class="countdown" id="countdown" aria-label="العد التنازلي للقاء الأول">
+        <span class="lbl">اللقاء الأول بعد</span>
+        <div class="cd"><b id="cdD">7</b><span>أيام</span></div>
+        <div class="cd"><b id="cdH">00</b><span>ساعات</span></div>
+        <div class="cd"><b id="cdM">00</b><span>دقائق</span></div>
+        <div class="cd"><b id="cdS">00</b><span>ثوانٍ</span></div>
       </div>
     </div>
 
-    <div class="console" aria-label="مثال لسير عمل المشروع">
-      <div class="hd"><i></i><i></i><i></i><span>workflow · solar-system-unit</span></div>
-      <ol id="run">
-        <li><span class="ic">●</span><span class="ar">فكرة: وحدة "المجموعة الشمسية"</span><span class="st">idea</span></li>
-        <li><span class="ic">●</span><span class="ar">خطة دروس كاملة</span><span class="st">Thinking</span></li>
-        <li><span class="ic">●</span><span class="ar">صور ومواد تعليمية</span><span class="st">Images</span></li>
-        <li><span class="ic">●</span><span class="ar">فيديو تعليمي مع مونتاج</span><span class="st">Video</span></li>
-        <li><span class="ic">●</span><span class="ar">موقع للمادة</span><span class="st">Sites</span></li>
-        <li><span class="ic">●</span><span class="ar">نموذج 3D تفاعلي للكواكب</span><span class="st">Codex</span></li>
-        <li><span class="ic">●</span><span class="ar">المتصفح ينفّذ المهام</span><span class="st">Work</span></li>
-        <li><span class="ic">●</span><span class="ar">مشروع تعليمي متكامل ✓</span><span class="st">ship</span></li>
-      </ol>
-      <div class="ft"><span id="runStatus">8/8 steps</span><span>7 × 90 min</span></div>
+    <div class="stage" id="stage">
+      <div class="fallback" aria-hidden="true"></div>
+      <canvas id="scene" aria-hidden="true"></canvas>
+      <div class="sticky" aria-hidden="true">انتج ..<br>صمم ..<br>طبق ..<br>بثقة</div>
+      <div class="floaty f1"><i style="background:var(--pink)"></i>فيديو بكبسة زر</div>
+      <div class="floaty f2"><i style="background:var(--cyan)"></i>تطبيقات 3D</div>
+      <div class="floaty f3"><i style="background:var(--green)"></i>مواقع تعليمية</div>
     </div>
   </div>
 </section>
 
-<div class="facts">
+<div class="ticker" aria-hidden="true"><div class="row" id="tickerRow"></div></div>
+
+<section id="sessions">
   <div class="wrap">
-    <div class="fact"><b>7</b><span>لقاءات تطبيقية</span></div>
-    <div class="fact"><b>90</b><span>دقيقة لكل لقاء</span></div>
-    <div class="fact"><b>10.5</b><span>ساعات عمل فعلي</span></div>
-    <div class="fact"><b>1</b><span>مشروع واحد يكبر كل أسبوع</span></div>
+    <div class="sec-head reveal">
+      <span class="k">7 SESSIONS · ONE PROJECT</span>
+      <h2>سبعة لقاءات، مشروع واحد يكبر كل أسبوع</h2>
+      <p>كل لقاء يضيف طبقة جديدة لنفس المشروع التعليمي: من الفكرة والخطة، إلى الفيديو والصور، ثم الموقع والتطبيق ثلاثي الأبعاد، وأخيرًا مشروع متكامل. اضغط على أي مرحلة لتشاهد محاكاة اللقاء عليها.</p>
+    </div>
+    <div class="sessions" id="sessionCards"></div>
   </div>
-</div>
+</section>
 
-<section id="project">
+<section id="simulator" style="padding-top:20px">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="k">ONE PROJECT · 7 LAYERS</span>
-      <h2>ليست 7 مواضيع منفصلة</h2>
-      <p>نبدأ من اللقاء الأول بمشروع واحد، وفي كل أسبوع نضيف إليه تقنية جديدة. في النهاية تخرج بمشروع تعليمي كامل بنيته بيدك.</p>
+    <div class="sec-head reveal">
+      <span class="k">LIVE SIMULATION</span>
+      <h2>شاهد ماذا يحدث في كل لقاء</h2>
+      <p>اختر اللقاء والمرحلة التي تدرّسها، وشاهد كيف يتحول طلب واحد إلى نتيجة جاهزة للصف.</p>
     </div>
-    <div class="chain" role="list">
-      <div class="node first" role="listitem">فكرة تعليمية</div><span class="arr" aria-hidden="true">←</span>
-      <div class="node" role="listitem">ChatGPT يحوّلها إلى خطة</div><span class="arr" aria-hidden="true">←</span>
-      <div class="node" role="listitem">ينشئ الصور والمواد</div><span class="arr" aria-hidden="true">←</span>
-      <div class="node" role="listitem">ينشئ فيديو تعليمي</div><span class="arr" aria-hidden="true">←</span>
-      <div class="node" role="listitem">يبني موقعًا للمادة</div><span class="arr" aria-hidden="true">←</span>
-      <div class="node" role="listitem">تجربة تفاعلية 3D <small>Codex</small></div><span class="arr" aria-hidden="true">←</span>
-      <div class="node" role="listitem">المتصفح ينفّذ سير العمل <small>Work</small></div><span class="arr" aria-hidden="true">←</span>
-      <div class="node last" role="listitem">مشروع تعليمي متكامل</div>
+    <div class="sim-controls">
+      <div><div class="chips-label">اللقاء</div><div class="chips" id="simSessions" role="group" aria-label="اختر اللقاء"></div></div>
+      <div><div class="chips-label">المرحلة</div><div class="chips" id="simLevels" role="group" aria-label="اختر المرحلة"></div></div>
     </div>
-
-    <div class="quote">
-      <div class="q" aria-hidden="true">”</div>
-      <p>من إنشاء المحتوى إلى <b>الفيديو والصور</b>، ومن <b>المواقع والتطبيقات</b> إلى <b>التحكم بالمتصفح والحاسوب</b>. كل لقاء يضيف طبقة جديدة لنفس المشروع.</p>
+    <div class="sim" id="sim">
+      <div class="chat">
+        <div class="win"><i></i><i></i><i></i><span id="simTool">ChatGPT · Work</span></div>
+        <div class="msg"><span class="who">طلب المعلم/ة</span><span id="simPrompt"></span><span class="caret" id="caret"></span></div>
+        <ol class="steps" id="simSteps"></ol>
+        <button class="replay" type="button" id="replay">↻ إعادة المحاكاة</button>
+      </div>
+      <div class="out">
+        <div class="out-h"><b id="outTitle"></b><span id="outSub"></span></div>
+        <div class="view" id="view"></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="sessions" style="padding-top:24px">
+<section id="schedule" style="padding-top:20px">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="k">SYLLABUS</span>
-      <h2>اللقاءات السبعة</h2>
-      <p>كل لقاء 90 دقيقة: تقنية جديدة، تطبيق تربوي مباشر، وإضافة ملموسة لمشروعك.</p>
+    <div class="sec-head reveal">
+      <span class="k">SCHEDULE · SUNDAYS</span>
+      <h2>مواعيد اللقاءات</h2>
+      <p>كل يوم أحد، سبعة أسابيع متتالية.</p>
     </div>
-
-    <div class="sessions">
-      <article class="s">
-        <div class="num">01<small>SESSION</small></div>
-        <div>
-          <h3><span class="emo">🚀</span>ChatGPT الحديث: من المحادثة إلى التنفيذ</h3>
-          <div class="tags"><span class="tag">GPT-5.6</span><span class="tag">Thinking</span><span class="tag">Work</span><span class="tag">Plugins</span></div>
-        </div>
-        <div class="right">
-          <p class="app">التعرف على البيئة الجديدة، الفرق بين Chat وWork، ربط الأدوات، وتحويل فكرة تعليمية إلى Workflow كامل.</p>
-          <span class="adds">+ فكرة المشروع وخطته</span>
-        </div>
-      </article>
-
-      <article class="s">
-        <div class="num">02<small>SESSION</small></div>
-        <div>
-          <h3><span class="emo">🎬</span>إنشاء ومونتاج الفيديو بكبسة زر</h3>
-          <div class="tags"><span class="tag">ChatGPT</span><span class="tag">Plugins</span><span class="tag">Video Tools</span><span class="tag">Work</span></div>
-        </div>
-        <div class="right">
-          <p class="app">كتابة السيناريو ← إنشاء المشاهد والصور ← الصوت ← الفيديو ← المونتاج؛ وربط عدة خدمات في عملية واحدة بدل العمل اليدوي.</p>
-          <span class="adds">+ فيديو تعليمي للمشروع</span>
-        </div>
-      </article>
-
-      <article class="s">
-        <div class="num">03<small>SESSION</small></div>
-        <div>
-          <h3><span class="emo">🖥️</span>دع ChatGPT يعمل على الحاسوب والمتصفح</h3>
-          <div class="tags"><span class="tag">Work</span><span class="tag">Cloud Browser</span><span class="tag">Computer Use</span></div>
-        </div>
-        <div class="right">
-          <p class="app">إعطاؤه مهمة متعددة الخطوات: فتح مواقع، البحث، النقر، إدخال البيانات، تنزيل وتنظيم ملفات، والعمل عبر صفحات الويب المدعومة.</p>
-          <span class="adds">+ مهام تُنفَّذ تلقائيًا</span>
-        </div>
-      </article>
-
-      <article class="s">
-        <div class="num">04<small>SESSION</small></div>
-        <div>
-          <h3><span class="emo">🌐</span>إنشاء مواقع تعليمية بالطريقة الحديثة</h3>
-          <div class="tags"><span class="tag">ChatGPT</span><span class="tag">Codex</span><span class="tag">Sites</span></div>
-        </div>
-        <div class="right">
-          <p class="app">من جملة واحدة إلى موقع تعليمي: صفحة درس، منصة صفية، لعبة، اختبار أو موقع لمشروع مدرسي، ثم تطويره بالمحادثة.</p>
-          <span class="adds">+ موقع المشروع</span>
-        </div>
-      </article>
-
-      <article class="s">
-        <div class="num">05<small>SESSION</small></div>
-        <div>
-          <h3><span class="emo">🎨</span>الصور والمواد التعليمية الاحترافية</h3>
-          <div class="tags"><span class="tag">Image Generation</span><span class="tag">Image Editing</span><span class="tag">Vision</span></div>
-        </div>
-        <div class="right">
-          <p class="app">إنشاء صورة، تعديل صورة موجودة، تغيير عناصرها وخلفيتها، بناء قصة مصورة، بطاقات، أوراق عمل ومواد بصرية.</p>
-          <span class="adds">+ حقيبة مواد بصرية</span>
-        </div>
-      </article>
-
-      <article class="s">
-        <div class="num">06<small>SESSION</small></div>
-        <div>
-          <h3><span class="emo">🧊</span>تطبيقات ومختبرات ثلاثية الأبعاد</h3>
-          <div class="tags"><span class="tag">Codex</span><span class="tag">Coding</span><span class="tag">Web 3D</span></div>
-        </div>
-        <div class="right">
-          <p class="app">بناء تطبيق تعليمي 3D: مختبر علوم، جسم الإنسان، النظام الشمسي، الأشكال الهندسية، نموذج تفاعلي وغيرها.</p>
-          <span class="adds">+ تجربة تفاعلية 3D</span>
-        </div>
-      </article>
-
-      <article class="s final">
-        <div class="num">07<small>FINAL</small></div>
-        <div>
-          <h3><span class="emo">🤖</span>المشروع الكبير: كل التقنيات معًا</h3>
-          <div class="tags"><span class="tag">Work</span><span class="tag">Codex</span><span class="tag">Plugins</span><span class="tag">Browser</span><span class="tag">Images</span><span class="tag">Automation</span></div>
-        </div>
-        <div class="right">
-          <p class="app">بناء مشروع تعليمي كامل يبدأ بفكرة وينتهي بموقع أو تطبيق، ومواد وصور وفيديو، وأتمتة لسير العمل.</p>
-          <span class="adds">= مشروع تعليمي متكامل</span>
-        </div>
-      </article>
+    <div class="sched" id="sched"></div>
+    <div class="seasons">
+      <div class="season"><span class="sy" aria-hidden="true">☀️</span><div><b>التوقيت الصيفي</b><span>اللقاءات الأولى (4.10، 11.10، 18.10، 25.10)</span></div><span class="tm">18:30 – 20:00</span></div>
+      <div class="season"><span class="sy" aria-hidden="true">❄️</span><div><b>التوقيت الشتوي</b><span>بداية من اللقاء الخامس (1.11، 8.11، 15.11)</span></div><span class="tm">17:30 – 19:00</span></div>
     </div>
   </div>
 </section>
 
-<section id="levels" style="padding-top:24px">
+<section style="padding-top:10px">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="k">K-12 → UNIVERSITY</span>
-      <h2>مشروعك حسب المرحلة التي تدرّسها</h2>
-      <p>اختر مرحلتك وشاهد كيف يتحوّل موضوع واحد إلى مشروع كامل عبر اللقاءات.</p>
+    <div class="offer reveal">
+      <div class="gift" aria-hidden="true">🎁</div>
+      <div><h3>انضم لأكثر من دورة</h3><p>واحصل على تخفيض خاص على كل الدورات التي تسجّل لها.</p></div>
+      <div class="pct">20%</div>
     </div>
-
-    <div class="tabs" role="tablist" aria-label="المراحل التعليمية" id="tabs"></div>
-    <div class="level" role="tabpanel" id="levelPanel" aria-live="polite">
-      <h3 id="lvTitle"></h3>
-      <p class="desc" id="lvDesc"></p>
-      <ol class="flow" id="lvFlow"></ol>
-    </div>
-  </div>
-</section>
-
-<section id="register" style="padding-top:24px">
-  <div class="wrap">
-    <div class="contact">
+    <div class="sub-note reveal">
+      <div class="price">$20<small>شهريًا</small></div>
       <div>
-        <h2>جاهز تبني مشروعك الأول مع ChatGPT 2026؟</h2>
-        <p>للتسجيل والاستفسار عن مواعيد اللقاءات، تواصل معنا مباشرة بالهاتف أو واتساب.</p>
+        <b>ملاحظة حول اشتراك ChatGPT</b>
+        <p>للمشاركة في الدورة يكفي <strong>اشتراك ChatGPT Plus بقيمة 20$ شهريًا</strong> تدفعونه بأنفسكم. من يريد استخدامًا أكثر من ذلك، فبعض الأدوات المتقدمة تعمل وفق <strong>نظام الرصيد (Credits)</strong>.</p>
       </div>
-      <div class="phone-card">
+    </div>
+  </div>
+</section>
+
+<section id="register" style="padding-top:20px">
+  <div class="wrap reg">
+    <div class="reg-info">
+      <h2>جاهز تبني مشروعك الأول مع <span class="grad-text">ChatGPT 2026</span>؟</h2>
+      <p>عبّئ النموذج ونعود إليك لتأكيد التسجيل، أو تواصل معنا مباشرة بالهاتف أو واتساب.</p>
+      <div class="phone-box">
         <div class="lbl">للتسجيل والاستفسار</div>
         <div class="phone" id="phone">052-671-0819</div>
         <div class="phone-actions">
-          <a class="btn" href="https://wa.me/972526710819?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D9%84%D8%AF%D9%88%D8%B1%D8%A9%20ChatGPT%202026" target="_blank" rel="noopener">واتساب</a>
-          <a class="btn ghost" href="tel:0526710819">اتصال</a>
-          <button class="btn ghost" type="button" id="copyBtn">نسخ الرقم</button>
+          <a class="btn wa" id="waBtn" href="https://wa.me/972526710819" target="_blank" rel="noopener">واتساب</a>
+          <a class="btn line" href="tel:0526710819">اتصال</a>
+          <button class="btn line" type="button" id="copyBtn">نسخ الرقم</button>
         </div>
-        <div class="copied" id="copied" aria-live="polite"></div>
+        <div class="note" id="copied" aria-live="polite"></div>
       </div>
     </div>
+
+    <form class="card" id="regForm" novalidate>
+      <div class="two">
+        <div class="field"><label for="f-name">الاسم الكامل</label><input id="f-name" name="full_name" required maxlength="120" autocomplete="name" placeholder="مثال: سناء محاميد"></div>
+        <div class="field"><label for="f-phone">رقم الهاتف</label><input id="f-phone" name="phone" required maxlength="30" inputmode="tel" autocomplete="tel" placeholder="05X-XXX-XXXX" dir="ltr"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="f-level">المرحلة التي تدرّسها</label>
+          <select id="f-level" name="level">
+            <option>رياض الأطفال</option><option>الابتدائي</option><option>الإعدادي</option><option>الثانوي</option><option>الجامعة / الكلية</option><option>إدارة / إرشاد</option><option>أخرى</option>
+          </select></div>
+        <div class="field"><label for="f-school">المدرسة / المؤسسة</label><input id="f-school" name="school" maxlength="160" placeholder="اختياري"></div>
+      </div>
+      <div class="field"><label for="f-notes">ملاحظات</label><textarea id="f-notes" name="notes" rows="3" maxlength="1000" placeholder="مثلًا: أريد التسجيل مع زميلة، أو أهتم بدورة أخرى أيضًا"></textarea></div>
+      <button class="btn" type="submit" id="submitBtn">أرسل طلب التسجيل</button>
+      <div class="form-msg" id="formMsg" aria-live="polite"></div>
+    </form>
   </div>
 </section>
 </main>
 
+<a class="wa-float" id="waFloat" href="https://wa.me/972526710819" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+  <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.3-3.8 1.2 1.2-3.7-.3-.4a10.4 10.4 0 0 1-1.6-5.6C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.8c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5v-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.8 5 .8.4 1.4.6 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+  <span>سجّل عبر واتساب</span>
+</a>
+
 <footer>
   <div class="wrap">
-    <span>ChatGPT 2026 — من الفكرة إلى التنفيذ · 7 لقاءات × 90 دقيقة</span>
-    <span class="mono">052-671-0819</span>
+    <span>ChatGPT 2026 — من الفكرة إلى التنفيذ · دورة عيانية للمعلمين والمربيات</span>
+    <span><span dir="ltr">052-671-0819</span> · <a href="admin.html">لوحة الإدارة</a></span>
   </div>
 </footer>
 
+<script src="config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
-  // Levels
-  var levels = [
-    {k:"kg", tab:"رياض الأطفال", title:"قصة تتحول إلى لعبة", desc:"قصة قصيرة بشخصيات محبوبة يعيشها الأطفال بالصورة والصوت واللعب.", flow:["قصة","شخصيات وصور","فيديو","لعبة تفاعلية"]},
-    {k:"el", tab:"الابتدائي", title:"وحدة \"المجموعة الشمسية\"", desc:"وحدة علوم كاملة من الصور حتى نموذج ثلاثي الأبعاد يستكشفه الطلاب بأنفسهم.", flow:["وحدة \"المجموعة الشمسية\"","صور","فيديو","موقع","نموذج 3D للكواكب"]},
-    {k:"mid", tab:"الإعدادي", title:"الرياضيات بطريقة جديدة", desc:"من الشرح إلى لعبة ثم تطبيق هندسي يرى فيه الطالب الأشكال من كل زاوية.", flow:["شرح","مواد","لعبة","تطبيق هندسي ثلاثي الأبعاد"]},
-    {k:"hs", tab:"الثانوي", title:"مختبر علوم افتراضي", desc:"تجارب لا يمكن تنفيذها في الصف، تصبح متاحة في مختبر تفاعلي على المتصفح.", flow:["موضوع التجربة","مواد وصور","فيديو شرح","موقع","مختبر علوم افتراضي تفاعلي"]},
-    {k:"uni", tab:"الجامعة", title:"مساق أكاديمي كامل", desc:"المحتوى الأكاديمي يتحول إلى موقع مساق ومحاكاة تفاعلية يستخدمها الطلاب.", flow:["محتوى أكاديمي","مواد بصرية","موقع للمساق","تطبيق/محاكاة تفاعلية"]}
-  ];
-  var tabs = document.getElementById("tabs");
-  function show(i){
-    var L = levels[i];
-    document.getElementById("lvTitle").textContent = L.title;
-    document.getElementById("lvDesc").textContent = L.desc;
-    var fl = document.getElementById("lvFlow"); fl.innerHTML = "";
-    L.flow.forEach(function(s){ var li=document.createElement("li"); var sp=document.createElement("span"); sp.textContent=s; li.appendChild(sp); fl.appendChild(li); });
-    Array.prototype.forEach.call(tabs.children, function(b,j){ b.setAttribute("aria-selected", j===i ? "true":"false"); b.tabIndex = j===i ? 0 : -1; });
-  }
-  levels.forEach(function(L,i){
-    var b=document.createElement("button"); b.type="button"; b.className="tab"; b.id="tab-"+L.k; b.setAttribute("role","tab"); b.textContent=L.tab;
-    b.addEventListener("click", function(){ show(i); });
-    tabs.appendChild(b);
-  });
-  show(1);
+var CFG = window.SITE_CONFIG || {whatsapp:"972526710819", supabaseUrl:"", supabaseAnonKey:""};
+var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function $(id){ return document.getElementById(id); }
+function el(tag, cls, txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+function waLink(text){ return "https://wa.me/"+CFG.whatsapp+"?text="+encodeURIComponent(text); }
 
-  // Workflow console: complete at rest, then replays
-  var items = document.querySelectorAll("#run li"), st = document.getElementById("runStatus");
-  function paint(n){ items.forEach(function(li,j){ li.className = j<n ? "done" : (j===n ? "now" : ""); }); st.textContent = Math.min(n,items.length)+"/"+items.length+" steps"; }
-  paint(items.length);
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var defaultWa = waLink("مرحبًا، أريد التسجيل لدورة ChatGPT 2026");
+$("waBtn").href = defaultWa; $("waFloat").href = defaultWa;
+
+/* ---------- data ---------- */
+var LEVELS = [
+  {k:"kg",  name:"رياض الأطفال", topic:"الأرنب نونو يتعلم الألوان"},
+  {k:"el",  name:"الابتدائي",    topic:"المجموعة الشمسية"},
+  {k:"mid", name:"الإعدادي",     topic:"الأشكال الهندسية والحجوم"},
+  {k:"hs",  name:"الثانوي",      topic:"التفاعلات الكيميائية"},
+  {k:"uni", name:"الجامعة",      topic:"بيولوجيا الخلية"}
+];
+var SESSIONS = [
+  {n:1,c:"#3B8BFF",type:"plan",date:"4.10.2026",time:"18:30–20:00",tool:"ChatGPT · Thinking · Work",
+   title:"ابدأ بقوة ChatGPT الحديث والتحكم الذكي",
+   desc:"البيئة الجديدة، الفرق بين Chat وWork، ربط الأدوات، ودعه يعمل على المتصفح والحاسوب: يفتح مواقع، يبحث، يُدخل بيانات وينظّم ملفات.",
+   tags:["GPT-5.6","Thinking","Work","Plugins","Computer Use"], out:"خطة كاملة + مهام نُفّذت في المتصفح",
+   sims:{
+    kg:{p:"أنا مربية روضة. أريد وحدة لأسبوعين عن الألوان من خلال قصة الأرنب نونو. ابنِ خطة كاملة، وابحث لي عن أغانٍ مناسبة ونظّمها في مجلد.",s:["Thinking: تحليل عمر الأطفال وأهداف الوحدة","Work: فتح المتصفح والبحث عن أغانٍ وأنشطة","تنظيم الملفات في مجلد \"وحدة الألوان\""],i:["يوم 1: قصة نونو واللون الأحمر","يوم 2: نشاط فرز الألوان","يوم 3: أغنية الألوان","يوم 4: ركن الرسم الحر"],u:"youtube.com/results?q=أغنية+الألوان+للأطفال"},
+    el:{p:"خطّط وحدة \"المجموعة الشمسية\" للصف الرابع في 6 حصص، واجمع لي من مواقع موثوقة صورًا وحقائق عن الكواكب.",s:["Thinking: تقسيم الوحدة إلى 6 حصص","Work: تصفح مواقع علمية وجمع الحقائق","حفظ جدول حقائق الكواكب في Drive"],i:["حصة 1: الشمس نجمنا","حصة 2: الكواكب الصخرية","حصة 3: العمالقة الغازية","حصة 4: مشروع نموذج الكواكب"],u:"science.nasa.gov/solar-system/planets"},
+    mid:{p:"حضّر وحدة \"الحجوم والمساحات\" للصف الثامن مع تمارين متدرجة، ثم أدخل العلامات من ملف الإكسل إلى النظام المدرسي.",s:["Thinking: بناء تسلسل من السهل إلى الصعب","Plugins: قراءة ملف العلامات","Computer Use: إدخال العلامات في النظام"],i:["حجم المكعب ومتوازي المستطيلات","حجم الأسطوانة","المساحة الجانبية والكلية","تمارين تحدٍّ متدرجة"],u:"school-system/grades/class-8"},
+    hs:{p:"ابنِ خطة وحدة \"التفاعلات الكيميائية\" للصف العاشر، وابحث عن تجارب آمنة، وجهّز قائمة المواد اللازمة لطلبها.",s:["Thinking: ربط الوحدة بالمنهج","Work: البحث عن تجارب آمنة","إعداد قائمة مواد وطلبية جاهزة"],i:["أنواع التفاعلات","موازنة المعادلات","تجربة الخل وبيكربونات الصوديوم","ورقة سلامة المختبر"],u:"lab-supplies/cart"},
+    uni:{p:"صمّم مخطط مساق \"بيولوجيا الخلية\" لـ 13 أسبوعًا، واجمع 10 مقالات حديثة ونظّمها في قائمة مراجع.",s:["Thinking: توزيع المادة على 13 أسبوعًا","Work: البحث في قواعد المقالات الأكاديمية","تنسيق قائمة المراجع بأسلوب APA"],i:["أسبوع 1–3: بنية الخلية","أسبوع 4–6: الغشاء والنقل","أسبوع 7–9: الطاقة في الخلية","أسبوع 10–13: الانقسام"],u:"scholar.google.com/?q=cell+biology+2026"}
+   }},
+  {n:2,c:"#FF3D8B",type:"video",date:"11.10.2026",time:"18:30–20:00",tool:"ChatGPT · Plugins · Video",
+   title:"إنتاج فيديوهات بكبسة زر",
+   desc:"كتابة السيناريو، إنشاء المشاهد والصور، الصوت، الفيديو والمونتاج؛ عدة خدمات مترابطة في عملية واحدة بدل العمل اليدوي.",
+   tags:["ChatGPT","Plugins","Video Tools","Work"], out:"فيديو تعليمي جاهز للعرض",
+   sims:{
+    kg:{p:"حوّل قصة نونو والألوان إلى فيديو كرتوني مدته دقيقتان بصوت راوٍ دافئ.",s:["كتابة السيناريو وتقسيمه إلى مشاهد","إنشاء الشخصيات والمشاهد","الصوت والموسيقى والمونتاج"],i:[["🐰","نونو يستيقظ"],["🍎","تفاحة حمراء"],["🥕","جزرة برتقالية"],["🌈","قوس قزح"]],d:"02:00"},
+    el:{p:"فيديو تعليمي 3 دقائق: رحلة صاروخ عبر المجموعة الشمسية مع راوٍ وطالب فضولي.",s:["سيناريو حواري بين الراوي والطالب","إنشاء مشاهد الفضاء والكواكب","تعليق صوتي وموسيقى ومونتاج"],i:[["🚀","الانطلاق"],["☀️","الشمس"],["🪐","زحل وحلقاته"],["🌍","العودة للأرض"]],d:"03:00"},
+    mid:{p:"فيديو يشرح حجم الأسطوانة بمثال علبة عصير، مع رسوم متحركة للصيغة.",s:["سيناريو من مثال حياتي إلى الصيغة","رسوم متحركة للقاعدة والارتفاع","صوت ومونتاج وعناوين"],i:[["🥤","علبة العصير"],["⭕","مساحة القاعدة"],["📏","الارتفاع"],["🧮","الصيغة النهائية"]],d:"02:30"},
+    hs:{p:"فيديو قصير بأسلوب وثائقي عن تفاعل الاحتراق مع تعليق صوتي ورسومات للجزيئات.",s:["سيناريو وثائقي علمي","مشاهد وجزيئات متحركة","تعليق صوتي ومونتاج"],i:[["🔥","ما هو الاحتراق؟"],["⚗️","المتفاعلات"],["💨","النواتج"],["⚖️","موازنة المعادلة"]],d:"03:40"},
+    uni:{p:"محاضرة فيديو 5 دقائق بأسلوب احترافي عن الميتوكوندريا مع رسوم توضيحية.",s:["تحويل المحاضرة إلى سيناريو مكثف","رسوم توضيحية علمية","تعليق صوتي احترافي ومونتاج"],i:[["🔬","تحت المجهر"],["🧬","بنية الميتوكوندريا"],["⚡","إنتاج ATP"],["📚","ملخص"]],d:"05:00"}
+   }},
+  {n:3,c:"#1FE0A0",type:"edit",date:"18.10.2026",time:"18:30–20:00",tool:"ChatGPT · Video Editing",
+   title:"تعديل فيديوهات بأقوى الأدوات",
+   desc:"قص، تحسين الصورة والصوت، ترجمة تلقائية، موسيقى، عناوين ومؤثرات؛ فيديو الجوال يصبح فيديو احترافيًا.",
+   tags:["Video Editing","Subtitles","Voice","Music"], out:"قبل ← بعد",
+   sims:{
+    kg:{p:"خذ فيديو حصة الروضة المصوَّر بالجوال: احذف الأجزاء المشوشة، أضف موسيقى هادئة وعناوين ملونة.",s:["تحليل الفيديو وتحديد الأجزاء المشوشة","القص وتثبيت الصورة","موسيقى وعناوين ملونة"],i:["قص 4 مقاطع مشوشة","تثبيت الصورة","موسيقى أطفال هادئة","عناوين ملونة كبيرة"]},
+    el:{p:"عدّل فيديو عرض الطلاب عن الكواكب: ترجمة تلقائية، تحسين الصوت، ومقدمة متحركة.",s:["تفريغ الكلام وترجمته","إزالة الضجيج من الصوت","إضافة مقدمة متحركة وصور"],i:["ترجمة تلقائية بالعربية","إزالة الضجيج","مقدمة متحركة","صور الكواكب فوق الشرح"]},
+    mid:{p:"اختصر فيديو شرح مدته 20 دقيقة إلى 4 دقائق مع إبراز الخطوات المهمة.",s:["تحديد اللحظات المهمة","الاختصار والتكبير على اللوح","أسهم وفصول بالعناوين"],i:["اختصار 20 ← 4 دقائق","تكبير على اللوح","أسهم وإبراز","فصول بالعناوين"]},
+    hs:{p:"حوّل تصوير التجربة إلى فيديو احترافي: تسريع، تعليق صوتي، وتحذيرات سلامة على الشاشة.",s:["تسريع الأجزاء الطويلة","تعليق صوتي بالذكاء الاصطناعي","لافتات سلامة ولقطات مقرّبة"],i:["تسريع الأجزاء الطويلة","تعليق صوتي","لافتات سلامة","لقطة مقرّبة للتفاعل"]},
+    uni:{p:"حوّل تسجيل محاضرة Zoom إلى مقاطع قصيرة للطلاب مع ترجمة ثنائية اللغة.",s:["تقسيم المحاضرة حسب المواضيع","إزالة الصمت والتكرار","ترجمة عربي/إنجليزي"],i:["تقسيم إلى 6 مقاطع","ترجمة عربي/إنجليزي","إزالة الصمت","الشرائح بجانب المحاضر"]}
+   }},
+  {n:4,c:"#FF9A1F",type:"images",date:"25.10.2026",time:"18:30–20:00",tool:"Image Generation · Editing · Vision",
+   title:"إنشاء وتعديل صور والمواد الدراسية بطريقة احترافية",
+   desc:"إنشاء صورة، تعديل صورة موجودة، تغيير عناصرها وخلفيتها، قصة مصورة، بطاقات، أوراق عمل ومواد بصرية.",
+   tags:["Image Generation","Image Editing","Vision"], out:"حقيبة مواد بصرية",
+   sims:{
+    kg:{p:"اصنع بطاقات ألوان بشخصية نونو، وغيّر خلفية الصورة إلى حديقة، وجهّز ورقة عمل للتلوين.",s:["تصميم شخصية نونو الثابتة","تعديل الخلفية وإنشاء البطاقات","ورقة عمل جاهزة للطباعة"],i:[["🐰","نونو باللون الأحمر"],["🌳","خلفية حديقة"],["🖍️","ورقة تلوين"],["🃏","بطاقات مطابقة"]]},
+    el:{p:"أنشئ بطاقات للكواكب بأسلوب موحد، وملصقًا للصف، وورقة عمل مطابقة.",s:["أسلوب بصري موحد للكواكب","بطاقة لكل كوكب مع حقيقة","ملصق صفي وورقة عمل"],i:[["🪐","بطاقة لكل كوكب"],["🧩","لغز الكواكب"],["📄","ورقة عمل"],["🏷️","ملصق للصف"]]},
+    mid:{p:"صمّم ورقة عمل مصورة للأشكال ثلاثية الأبعاد، وحوّل صورة السبورة إلى إنفوجرافيك واضح.",s:["قراءة صورة السبورة (Vision)","رسم المجسمات بمقاساتها","إنفوجرافيك وورقة عمل"],i:[["🧊","مكعب ومقاساته"],["🛢️","أسطوانة"],["📐","إنفوجرافيك الصيغ"],["📝","ورقة عمل"]]},
+    hs:{p:"ارسم مخططات أدوات المختبر، وصحّح صورة تجربة مظلمة، واصنع قصة مصورة عن السلامة.",s:["رسم أدوات المختبر بأسمائها","تصحيح الإضاءة والألوان","قصة مصورة من 6 مربعات"],i:[["🧪","أدوات المختبر"],["💡","صورة مصحّحة"],["📖","قصة مصورة"],["⚠️","ملصق السلامة"]]},
+    uni:{p:"حوّل رسم الخلية من الكتاب إلى رسم توضيحي احترافي مع أسماء الأجزاء، وشرائح بصرية للمحاضرة.",s:["قراءة الرسم الأصلي (Vision)","إعادة رسمه بدقة واحترافية","تسميات وشرائح للمحاضرة"],i:[["🧫","رسم الخلية"],["🏷️","أسماء العضيات"],["📊","مخطط مقارنة"],["🖼️","شرائح المحاضرة"]]}
+   }},
+  {n:5,c:"#9B5CFF",type:"site",date:"1.11.2026",time:"17:30–19:00",tool:"ChatGPT · Codex · Sites",
+   title:"موقع إنترنت بطريقة حديثة وعصرية",
+   desc:"من جملة واحدة إلى موقع تعليمي: صفحة درس، منصة صفية، لعبة، اختبار أو موقع لمشروع مدرسي، ثم تطويره بالمحادثة.",
+   tags:["ChatGPT","Codex","Sites"], out:"موقع منشور برابط",
+   sims:{
+    kg:{p:"ابنِ موقعًا للأهالي عن وحدة الألوان: القصة، الفيديو، ولعبة ألوان بسيطة.",s:["تخطيط صفحات الموقع","بناء الموقع بـ Codex","نشر الموقع وإرسال الرابط"],site:"عالم نونو",tag:"موقع الأهالي لوحدة الألوان",i:["القصة","الفيديو","لعبة الألوان","للأهالي"]},
+    el:{p:"موقع صفي للمجموعة الشمسية: صفحة لكل كوكب، اختبار قصير، ومعرض لأعمال الطلاب.",s:["تخطيط صفحات الموقع","بناء الموقع والاختبار","نشر الموقع ومشاركته"],site:"رحلة إلى الفضاء",tag:"موقع الصف الرابع",i:["الكواكب","اختبار قصير","معرض الطلاب","الفيديو"]},
+    mid:{p:"منصة تمارين تفاعلية للحجوم مع تصحيح فوري ولوحة نقاط.",s:["تصميم بنك التمارين","برمجة التصحيح الفوري","لوحة نقاط ونشر"],site:"مختبر الحجوم",tag:"تمارين تفاعلية للصف الثامن",i:["شرح","تمارين","تصحيح فوري","لوحة النقاط"]},
+    hs:{p:"موقع للوحدة: ملخصات، فيديوهات التجارب، وبنك أسئلة للبجروت.",s:["تنظيم المحتوى في أقسام","بناء بنك الأسئلة","نشر الموقع للطلاب"],site:"كيمياء 10",tag:"كل ما تحتاجه للوحدة",i:["ملخصات","التجارب","بنك أسئلة","مواعيد"]},
+    uni:{p:"موقع للمساق: جدول الأسابيع، المواد، المراجع، ومنتدى أسئلة.",s:["هيكلة المساق","بناء الصفحات والمنتدى","نشر ومشاركة الرابط"],site:"بيولوجيا الخلية",tag:"موقع المساق — الفصل الأول",i:["الجدول","المواد","المراجع","أسئلة الطلاب"]}
+   }},
+  {n:6,c:"#22D3F5",type:"3d",date:"8.11.2026",time:"17:30–19:00",tool:"Codex · Coding · Web 3D",
+   title:"تطبيقات ثلاثية الأبعاد",
+   desc:"بناء تطبيق تعليمي 3D: مختبر علوم، جسم الإنسان، النظام الشمسي، الأشكال الهندسية، ونماذج تفاعلية يدوّرها الطالب بيده.",
+   tags:["Codex","Coding","Web 3D"], out:"تجربة 3D تفاعلية (اسحب لتدوير)",
+   sims:{
+    kg:{p:"اصنع لعبة 3D: مكعب ألوان يدوّره الطفل ويختار اللون الذي يقوله نونو.",s:["تصميم المكعب والألوان","برمجة التدوير باللمس","صوت نونو ومكافأة عند الإجابة"],obj:"مكعب الألوان",i:["أحمر","أزرق","أصفر","أخضر","نونو","🐰"]},
+    el:{p:"نموذج 3D للمجموعة الشمسية: الكواكب تدور، والنقر على كوكب يعرض معلوماته.",s:["نمذجة الكواكب ومداراتها","برمجة الدوران والنقر","بطاقات معلومات لكل كوكب"],obj:"مستكشف الكواكب",i:["عطارد","الأرض","المريخ","زحل","☀️","🪐"]},
+    mid:{p:"تطبيق يدوّر المجسمات ويفرد المكعب إلى شبكته ويحسب الحجم مباشرة.",s:["نمذجة المجسمات","برمجة الفرد والتدوير","حساب الحجم لحظيًا"],obj:"مختبر المجسمات",i:["الطول 5","العرض 3","الارتفاع 4","الحجم 60","📐","🧊"]},
+    hs:{p:"مختبر افتراضي: ركّب جزيئات الماء وثاني أكسيد الكربون بالسحب والإفلات.",s:["نماذج الذرات والروابط","السحب والإفلات لبناء الجزيء","فحص صحة الجزيء"],obj:"مختبر الجزيئات",i:["H₂O","CO₂","O₂","CH₄","⚗️","🧪"]},
+    uni:{p:"محاكاة 3D للخلية يستكشف فيها الطالب العضيات ويقرأ وظيفة كل منها.",s:["نموذج الخلية وعضياتها","التكبير والتدوير","نافذة وظيفة لكل عضية"],obj:"الخلية التفاعلية",i:["النواة","الميتوكوندريا","الريبوسوم","جهاز جولجي","🧬","🔬"]}
+   }},
+  {n:7,c:"#FF4FD1",type:"final",date:"15.11.2026",time:"17:30–19:00",tool:"Work · Codex · Plugins · Automation",
+   title:"المشروع الكبير والتكامل",
+   desc:"كل التقنيات معًا: مشروع تعليمي كامل يبدأ بفكرة وينتهي بموقع أو تطبيق، ومواد وصور وفيديو، وأتمتة لسير العمل.",
+   tags:["Work","Codex","Plugins","Browser","Images","Automation"], out:"مشروع تعليمي متكامل",
+   sims:{
+    kg:{p:"اجمع كل ما صنعناه في مشروع \"عالم نونو\"، وأرسل رابطه تلقائيًا للأهالي كل أسبوع.",s:["تجميع كل المواد في مشروع واحد","ربط الموقع باللعبة والفيديو","أتمتة رسالة أسبوعية للأهالي"],proj:"عالم نونو",auto:"رسالة أسبوعية للأهالي كل يوم أحد"},
+    el:{p:"أكمل مشروع \"رحلة إلى الفضاء\"، وذكّر الطلاب تلقائيًا بموعد الاختبار.",s:["تجميع المواد والموقع والنموذج","فحص الروابط والمحتوى","تذكير تلقائي قبل الاختبار"],proj:"رحلة إلى الفضاء",auto:"تذكير تلقائي للطلاب قبل الاختبار"},
+    mid:{p:"أكمل \"مختبر الحجوم\" مع تصحيح تلقائي للواجبات وتقرير أسبوعي لي.",s:["دمج التمارين والتطبيق","تصحيح تلقائي للواجبات","تقرير أسبوعي للمعلم"],proj:"مختبر الحجوم",auto:"تقرير أسبوعي بتقدم كل طالب"},
+    hs:{p:"أكمل \"كيمياء 10\" مع بنك أسئلة يتجدد وتقارير تقدم الطلاب.",s:["دمج المختبر والموقع والفيديو","بنك أسئلة يتجدد تلقائيًا","تقارير تقدم الطلاب"],proj:"كيمياء 10",auto:"بنك أسئلة جديد كل أسبوع"},
+    uni:{p:"حوّل المساق إلى مساق رقمي متكامل مع أتمتة الإعلانات وجمع الواجبات.",s:["دمج الموقع والمحاكاة والمحاضرات","أتمتة الإعلانات للطلاب","جمع الواجبات وتنظيمها"],proj:"بيولوجيا الخلية الرقمي",auto:"إعلانات وجمع واجبات تلقائي"}
+   }}
+];
+
+/* ---------- ticker ---------- */
+var tk = ["GPT-5.6","Thinking","Work","Plugins","Cloud Browser","Computer Use","Codex","Sites","Image Generation","Image Editing","Vision","Video","Web 3D","Automation"];
+var row = $("tickerRow"); tk.concat(tk).forEach(function(t){ row.appendChild(el("span",null,t)); });
+
+/* ---------- session cards ---------- */
+var cards = $("sessionCards");
+SESSIONS.forEach(function(s){
+  var c = el("article","sc reveal"+(s.n===7?" final":"")); c.style.setProperty("--c", s.c);
+  var n = el("div","n", String(s.n));
+  var body = el("div");
+  var h = el("h3",null,s.title);
+  var d = el("p","d",s.desc);
+  var tags = el("div","tags"); s.tags.forEach(function(t){ tags.appendChild(el("span","tag",t)); });
+  body.appendChild(h); body.appendChild(d);
+  var go = el("div","sim-go");
+  LEVELS.forEach(function(L){
+    var b = el("button",null,L.name); b.type="button";
+    b.addEventListener("click",function(){ setSim(s.n-1, LEVELS.indexOf(L), true); $("simulator").scrollIntoView({behavior: reduce?"auto":"smooth"}); });
+    go.appendChild(b);
+  });
+  var when = el("div","when");
+  var w1 = el("span",null,"الأحد"); var w2 = el("b",null,s.date+" · "+s.time); w2.dir="ltr";
+  when.appendChild(w1); when.appendChild(w2);
+  if(s.n===7){ c.appendChild(n); c.appendChild(body); body.appendChild(tags); var side=el("div"); side.appendChild(go); side.appendChild(when); side.style.flex="0 1 320px"; c.appendChild(side); when.style.marginTop="12px"; }
+  else { c.appendChild(n); c.appendChild(body); c.appendChild(tags); c.appendChild(go); c.appendChild(when); }
+  cards.appendChild(c);
+  // 3D tilt
   if(!reduce){
-    var n = items.length;
-    setInterval(function(){ n = n >= items.length ? 0 : n+1; paint(n); }, 1100);
+    c.addEventListener("pointermove",function(e){ var r=c.getBoundingClientRect(); var x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; c.style.transform="rotateY("+(x*10)+"deg) rotateX("+(-y*10)+"deg) translateZ(0)"; });
+    c.addEventListener("pointerleave",function(){ c.style.transform=""; });
   }
+});
 
-  // Copy phone
-  var copyBtn = document.getElementById("copyBtn"), msg = document.getElementById("copied");
-  copyBtn.addEventListener("click", function(){
-    var num = "0526710819";
-    function fallback(){ var r=document.createRange(); r.selectNodeContents(document.getElementById("phone")); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent="الرقم محدد، اضغط Ctrl+C للنسخ"; }
-    try{
-      navigator.clipboard.writeText(num).then(function(){ msg.textContent="تم نسخ الرقم"; }, fallback);
-    }catch(e){ fallback(); }
+/* ---------- schedule ---------- */
+var sched = $("sched");
+SESSIONS.forEach(function(s){
+  var d = el("div","day"); d.style.setProperty("--c", s.c);
+  d.appendChild(el("span","no",String(s.n)));
+  d.appendChild(el("div","dn","الأحد"));
+  d.appendChild(el("div","dt",s.date.replace(".2026","")));
+  d.appendChild(el("div","tm",s.time));
+  sched.appendChild(d);
+});
+
+/* ---------- simulator ---------- */
+var cur = {s:0, l:1}, timers = [];
+var simS = $("simSessions"), simL = $("simLevels");
+SESSIONS.forEach(function(s,i){
+  var b = el("button","chip",s.n+". "+s.title.split(" ").slice(0,3).join(" ")); b.type="button"; b.style.setProperty("--c", s.c);
+  b.addEventListener("click",function(){ setSim(i, cur.l, true); }); simS.appendChild(b);
+});
+LEVELS.forEach(function(L,i){
+  var b = el("button","chip",L.name); b.type="button";
+  b.addEventListener("click",function(){ setSim(cur.s, i, true); }); simL.appendChild(b);
+});
+$("replay").addEventListener("click",function(){ setSim(cur.s, cur.l, true); });
+
+function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+
+function buildView(s, L, d){
+  var v = $("view"); v.innerHTML=""; v.className="view";
+  var wrap;
+  if(s.type==="plan"){
+    wrap = el("div","v-list"); d.i.forEach(function(t){ wrap.appendChild(el("div","it",t)); });
+    var br = el("div","v-browser"); var u = el("div","url","https://"+d.u); var pg = el("div","pg");
+    pg.appendChild(el("i")); pg.appendChild(el("i")); pg.appendChild(el("i"));
+    var cu = el("div","cursor"); cu.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 2l7 19 2.5-8L21 10z" fill="#fff" stroke="#0B1136" stroke-width="1.5"/></svg>';
+    pg.appendChild(cu); br.appendChild(u); br.appendChild(pg);
+    v.appendChild(wrap); v.appendChild(br);
+  } else if(s.type==="video"){
+    wrap = el("div","v-story");
+    d.i.forEach(function(f,j){ var fr=el("div","frame"); fr.appendChild(el("span","no","0"+(j+1))); var em=el("span","em",f[0]); em.style.animationDelay=(-j*.6)+"s"; fr.appendChild(em); fr.appendChild(el("span","cap",f[1])); wrap.appendChild(fr); });
+    var pl = el("div","player"); pl.appendChild(el("span","pl","▶")); var b2=el("div","bar2"); b2.appendChild(el("i")); pl.appendChild(b2); pl.appendChild(el("span","t","00:00 / "+d.d));
+    v.appendChild(wrap); v.appendChild(pl);
+  } else if(s.type==="edit"){
+    wrap = el("div","v-edit");
+    var ba = el("div","ba"); ba.appendChild(el("div","b","قبل")); ba.appendChild(el("div","a","بعد"));
+    var tr = el("div","tracks");
+    [["VIDEO",[[2,30],[36,28],[68,30]]],["VOICE",[[4,90]]],["MUSIC",[[0,100]]],["TEXT",[[6,14],[40,16],[72,18]]]].forEach(function(t){
+      var r=el("div","track"); r.appendChild(el("span",null,t[0])); var ln=el("div","lane");
+      t[1].forEach(function(seg){ var i=el("i"); i.style.left=seg[0]+"%"; i.style.width=seg[1]+"%"; ln.appendChild(i); }); r.appendChild(ln); tr.appendChild(r);
+    });
+    var fx = el("div","fx"); d.i.forEach(function(t){ fx.appendChild(el("span",null,"✓ "+t)); });
+    wrap.appendChild(ba); wrap.appendChild(tr); wrap.appendChild(fx); v.appendChild(wrap);
+  } else if(s.type==="images"){
+    wrap = el("div","v-cards");
+    d.i.forEach(function(c){ var pc=el("div","pc"); pc.appendChild(el("div","art",c[0])); pc.appendChild(el("b",null,c[1])); wrap.appendChild(pc); });
+    v.appendChild(wrap);
+  } else if(s.type==="site"){
+    wrap = el("div","v-site");
+    var top = el("div","top"); top.appendChild(el("b",null,d.site)); var nv=el("span"); ["الرئيسية","عن الوحدة","تواصل"].forEach(function(t){ nv.appendChild(el("span",null,t)); }); top.appendChild(nv);
+    var hs = el("div","heroS",d.site); hs.appendChild(el("small",null,d.tag));
+    var g = el("div","grid"); d.i.forEach(function(t){ g.appendChild(el("div",null,t)); });
+    wrap.appendChild(top); wrap.appendChild(hs); wrap.appendChild(g); v.appendChild(wrap);
+  } else if(s.type==="3d"){
+    wrap = el("div","v-3d");
+    var cube = el("div","cube"+(reduce?"":" auto"));
+    d.i.forEach(function(t,j){ cube.appendChild(el("div","f"+(j+1),t)); });
+    wrap.appendChild(el("div","name",d.obj)); wrap.appendChild(cube); wrap.appendChild(el("div","hint","اسحب بالماوس أو بالإصبع لتدوير النموذج"));
+    v.appendChild(wrap);
+    var rx=-22, ry=30, dragging=false, px=0, py=0;
+    wrap.addEventListener("pointerdown",function(e){ dragging=true; px=e.clientX; py=e.clientY; cube.classList.remove("auto"); try{wrap.setPointerCapture(e.pointerId);}catch(_){} });
+    wrap.addEventListener("pointermove",function(e){ if(!dragging) return; ry+=(e.clientX-px)*.6; rx-=(e.clientY-py)*.6; px=e.clientX; py=e.clientY; cube.style.transform="rotateX("+rx+"deg) rotateY("+ry+"deg)"; });
+    wrap.addEventListener("pointerup",function(){ dragging=false; });
+    wrap.addEventListener("pointercancel",function(){ dragging=false; });
+  } else if(s.type==="final"){
+    wrap = el("div","v-final");
+    wrap.appendChild(el("div","proj",d.proj));
+    var tiles = el("div","tiles");
+    [["🧭","الخطة"],["🎨","الصور والمواد"],["🎬","الفيديو"],["🌐","الموقع"],["🧊","تجربة 3D"],["⚙️","الأتمتة"]].forEach(function(t){ var ti=el("div","tile"); ti.appendChild(el("i",null,t[0])); ti.appendChild(el("span",null,t[1])); tiles.appendChild(ti); });
+    var fl = el("div","flow"); fl.appendChild(el("span",null,"⚡")); var fb=el("span"); fb.appendChild(el("b",null,"أتمتة: ")); fb.appendChild(document.createTextNode(d.auto)); fl.appendChild(fb);
+    wrap.appendChild(tiles); wrap.appendChild(fl); v.appendChild(wrap);
+  }
+}
+
+function setSim(si, li, animate){
+  clearTimers();
+  cur.s=si; cur.l=li;
+  var s = SESSIONS[si], L = LEVELS[li], d = s.sims[L.k];
+  $("sim").style.setProperty("--c", s.c);
+  Array.prototype.forEach.call(simS.children,function(b,j){ b.setAttribute("aria-pressed", j===si?"true":"false"); });
+  Array.prototype.forEach.call(simL.children,function(b,j){ b.setAttribute("aria-pressed", j===li?"true":"false"); b.style.setProperty("--c", s.c); });
+  $("simTool").textContent = s.tool;
+  $("outTitle").textContent = s.out;
+  $("outSub").textContent = L.name+" · "+L.topic;
+  var steps = $("simSteps"); steps.innerHTML="";
+  d.s.forEach(function(t){ var li2=el("li"); li2.appendChild(el("span","ic","")); li2.appendChild(el("span",null,t)); steps.appendChild(li2); });
+  buildView(s, L, d);
+  var P = $("simPrompt"), view=$("view"), caret=$("caret");
+  if(!animate || reduce){
+    P.textContent = d.p; caret.hidden = true;
+    Array.prototype.forEach.call(steps.children,function(x){ x.className="on ok"; x.firstChild.textContent="✓"; });
+    view.classList.add("show"); return;
+  }
+  P.textContent=""; caret.hidden=false;
+  var i=0, txt=d.p;
+  (function type(){ i+=2; P.textContent = txt.slice(0,i); if(i<txt.length) later(type,22); else runSteps(); })();
+  function runSteps(){
+    caret.hidden=true;
+    var items = steps.children, k=0;
+    (function next(){
+      if(k>0){ items[k-1].className="on ok"; items[k-1].firstChild.textContent="✓"; }
+      if(k<items.length){ items[k].className="on run"; k++; later(next,850); }
+      else view.classList.add("show");
+    })();
+  }
+}
+setSim(0,1,false);
+// play the first simulation once it scrolls into view
+if("IntersectionObserver" in window && !reduce){
+  var played=false;
+  new IntersectionObserver(function(es,ob){ es.forEach(function(e){ if(e.isIntersecting && !played){ played=true; setSim(cur.s,cur.l,true); ob.disconnect(); } }); },{threshold:.35}).observe($("sim"));
+}
+
+/* ---------- countdown (first session: 4.10.2026 18:30 Israel time, UTC+3) ---------- */
+var target = Date.parse("2026-10-04T18:30:00+03:00");
+function pad(n){ return (n<10?"0":"")+n; }
+function tick(){
+  var ms = target - Date.now();
+  if(ms<=0){ $("countdown").innerHTML=""; $("countdown").appendChild(el("span","pill","الدورة انطلقت! تواصل معنا للانضمام")); return false; }
+  var s=Math.floor(ms/1000);
+  $("cdD").textContent=Math.floor(s/86400); $("cdH").textContent=pad(Math.floor(s%86400/3600)); $("cdM").textContent=pad(Math.floor(s%3600/60)); $("cdS").textContent=pad(s%60);
+  return true;
+}
+if(tick()) setInterval(tick,1000);
+
+/* ---------- reveal on scroll (content is visible at rest; this only adds a lift) ---------- */
+if("IntersectionObserver" in window && !reduce){
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.remove("pre"); io.unobserve(e.target); } }); },{threshold:.1});
+  document.querySelectorAll(".reveal").forEach(function(r){ var rect=r.getBoundingClientRect(); if(rect.top>innerHeight){ r.classList.add("pre"); io.observe(r); } });
+}
+
+/* ---------- copy phone ---------- */
+$("copyBtn").addEventListener("click",function(){
+  var msg=$("copied");
+  function fallback(){ var r=document.createRange(); r.selectNodeContents($("phone")); var sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); msg.textContent="الرقم محدد، اضغط Ctrl+C للنسخ"; }
+  try{ navigator.clipboard.writeText("0526710819").then(function(){ msg.textContent="تم نسخ الرقم"; },fallback); }catch(e){ fallback(); }
+});
+
+/* ---------- registration ---------- */
+$("regForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var f=e.target, msg=$("formMsg"), btn=$("submitBtn");
+  var data={ full_name:f.full_name.value.trim(), phone:f.phone.value.trim(), level:f.level.value, school:f.school.value.trim()||null, notes:f.notes.value.trim()||null };
+  if(data.full_name.length<2){ msg.className="form-msg err"; msg.textContent="اكتب الاسم الكامل."; f.full_name.focus(); return; }
+  if(data.phone.replace(/\D/g,"").length<9){ msg.className="form-msg err"; msg.textContent="اكتب رقم هاتف صحيح (9 أرقام على الأقل)."; f.phone.focus(); return; }
+  var waText = "مرحبًا، أريد التسجيل لدورة ChatGPT 2026\nالاسم: "+data.full_name+"\nالهاتف: "+data.phone+"\nالمرحلة: "+data.level+(data.school?"\nالمؤسسة: "+data.school:"")+(data.notes?"\nملاحظات: "+data.notes:"");
+  function showWa(prefix){
+    msg.className="form-msg ok"; msg.textContent=prefix+" ";
+    var a=el("a",null,"أرسل التفاصيل عبر واتساب"); a.href=waLink(waText); a.target="_blank"; a.rel="noopener"; a.style.color="var(--wa)"; a.style.fontWeight="700";
+    msg.appendChild(a);
+  }
+  if(!CFG.supabaseUrl || !CFG.supabaseAnonKey){ showWa("خطوة أخيرة:"); return; }
+  btn.disabled=true; btn.textContent="جارٍ الإرسال…";
+  fetch(CFG.supabaseUrl.replace(/\/$/,"")+"/rest/v1/registrations",{method:"POST",headers:{"Content-Type":"application/json","apikey":CFG.supabaseAnonKey,"Authorization":"Bearer "+CFG.supabaseAnonKey,"Prefer":"return=minimal"},body:JSON.stringify(data)})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); f.reset(); showWa("تم استلام طلبك، سنتواصل معك قريبًا. لتسريع التأكيد:"); })
+    .catch(function(){ showWa("لم نتمكن من حفظ الطلب الآن. أرسله مباشرة:"); })
+    .then(function(){ btn.disabled=false; btn.textContent="أرسل طلب التسجيل"; });
+});
+
+/* ---------- hero 3D scene ---------- */
+(function(){
+  var stage=$("stage"), canvas=$("scene");
+  if(!window.THREE) return;
+  var renderer;
+  try{ renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true}); }catch(e){ return; }
+  stage.classList.add("gl");
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  var scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(45,1,.1,100); cam.position.set(0,0,9);
+  scene.add(new THREE.AmbientLight(0x404080,1.2));
+  var l1=new THREE.PointLight(0xFF4FD1,2.2,30); l1.position.set(5,4,6); scene.add(l1);
+  var l2=new THREE.PointLight(0x22D3F5,2.2,30); l2.position.set(-6,-3,5); scene.add(l2);
+  var l3=new THREE.PointLight(0x9B5CFF,1.6,30); l3.position.set(0,6,-4); scene.add(l3);
+
+  var group=new THREE.Group(); scene.add(group);
+  var knotGeo=new THREE.TorusKnotGeometry(1.45,.42,220,28,2,3);
+  var knot=new THREE.Mesh(knotGeo,new THREE.MeshStandardMaterial({color:0x2A2F8F,metalness:.75,roughness:.22,emissive:0x1A0F4A}));
+  group.add(knot);
+  var wire=new THREE.Mesh(knotGeo,new THREE.MeshBasicMaterial({color:0xFF4FD1,wireframe:true,transparent:true,opacity:.14}));
+  wire.scale.setScalar(1.02); group.add(wire);
+
+  // seven session orbs
+  var orbs=[];
+  SESSIONS.forEach(function(s,i){
+    var col=new THREE.Color(s.c);
+    var m=new THREE.Mesh(new THREE.SphereGeometry(.2,24,24),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:.9,roughness:.3}));
+    var halo=new THREE.Mesh(new THREE.SphereGeometry(.34,20,20),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.18}));
+    m.add(halo); scene.add(m);
+    orbs.push({m:m,a:i/7*Math.PI*2,r:3.1+(i%2)*.35,tilt:(i%3-1)*.35,sp:.25+i*.02});
   });
+  // ring
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(3.25,.012,8,160),new THREE.MeshBasicMaterial({color:0x22D3F5,transparent:true,opacity:.35}));
+  ring.rotation.x=Math.PI/2.3; scene.add(ring);
+  // stars
+  var N=500, pos=new Float32Array(N*3);
+  for(var i=0;i<N;i++){ var r=6+Math.random()*10, t=Math.random()*Math.PI*2, p=Math.acos(2*Math.random()-1); pos[i*3]=r*Math.sin(p)*Math.cos(t); pos[i*3+1]=r*Math.sin(p)*Math.sin(t); pos[i*3+2]=r*Math.cos(p)-4; }
+  var sg=new THREE.BufferGeometry(); sg.setAttribute("position",new THREE.BufferAttribute(pos,3));
+  var stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0xC9CEFF,size:.05,transparent:true,opacity:.8})); scene.add(stars);
+
+  var mx=0,my=0;
+  window.addEventListener("pointermove",function(e){ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; });
+  function resize(){ var w=stage.clientWidth,h=stage.clientHeight; renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix(); }
+  resize(); window.addEventListener("resize",resize);
+  var t0=performance.now(), visible=true;
+  if("IntersectionObserver" in window) new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(stage);
+  function frame(now){
+    requestAnimationFrame(frame);
+    if(!visible) return;
+    var t=(now-t0)/1000*(reduce?0:1);
+    group.rotation.x=t*.18+my*.6; group.rotation.y=t*.26+mx*.8;
+    stars.rotation.y=t*.02;
+    ring.rotation.z=t*.1;
+    orbs.forEach(function(o){ var a=o.a+t*o.sp; o.m.position.set(Math.cos(a)*o.r, Math.sin(a*1.3)*.5+o.tilt*Math.sin(a)*2, Math.sin(a)*o.r*.55); });
+    cam.position.x+=(mx*1.2-cam.position.x)*.05; cam.position.y+=(-my*1.2-cam.position.y)*.05; cam.lookAt(0,0,0);
+    renderer.render(scene,cam);
+  }
+  requestAnimationFrame(frame);
+})();
 })();
 </script>
 </body>

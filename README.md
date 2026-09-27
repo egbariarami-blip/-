@@ -1,11 +1,15 @@
-<div align="center">
+# ChatGPT 2026 — من الفكرة إلى التنفيذ
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+موقع دورة ChatGPT 2026 للمعلمين والمربيات.
 
-  <h1>Built with AI Studio</h2>
+- `index.html` — صفحة الدورة: مشهد ثلاثي الأبعاد، اللقاءات السبعة، محاكاة لكل لقاء حسب المرحلة، المواعيد، العرض، ونموذج التسجيل.
+- `admin.html` — لوحة الإدارة لمتابعة طلبات التسجيل (محمية بكلمة سر).
+- `config.js` — رقم الواتساب وإعدادات Supabase.
+- `supabase/setup.sql` — جدول التسجيل ودوال الإدارة. تستبدل `CHANGE_ME` بكلمة السر قبل التشغيل.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## التشغيل
+1. أنشئ مشروع Supabase وشغّل `supabase/setup.sql` في محرر SQL.
+2. ضع رابط المشروع والمفتاح العام في `config.js`.
+3. انشر المجلد على أي استضافة ثابتة (GitHub Pages، Vercel، Netlify).
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
-
-</div>
+بدون قاعدة بيانات: التسجيل يُرسل عبر واتساب، ولوحة الإدارة تعرض المواعيد فقط.
