@@ -86,6 +86,25 @@ td .notes{color:var(--soft);font-size:13px;max-width:260px}
 .rowacts a{background:var(--wa);color:#05290F}
 .rowacts button{background:rgba(255,107,129,.15);color:var(--red)}
 .badge{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,210,63,.18);color:#FFD23F;font-family:var(--mono)}
+td.ck,th.ck{width:34px;text-align:center}
+td.ck input,th.ck input{width:17px;height:17px;accent-color:#9B5CFF;cursor:pointer}
+td .em{font-family:var(--mono);font-size:12.5px;color:var(--soft);direction:ltr;text-align:right}
+.mailbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.mailbar .cnt{font-size:14px;color:var(--soft)}
+.compose{display:grid;gap:12px;padding:20px;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1.5px rgba(155,92,255,.55);margin-bottom:14px}
+.compose h2{font-size:18px}
+.compose label{font-weight:700;font-size:13.5px;display:grid;gap:6px}
+.compose input,.compose select,.compose textarea{font:500 15px/1.5 var(--body);color:var(--ink);background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.compose textarea{resize:vertical}
+.compose #mTo{direction:ltr;font-family:var(--mono);font-size:13px}
+.compose .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.compose .hint{font-size:13px;color:var(--soft)}
+.compose .warn{font-size:13px;color:#FFD9A8}
+.compose .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.compose .chk{display:flex;gap:8px;align-items:center;font-weight:500;font-size:14px}
+.compose .chk input{width:17px;height:17px;accent-color:#1FE0A0}
+.btn.gm{background:#EA4335}
+@media (max-width:700px){.compose .row{grid-template-columns:1fr}}
 .empty{padding:34px;text-align:center;color:var(--soft)}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:12.5px}
 .toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#fff;color:#0B1136;font-weight:700;padding:10px 16px;border-radius:12px;box-shadow:0 10px 30px -10px rgba(0,0,0,.6);font-size:14px}
@@ -138,9 +157,36 @@ td .notes{color:var(--soft);font-size:13px;max-width:260px}
         <option value="">كل الحالات</option><option value="new">جديد</option><option value="contacted">تم التواصل</option><option value="paid">دفع</option><option value="cancelled">ملغى</option>
       </select>
     </div>
+    <div class="mailbar">
+      <button class="btn" type="button" id="mailOpen">✉ إرسال بريد للمحددين</button>
+      <span class="cnt" id="selCount">لم يتم تحديد أحد</span>
+    </div>
+    <div class="compose" id="compose" hidden>
+      <h2>رسالة بريد إلكتروني</h2>
+      <label>إلى (عناوين مفصولة بفاصلة، تقدر تضيف أي عنوان)<textarea id="mTo" rows="2"></textarea></label>
+      <div class="warn" id="mWarn" hidden></div>
+      <div class="row">
+        <label>القالب<select id="mTpl">
+          <option value="pay">تذكير بالدفع وإتمام التسجيل</option>
+          <option value="done">تأكيد إتمام التسجيل</option>
+          <option value="remind">تذكير باللقاء القادم</option>
+          <option value="free">رسالة حرة</option>
+        </select></label>
+        <label>الموضوع<input id="mSubj" maxlength="200"></label>
+      </div>
+      <label>نص الرسالة<textarea id="mBody" rows="11"></textarea></label>
+      <div class="hint">إذا كان المستلم واحدًا تُكتب الرسالة باسمه. لأكثر من مستلم تُرسل كنسخة مخفية (BCC) فلا يرى أحد عناوين الآخرين.</div>
+      <label class="chk"><input type="checkbox" id="mMark" checked> بعد الفتح: غيّر حالة المحددين من «جديد» إلى «تم التواصل»</label>
+      <div class="acts">
+        <a class="btn gm" id="mGmail" href="#" target="_blank" rel="noopener">فتح في Gmail</a>
+        <a class="btn line" id="mMailto" href="#">برنامج البريد</a>
+        <button class="btn line" type="button" id="mCopy">نسخ العناوين</button>
+        <button class="btn line" type="button" id="mClose">إغلاق</button>
+      </div>
+    </div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>التاريخ</th><th>الاسم</th><th>الهاتف</th><th>المرحلة</th><th>المؤسسة / ملاحظات</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+        <thead><tr><th class="ck"><input type="checkbox" id="ckAll" aria-label="تحديد الكل"></th><th>التاريخ</th><th>الاسم</th><th>الهاتف / البريد</th><th>المرحلة</th><th>المؤسسة / ملاحظات</th><th>الحالة</th><th>إجراءات</th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
@@ -158,7 +204,7 @@ var PASS_SHA256 = "6c147dd9a7dc507184f7eeb0cdc4fe1f89b4e3a7a12eb525b776ce2e99466
 var STATUS = {new:"جديد",contacted:"تم التواصل",paid:"دفع",cancelled:"ملغى"};
 var LEVELS = ["رياض الأطفال","الابتدائي","الإعدادي","الثانوي","الجامعة / الكلية","إدارة / إرشاد","أخرى"];
 var SESS = [["4.10.2026","18:30","#3B8BFF","ابدأ بقوة ChatGPT الحديث"],["11.10.2026","18:30","#FF3D8B","إنتاج فيديوهات بكبسة زر"],["18.10.2026","18:30","#1FE0A0","تعديل فيديوهات"],["25.10.2026","18:30","#FF9A1F","صور ومواد دراسية"],["1.11.2026","17:30","#9B5CFF","موقع إنترنت حديث"],["8.11.2026","17:30","#22D3F5","تطبيقات ثلاثية الأبعاد"],["15.11.2026","17:30","#FF4FD1","المشروع الكبير والتكامل"]];
-var pw = "", data = [];
+var pw = "", data = [], picked = {}, shown = [];
 function $(id){ return document.getElementById(id); }
 function el(t,c,x){ var e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e; }
 function toast(t){ var d=el("div","toast",t); document.body.appendChild(d); setTimeout(function(){ d.remove(); },2200); }
@@ -219,13 +265,17 @@ function render(){
 
 function renderRows(){
   var q=$("q").value.trim().toLowerCase(), fs=$("fStatus").value, tb=$("rows"); tb.innerHTML="";
-  var list=data.filter(function(r){ return (!fs||r.status===fs) && (!q || [r.full_name,r.phone,r.school,r.notes].join(" ").toLowerCase().indexOf(q)>-1); });
-  if(!list.length){ var tr=el("tr"); var td=el("td","empty", DB ? (data.length?"لا توجد نتائج مطابقة.":"لا توجد طلبات تسجيل بعد.") : "لا توجد بيانات: قاعدة البيانات غير متصلة."); td.colSpan=7; tr.appendChild(td); tb.appendChild(tr); return; }
+  var list=data.filter(function(r){ return (!fs||r.status===fs) && (!q || [r.full_name,r.phone,r.email,r.school,r.notes].join(" ").toLowerCase().indexOf(q)>-1); });
+  shown=list; updSel();
+  if(!list.length){ var tr=el("tr"); var td=el("td","empty", DB ? (data.length?"لا توجد نتائج مطابقة.":"لا توجد طلبات تسجيل بعد.") : "لا توجد بيانات: قاعدة البيانات غير متصلة."); td.colSpan=8; tr.appendChild(td); tb.appendChild(tr); return; }
   list.forEach(function(r){
     var tr=el("tr");
+    var ckc=el("td","ck"); var ck=el("input"); ck.type="checkbox"; ck.checked=!!picked[r.id]; ck.setAttribute("aria-label","تحديد "+r.full_name);
+    ck.addEventListener("change",function(){ if(ck.checked) picked[r.id]=true; else delete picked[r.id]; updSel(); });
+    ckc.appendChild(ck); tr.appendChild(ckc);
     tr.appendChild(el("td","dt",fmtDate(r.created_at)));
     var nm=el("td"); nm.appendChild(el("b",null,r.full_name)); if(r.prev_participant){ nm.appendChild(document.createElement("br")); nm.appendChild(el("span","badge","مشارك سابق · "+(r.discount_code||"RAMI20"))); } tr.appendChild(nm);
-    tr.appendChild(el("td","ph",r.phone));
+    var phc=el("td","ph"); phc.appendChild(el("div",null,r.phone)); if(r.email) phc.appendChild(el("div","em",r.email)); tr.appendChild(phc);
     tr.appendChild(el("td",null,r.level||"—"));
     var inf=el("td"); inf.appendChild(el("div",null,r.school||"—")); if(r.notes) inf.appendChild(el("div","notes",r.notes)); tr.appendChild(inf);
     var stc=el("td"); var sel=el("select","st"); sel.setAttribute("aria-label","حالة الطلب");
@@ -248,9 +298,74 @@ function renderRows(){
   });
 }
 
+/* ---------- email ---------- */
+function selected(){ return data.filter(function(r){ return picked[r.id]; }); }
+function updSel(){
+  var s=selected(), n=s.length;
+  $("selCount").textContent = n ? ("محدد: "+n+(s.filter(function(r){return !r.email;}).length?" · بدون بريد: "+s.filter(function(r){return !r.email;}).length:"")) : "لم يتم تحديد أحد";
+  var all=$("ckAll"); all.checked = shown.length>0 && shown.every(function(r){ return picked[r.id]; });
+  all.indeterminate = !all.checked && shown.some(function(r){ return picked[r.id]; });
+}
+$("ckAll").addEventListener("change",function(){ var on=this.checked; shown.forEach(function(r){ if(on) picked[r.id]=true; else delete picked[r.id]; }); renderRows(); });
+var ORD=["الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع"];
+function nextSession(){
+  var now=Date.now();
+  for(var i=0;i<SESS.length;i++){ var s=SESS[i], p=s[0].split("."); var t=Date.parse(p[2]+"-"+p[1].padStart(2,"0")+"-"+p[0].padStart(2,"0")+"T"+s[1]+":00+0"+(i<4?"3":"2")+":00"); if(t+90*60000>now) return {n:i+1,date:s[0],time:s[1],title:s[3]}; }
+  return null;
+}
+var SIGN="\n\nتحياتي وبالتوفيق\nرامي اغبارية\n0526710819";
+function tpl(k){
+  var ns=nextSession(), when = ns ? ("يوم الأحد "+ns.date+" الساعة "+ns.time) : "في الموعد المحدد";
+  var T={
+    pay:{s:"إتمام التسجيل لدورة ChatGPT 2026",b:"{greet}\n\nكما يظهر لدينا بأنكم قمتم بالتسجيل لدورة ChatGPT 2026 — من الفكرة إلى التنفيذ.\nلإتمام التسجيل وحجز مكانكم، أرجو إتمام الدفع عبر موقع الدورات:\nhttps://rami-courses.vercel.app/index.html#courses\n\nللمشاركين في دورات سابقة: خصم 20% بكود RAMI20.\nاللقاء "+(ns?ORD[ns.n-1]+" ":"")+when+" بإذن الله.\n\nلأي استفسار أو ترتيب دفع خاص، أرجو التواصل معي على الخاص واتساب 0526710819"+SIGN},
+    done:{s:"تأكيد تسجيلك لدورة ChatGPT 2026",b:"{greet}\n\nأوافيكم بأنه تم استلام الدفع وتأكيد تسجيلكم لدورة ChatGPT 2026 — مبروك!\n\nاللقاء القادم: "+when+" بعون الله"+(ns?" ("+ns.title+")":"")+"\nالمكان: (اكتب المكان هنا)\nما تحتاجونه: حاسوب محمول واشتراك ChatGPT Plus فعّال.\n\nنراكم عخير"+SIGN},
+    remind:{s:"تذكير: لقاء دورة ChatGPT 2026"+(ns?" — "+ns.date:""),b:"{greet}\n\nتذكير بأن اللقاء "+(ns?ORD[ns.n-1]+" ("+ns.title+") ":"")+"سيكون "+when+" بإذن الله.\nأرجو إحضار الحاسوب المحمول والتأكد من أن اشتراك ChatGPT فعّال.\n\nنراكم عخير"+SIGN},
+    free:{s:"دورة ChatGPT 2026",b:"{greet}\n\n"+SIGN.trim()}
+  };
+  return T[k];
+}
+function recipients(){ return $("mTo").value.split(/[\s,;]+/).map(function(x){ return x.trim().toLowerCase(); }).filter(function(x){ return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x); }).filter(function(x,i,a){ return a.indexOf(x)===i; }); }
+function greetFor(){
+  var to=recipients(); if(to.length!==1) return "السلام عليكم";
+  var r=data.filter(function(x){ return x.email===to[0]; })[0];
+  return r ? "مرحبا "+r.full_name.split(" ")[0]+"،" : "السلام عليكم";
+}
+function fillTpl(){ var t=tpl($("mTpl").value); $("mSubj").value=t.s; $("mBody").value=t.b.replace("{greet}",greetFor()); refreshLinks(); }
+function regreet(){ var b=$("mBody").value, nl=b.indexOf("\n"), first=nl<0?b:b.slice(0,nl); if(first==="السلام عليكم"||/^مرحبا .+،$/.test(first)) $("mBody").value=greetFor()+(nl<0?"":b.slice(nl)); }
+function refreshLinks(){
+  var to=recipients(), body=$("mBody").value, subj=$("mSubj").value;
+  var one=to.length===1;
+  var g="https://mail.google.com/mail/?view=cm&fs=1"+(one?"&to=":"&bcc=")+encodeURIComponent(to.join(","))+"&su="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+  var m="mailto:"+(one?encodeURIComponent(to[0]):"")+"?"+(one?"":"bcc="+encodeURIComponent(to.join(","))+"&")+"subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+  $("mGmail").href=g; $("mMailto").href=m;
+  var w=$("mWarn"), msgs=[];
+  var noMail=selected().filter(function(r){ return !r.email; }).map(function(r){ return r.full_name; });
+  if(noMail.length) msgs.push("بدون بريد (لن يصلهم): "+noMail.join("، ")+". تقدر تراسلهم عبر زر واتساب في الجدول.");
+  if(!to.length) msgs.push("أضف عنوان بريد واحدًا على الأقل.");
+  if(g.length>7500) msgs.push("القائمة طويلة جدًا لرابط Gmail. استعمل «نسخ العناوين» والصقها في خانة BCC.");
+  w.hidden=!msgs.length; w.textContent=msgs.join(" ");
+}
+$("mailOpen").addEventListener("click",function(){
+  var s=selected().filter(function(r){ return r.email; }).map(function(r){ return r.email; });
+  $("mTo").value=s.join(", "); $("compose").hidden=false; fillTpl(); $("compose").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("mClose").addEventListener("click",function(){ $("compose").hidden=true; });
+$("mTpl").addEventListener("change",fillTpl);
+$("mTo").addEventListener("input",function(){ regreet(); refreshLinks(); });
+["mSubj","mBody"].forEach(function(id){ $(id).addEventListener("input",refreshLinks); });
+$("mCopy").addEventListener("click",function(){ var t=recipients().join(", "); try{ navigator.clipboard.writeText(t).then(function(){ toast("تم نسخ "+recipients().length+" عنوان"); }); }catch(e){ toast("انسخ العناوين يدويًا من الخانة"); } });
+function afterOpen(e){
+  if(!recipients().length){ e.preventDefault(); refreshLinks(); return; }
+  if(!$("mMark").checked) return;
+  selected().filter(function(r){ return r.status==="new"; }).forEach(function(r){
+    rpc("chatgpt26_admin_set_status",{p_password:pw,p_id:r.id,p_status:"contacted"}).then(function(){ r.status="contacted"; render(); });
+  });
+}
+$("mGmail").addEventListener("click",afterOpen); $("mMailto").addEventListener("click",afterOpen);
+
 $("csv").addEventListener("click",function(){
   if(!data.length){ toast("لا توجد بيانات للتصدير"); return; }
-  var cols=["created_at","full_name","phone","level","school","notes","prev_participant","discount_code","status"];
+  var cols=["created_at","full_name","phone","email","level","school","notes","prev_participant","discount_code","status"];
   var esc=function(v){ v=v==null?"":String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
   var csv="﻿"+cols.join(",")+"\n"+data.map(function(r){ return cols.map(function(c){ return esc(c==="status"?STATUS[r[c]]||r[c]:r[c]); }).join(","); }).join("\n");
   var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="chatgpt2026-registrations.csv"; document.body.appendChild(a); a.click(); a.remove();

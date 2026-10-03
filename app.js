@@ -308,7 +308,7 @@ function calc(){
   var ret = lead && lead.prev_participant;
   $("save").textContent = ret ? "كود "+RETURNING_CODE+": وفّرت "+(full-total)+" ₪ · خصم 20% على كل دورة تضيفها" : (n===1 ? "أضف دورة واحدة ووفّر 10% عليها، أو دورتين ووفّر حتى 20%." : "رائع! وفّرت "+(full-total)+" ₪"+(n===2?" · أضف دورة ثالثة ووفّر 20% عليها":""));
   var names=chosen.map(function(c){ return c.name; }).join("، ");
-  var txt="مرحبًا، أريد التسجيل"+(lead?"\nالاسم: "+lead.full_name+"\nالهاتف: "+lead.phone+"\nالمرحلة: "+lead.level:"")+(lead&&lead.discount_code?"\nكود الخصم: "+lead.discount_code+" (مشارك/ة سابق/ة)":"")+"\nالدورات: "+names+"\nالمجموع بعد الخصم: "+total+" ₪";
+  var txt="مرحبًا، أريد التسجيل"+(lead?"\nالاسم: "+lead.full_name+"\nالهاتف: "+lead.phone+"\nالبريد: "+lead.email+"\nالمرحلة: "+lead.level:"")+(lead&&lead.discount_code?"\nكود الخصم: "+lead.discount_code+" (مشارك/ة سابق/ة)":"")+"\nالدورات: "+names+"\nالمجموع بعد الخصم: "+total+" ₪";
   $("prepayWa").href=waLink(txt);
 }
 function showPrepay(msg){
@@ -325,9 +325,10 @@ $("regForm").addEventListener("submit",function(e){
   e.preventDefault();
   var f=e.target, msg=$("formMsg"), btn=$("submitBtn");
   var isPrev=$("prev-yes").checked;
-  var data={ full_name:f.full_name.value.trim(), phone:f.phone.value.trim(), level:f.level.value, school:f.school.value.trim()||null, notes:f.notes.value.trim()||null, prev_participant:isPrev, discount_code:isPrev?RETURNING_CODE:null };
+  var data={ full_name:f.full_name.value.trim(), phone:f.phone.value.trim(), email:$("f-email").value.trim().toLowerCase(), level:f.level.value, school:f.school.value.trim()||null, notes:f.notes.value.trim()||null, prev_participant:isPrev, discount_code:isPrev?RETURNING_CODE:null };
   if(data.full_name.length<2){ msg.className="form-msg err"; msg.textContent="اكتب الاسم الكامل."; f.full_name.focus(); return; }
   if(data.phone.replace(/\D/g,"").length<9){ msg.className="form-msg err"; msg.textContent="اكتب رقم هاتف صحيح (9 أرقام على الأقل)."; f.phone.focus(); return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){ msg.className="form-msg err"; msg.textContent="اكتب بريدًا إلكترونيًا صحيحًا."; $("f-email").focus(); return; }
   if(!$("prev-yes").checked && !$("prev-no").checked){ msg.className="form-msg err"; msg.textContent="أجب: هل شاركت في دورة سابقة معنا؟"; $("prev-yes").focus(); return; }
   lead=data;
   if(!CFG.supabaseUrl || !CFG.supabaseAnonKey){ showPrepay("✓ خطوة أخيرة قبل الدفع"); return; }
