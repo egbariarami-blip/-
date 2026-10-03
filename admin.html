@@ -104,6 +104,11 @@ td .em{font-family:var(--mono);font-size:12.5px;color:var(--soft);direction:ltr;
 .compose .chk{display:flex;gap:8px;align-items:center;font-weight:500;font-size:14px}
 .compose .chk input{width:17px;height:17px;accent-color:#1FE0A0}
 .btn.gm{background:#EA4335}
+.btn.send{background:linear-gradient(135deg,#1FE0A0,#3B8BFF);color:#071022}
+.btn.send.sure{background:#FF9A1F}
+.btn[disabled]{opacity:.6;cursor:wait}
+.compose .res{font-size:14px;padding:10px 12px;border-radius:10px;background:rgba(31,224,160,.12)}
+.compose .res.bad{background:rgba(255,61,139,.14)}
 @media (max-width:700px){.compose .row{grid-template-columns:1fr}}
 .empty{padding:34px;text-align:center;color:var(--soft)}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:12.5px}
@@ -175,9 +180,11 @@ td .em{font-family:var(--mono);font-size:12.5px;color:var(--soft);direction:ltr;
         <label>الموضوع<input id="mSubj" maxlength="200"></label>
       </div>
       <label>نص الرسالة<textarea id="mBody" rows="11"></textarea></label>
-      <div class="hint">إذا كان المستلم واحدًا تُكتب الرسالة باسمه. لأكثر من مستلم تُرسل كنسخة مخفية (BCC) فلا يرى أحد عناوين الآخرين.</div>
-      <label class="chk"><input type="checkbox" id="mMark" checked> بعد الفتح: غيّر حالة المحددين من «جديد» إلى «تم التواصل»</label>
+      <div class="hint">«إرسال مباشر» يرسل من بريدك في Gmail رسالة منفصلة لكل شخص وباسمه (حتى 50 بالمرة). «فتح في Gmail» يفتح مسودة، ولأكثر من مستلم تكون نسخة مخفية (BCC).</div>
+      <label class="chk"><input type="checkbox" id="mMark" checked> بعد الإرسال: غيّر حالة المحددين من «جديد» إلى «تم التواصل»</label>
+      <div class="res" id="mRes" hidden></div>
       <div class="acts">
+        <button class="btn send" type="button" id="mSend">إرسال مباشر</button>
         <a class="btn gm" id="mGmail" href="#" target="_blank" rel="noopener">فتح في Gmail</a>
         <a class="btn line" id="mMailto" href="#">برنامج البريد</a>
         <button class="btn line" type="button" id="mCopy">نسخ العناوين</button>
@@ -354,14 +361,53 @@ $("mTpl").addEventListener("change",fillTpl);
 $("mTo").addEventListener("input",function(){ regreet(); refreshLinks(); });
 ["mSubj","mBody"].forEach(function(id){ $(id).addEventListener("input",refreshLinks); });
 $("mCopy").addEventListener("click",function(){ var t=recipients().join(", "); try{ navigator.clipboard.writeText(t).then(function(){ toast("تم نسخ "+recipients().length+" عنوان"); }); }catch(e){ toast("انسخ العناوين يدويًا من الخانة"); } });
-function afterOpen(e){
-  if(!recipients().length){ e.preventDefault(); refreshLinks(); return; }
+function markContacted(emails){
   if(!$("mMark").checked) return;
-  selected().filter(function(r){ return r.status==="new"; }).forEach(function(r){
+  data.filter(function(r){ return r.status==="new" && r.email && (emails ? emails.indexOf(r.email)>-1 : picked[r.id]); }).forEach(function(r){
     rpc("chatgpt26_admin_set_status",{p_password:pw,p_id:r.id,p_status:"contacted"}).then(function(){ r.status="contacted"; render(); });
   });
 }
+function afterOpen(e){
+  if(!recipients().length){ e.preventDefault(); refreshLinks(); return; }
+  markContacted(null);
+}
 $("mGmail").addEventListener("click",afterOpen); $("mMailto").addEventListener("click",afterOpen);
+
+// Direct send: one personal message per address, sent from the owner's Gmail by the server.
+function personal(body, addr){
+  var r=data.filter(function(x){ return x.email===addr; })[0];
+  var g=r ? "مرحبا "+r.full_name.split(" ")[0]+"،" : "السلام عليكم";
+  var nl=body.indexOf("\n"), first=nl<0?body:body.slice(0,nl);
+  return (first==="السلام عليكم"||/^مرحبا .+،$/.test(first)) ? g+(nl<0?"":body.slice(nl)) : body;
+}
+var sendSure=false;
+function resetSend(){ sendSure=false; var b=$("mSend"); b.classList.remove("sure"); b.textContent="إرسال مباشر"; }
+["mTo","mSubj","mBody","mTpl"].forEach(function(id){ $(id).addEventListener("input",resetSend); $(id).addEventListener("change",resetSend); });
+function showRes(t,bad){ var r=$("mRes"); r.hidden=false; r.textContent=t; r.classList.toggle("bad",!!bad); }
+var MAIL_ERR={unauthorized:"انتهت الجلسة. سجّل الدخول من جديد.",not_configured:"خدمة الإرسال المباشر لم تُربط بعد بحساب Gmail. استعمل «فتح في Gmail» حاليًا.",too_many:"الحد الأقصى 50 مستلمًا بالمرة الواحدة.",invalid_message:"تأكد من الموضوع والنص وعناوين البريد.",forbidden:"خدمة الإرسال رفضت الطلب (المفتاح غير مطابق)."};
+$("mSend").addEventListener("click",function(){
+  var to=recipients(), subj=$("mSubj").value.trim(), body=$("mBody").value, b=this;
+  $("mRes").hidden=true;
+  if(!to.length){ refreshLinks(); return; }
+  if(!subj){ showRes("اكتب موضوع الرسالة.",true); return; }
+  if(to.length>50){ showRes(MAIL_ERR.too_many,true); return; }
+  if(!sendSure){ sendSure=true; b.classList.add("sure"); b.textContent="تأكيد الإرسال إلى "+to.length; return; }
+  b.disabled=true; b.textContent="جارٍ الإرسال…";
+  fetch(BASE+"/functions/v1/chatgpt26-mail",{method:"POST",headers:{"Content-Type":"application/json","apikey":CFG.supabaseAnonKey,"Authorization":"Bearer "+CFG.supabaseAnonKey},
+    body:JSON.stringify({password:pw,messages:to.map(function(a){ return {to:a,subject:subj,body:personal(body,a)}; })})})
+  .then(function(r){ return r.json().catch(function(){ return {error:"network"}; }); })
+  .then(function(j){
+    if(j.error){ showRes(MAIL_ERR[j.error]||"تعذّر الإرسال. حاول مرة أخرى أو استعمل «فتح في Gmail».",true); return; }
+    var sent=j.sent||[], failed=j.failed||[];
+    var t="تم إرسال "+sent.length+" رسالة من بريدك ✓";
+    if(failed.length) t+=" · لم تُرسل إلى: "+failed.map(function(f){ return f.to; }).join("، ");
+    if(j.quota!=null) t+=" · المتبقي اليوم: "+j.quota;
+    showRes(t,failed.length>0 && !sent.length);
+    if(sent.length){ markContacted(sent); toast("تم الإرسال"); }
+  })
+  .catch(function(){ showRes("تعذّر الاتصال بخدمة الإرسال.",true); })
+  .then(function(){ b.disabled=false; resetSend(); });
+});
 
 $("csv").addEventListener("click",function(){
   if(!data.length){ toast("لا توجد بيانات للتصدير"); return; }
