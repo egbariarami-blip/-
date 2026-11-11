@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}html{height:100%}</style>
+<title>פ"מ תומכות חינוך דבוריה</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Layout: screen-by-screen app. Header with year switch + screen tabs, one screen fills the viewport, prev/next footer. */
+:root {
+  --bg: #f4f6f1;
+  --surface: #ffffff;
+  --fg: #1d2620;
+  --muted: #56655a;
+  --line: #d9e0d5;
+  --olive: #4c6a2c;
+  --olive-soft: #e5ecdb;
+  --sky: #2c6a87;
+  --sky-soft: #dcebf2;
+  --amber: #8a5a12;
+  --amber-soft: #f6ead4;
+  --tile: #ffffff;
+  --font-display: "Rubik", "Assistant", system-ui, sans-serif;
+  --font-body: "Assistant", "Rubik", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141a16; --surface: #1c241f; --fg: #e7ece5; --muted: #a2b0a5; --line: #2f3a32;
+    --olive: #a5c77a; --olive-soft: #26331d; --sky: #7fbcd8; --sky-soft: #1a2d36;
+    --amber: #e3b56a; --amber-soft: #33291a; --tile: #f3f5f1; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141a16; --surface: #1c241f; --fg: #e7ece5; --muted: #a2b0a5; --line: #2f3a32;
+  --olive: #a5c77a; --olive-soft: #26331d; --sky: #7fbcd8; --sky-soft: #1a2d36;
+  --amber: #e3b56a; --amber-soft: #33291a; --tile: #f3f5f1; color-scheme: dark;
+}
+html { height: 100%; font-size: clamp(12px, min(1.1vw, 2vh), 17px); }
+body { height: 100%; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 1rem; line-height: 1.5; }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance; margin: 0; }
+p, ul { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+
+.app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1500px; margin: 0 auto; }
+
+/* header */
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1.5rem; padding-block: .9rem .7rem; border-bottom: 1px solid var(--line); }
+.brand { display: grid; }
+.brand small { font-family: var(--font-display); font-size: .8rem; color: var(--olive); letter-spacing: .04em; }
+.brand h1 { font-size: 1.35rem; font-weight: 800; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.years { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.years button { border: 0; background: none; padding: .35rem 1rem; border-radius: 999px; font-family: var(--font-display); font-weight: 500; font-size: .95rem; }
+.years button[aria-pressed="true"] { background: var(--olive); color: var(--bg); }
+.screens { display: flex; gap: .3rem; }
+.screens button { border: 0; background: none; padding: .35rem .7rem; border-radius: 6px; font-size: .95rem; color: var(--muted); border-bottom: 2px solid transparent; border-radius: 0; }
+.screens button[aria-current="true"] { color: var(--fg); border-bottom-color: var(--olive); font-weight: 700; }
+
+/* screen */
+.stage { min-height: 0; overflow: auto; }
+.screen { display: grid; gap: 1rem; padding-block: 1rem; min-height: 100%; align-content: center; }
+.screen[hidden] { display: none !important; }
+.eyebrow { font-family: var(--font-display); font-weight: 500; font-size: .78rem; letter-spacing: .04em; color: var(--olive); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; min-width: 0; min-height: 0; }
+.panel > h2 { font-size: 1.15rem; margin-bottom: .7rem; }
+.muted { color: var(--muted); }
+.pic { background: var(--tile); border-radius: 10px; display: grid; place-items: center; flex: none; overflow: hidden; }
+.pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; display: block; }
+
+/* year A overview */
+.y1o { grid-template-rows: auto; }
+.intro { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; align-items: end; justify-content: space-between; }
+.intro h2 { font-size: 1.7rem; }
+.intro p { max-width: 60ch; }
+.facts { display: flex; flex-wrap: wrap; gap: .4rem 1.8rem; }
+.fact { display: grid; }
+.fact b { font-family: var(--font-display); font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.fact small { color: var(--muted); font-size: .85rem; }
+.goals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; }
+.goal { display: flex; gap: .8rem; align-items: center; }
+.goal .pic { width: 4.2rem; height: 4.2rem; }
+.goal p { font-size: .9rem; color: var(--muted); }
+.goal h3 { font-size: 1rem; margin-bottom: .15rem; }
+.clock { display: grid; gap: .9rem; align-content: start; }
+.bar { display: flex; height: 3rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.seg { display: grid; place-items: center; font-family: var(--font-display); font-size: .85rem; font-weight: 500; min-width: 0; overflow: hidden; white-space: nowrap; }
+.seg:nth-child(odd) { background: var(--olive-soft); }
+.seg:nth-child(even) { background: var(--surface); }
+.seg.break { background: repeating-linear-gradient(135deg, var(--surface) 0 6px, var(--bg) 6px 12px); color: var(--muted); }
+.legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; }
+.legend div { display: grid; gap: .1rem; font-size: .9rem; }
+.legend b { font-family: var(--font-display); font-weight: 500; font-variant-numeric: tabular-nums; }
+.legend span { color: var(--muted); }
+.req { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-top: .4rem; font-size: .9rem; }
+.req div { border-top: 2px solid var(--olive); padding-top: .4rem; }
+
+/* year A meetings */
+.y1m { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); align-items: start; }
+.y1m .mgrid { grid-auto-rows: 8.5rem; }
+.mgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: .7rem; min-height: 0; }
+.mcard { text-align: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .8rem; display: grid; grid-template-rows: auto auto 1fr; gap: .35rem; align-content: start; min-height: 0; overflow: hidden; }
+.mcard:hover { border-color: var(--olive); }
+.mcard[aria-pressed="true"] { border-color: var(--olive); box-shadow: inset 0 0 0 1px var(--olive); background: var(--olive-soft); }
+.mhead { display: flex; justify-content: space-between; align-items: center; }
+.num { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; background: var(--olive-soft); color: var(--olive); font-variant-numeric: tabular-nums; font-size: .9rem; }
+.mcard[aria-pressed="true"] .num { background: var(--olive); color: var(--bg); }
+.mhead small { color: var(--muted); font-size: .8rem; }
+.mcard h3 { font-size: .95rem; }
+.mcard p { font-size: .82rem; color: var(--muted); }
+.detail { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: .8rem; overflow: auto; }
+.dtop { display: flex; gap: .9rem; align-items: center; }
+.dtop .pic { width: 5rem; height: 5rem; }
+.dtop h2 { font-size: 1.25rem; }
+.dcols { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; font-size: .92rem; }
+.dcols h4, .detail h4 { font-size: .78rem; font-weight: 500; color: var(--sky); margin-bottom: .2rem; letter-spacing: .03em; }
+.dcols ul { padding-inline-start: 1.1rem; }
+.task { background: var(--sky-soft); border-radius: 8px; padding: .6rem .8rem; font-size: .92rem; align-self: start; }
+.task b { color: var(--sky); }
+
+/* year B status */
+.y2s { grid-template-rows: auto auto; align-items: start; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+.summary { grid-column: 1 / -1; display: flex; gap: 1rem 2rem; flex-wrap: wrap; align-items: start; }
+.summary h2 { font-size: 1.6rem; flex: 0 0 auto; max-width: 16ch; }
+.summary p { flex: 1 1 32rem; font-size: .98rem; max-width: 95ch; }
+.summary p b { color: var(--olive); }
+.chal { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.chal-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; min-height: 0; }
+.ch { display: grid; grid-template-rows: auto auto 1fr; gap: .45rem; align-content: start; }
+.ch .pic { height: 7.5rem; width: 100%; }
+.ch h3 { font-size: 1rem; }
+.ch p { font-size: .88rem; color: var(--muted); }
+.cmp { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.cmp-grid { display: grid; grid-template-columns: minmax(0, .85fr) auto minmax(0, 1.3fr); gap: .45rem .6rem; align-content: start; font-size: .92rem; }
+.cmp-grid .h { font-family: var(--font-display); font-weight: 500; font-size: .82rem; padding: .3rem .7rem; border-radius: 999px; text-align: center; }
+.cmp-grid .h.a { background: var(--sky-soft); color: var(--sky); }
+.cmp-grid .h.b { background: var(--olive-soft); color: var(--olive); }
+.cmp-grid .c { border: 1px solid var(--line); border-radius: 999px; padding: .45rem .8rem; text-align: center; min-width: 0; }
+.cmp-grid .arrow { color: var(--muted); align-self: center; }
+.src { font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+
+/* year B plan */
+.y2p { grid-template-columns: minmax(0, 1fr) minmax(0, 3.2fr); align-items: start; }
+.gcol { display: grid; grid-template-rows: auto repeat(3, auto); gap: .7rem; align-content: start; overflow: auto; }
+.g { display: flex; gap: .7rem; align-items: center; }
+.g .pic { width: 3.6rem; height: 3.6rem; }
+.g h3 { font-size: .95rem; }
+.g p { font-size: .84rem; color: var(--muted); }
+.quote { background: var(--amber-soft); border-radius: 10px; padding: .7rem .8rem; font-size: .9rem; }
+.quote b { color: var(--amber); font-family: var(--font-display); font-weight: 500; }
+.areas { display: grid; grid-template-rows: auto auto; gap: .7rem; min-height: 0; }
+.areas-head { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; }
+.areas-head h2 { font-size: 1.5rem; }
+.area-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; min-height: 0; }
+.area { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: .5rem; overflow: auto; }
+.area .top-row { display: flex; gap: .6rem; align-items: center; }
+.area .pic { width: 4.6rem; height: 4.6rem; }
+.area h3 { font-size: .98rem; }
+.area .why { font-size: .84rem; color: var(--muted); }
+.tag { display: inline-block; font-size: .72rem; font-family: var(--font-display); font-weight: 500; background: var(--amber-soft); color: var(--amber); border-radius: 999px; padding: .05rem .5rem; margin-top: .15rem; }
+.sess { display: grid; gap: .5rem; align-content: start; }
+.s { border-top: 1px solid var(--line); padding-top: .45rem; display: grid; gap: .1rem; }
+.s b { font-family: var(--font-display); font-weight: 500; font-size: .9rem; }
+.s b span { color: var(--olive); font-variant-numeric: tabular-nums; }
+.s p { font-size: .84rem; color: var(--muted); }
+
+/* footer */
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .6rem .9rem; border-top: 1px solid var(--line); }
+.foot button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: .4rem .9rem; font-family: var(--font-display); font-weight: 500; font-size: .9rem; }
+.foot button:hover:not(:disabled) { border-color: var(--olive); }
+.foot button:disabled { opacity: .4; cursor: default; }
+.pos { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; text-align: center; }
+
+/* small or short screens: stack and let the screen scroll inside itself */
+@media (max-width: 900px), (max-height: 520px) {
+  html { font-size: 15px; }
+  .stage { overflow: auto; }
+  .screen { height: auto; }
+  .y1m, .y2s, .y2p { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .goals, .req { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
+  .area-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chal-list { grid-template-columns: minmax(0, 1fr); }
+  .ch { grid-template-columns: 5.5rem minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: .8rem; }
+  .ch .pic { grid-row: span 2; height: 5.5rem; }
+}
+@media (max-width: 560px) {
+  .goals, .req, .area-grid, .dcols { grid-template-columns: minmax(0, 1fr); }
+  .screens button { padding: .35rem .45rem; }
+  .cmp-grid { font-size: .85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" dir="rtl" lang="he">
+  <header class="top">
+    <div class="brand">
+      <small>פסג"ה דבוריה · פיתוח מקצועי</small>
+      <h1>תומכות חינוך בגנים</h1>
+    </div>
+    <nav class="nav" aria-label="ניווט">
+      <div class="years" role="group" aria-label="בחירת שנה">
+        <button type="button" data-year="1" id="yr-1">שנה א׳ · תשפ"ו</button>
+        <button type="button" data-year="2" id="yr-2">שנה ב׳ · תשפ"ז</button>
+      </div>
+      <div class="screens" id="screen-tabs"></div>
+    </nav>
+  </header>
+
+  <main class="stage" id="stage">
+
+    <!-- YEAR A · overview -->
+    <section class="screen y1o" id="year1-overview" data-year="1" data-label="מבט על" hidden>
+      <div class="intro">
+        <div>
+          <div class="eyebrow">שנה א׳ · תכנית בסיס</div>
+          <h2>מכירות את התפקיד, מכירות את הילד</h2>
+          <p class="muted">השנה הראשונה בנתה שפה מקצועית משותפת: מה תפקידה של תומכת החינוך, איך מתפתח ילד, ואילו כלים בסיסיים עוזרים ביום יום בגן.</p>
+        </div>
+        <div class="facts">
+          <div class="fact"><b>10</b><small>מפגשים</small></div>
+          <div class="fact"><b>30</b><small>שעות</small></div>
+          <div class="fact"><b>אוק׳–יוני</b><small>מפגש בחודש</small></div>
+        </div>
+      </div>
+      <div class="goals">
+        <div class="goal panel"><div class="pic"><img src="img/confidence.webp" alt=""></div><div><h3>הבנת התפקיד</h3><p>תחומי אחריות, גבולות ושותפות עם הגננת.</p></div></div>
+        <div class="goal panel"><div class="pic"><img src="img/needs.webp" alt=""></div><div><h3>הכרת הילד</h3><p>התפתחות, צרכים רגשיים וצרכים מיוחדים.</p></div></div>
+        <div class="goal panel"><div class="pic"><img src="img/communication.webp" alt=""></div><div><h3>כלים לעבודה</h3><p>תקשורת, תיווך, התנהגות ומוגנות.</p></div></div>
+        <div class="goal panel"><div class="pic"><img src="img/regulation.webp" alt=""></div><div><h3>חוסן וקהילה</h3><p>קבוצת עמיתות ומניעת שחיקה.</p></div></div>
+      </div>
+      <div class="panel clock">
+        <h2>מבנה קבוע לכל מפגש · 180 דקות</h2>
+        <div class="bar" role="img" aria-label="חלוקת זמן המפגש">
+          <div class="seg" style="flex:20">פתיחה</div>
+          <div class="seg" style="flex:55">תוכן מקצועי</div>
+          <div class="seg break" style="flex:15">הפסקה</div>
+          <div class="seg" style="flex:65">סדנה מעשית</div>
+          <div class="seg" style="flex:25">רפלקציה</div>
+        </div>
+        <div class="legend">
+          <div><b>20 דק׳ · פתיחה</b><span>שיתוף במשימת היישום.</span></div>
+          <div><b>55 דק׳ · תוכן</b><span>הרצאה קצרה, סרטון או מקרה.</span></div>
+          <div><b>15 דק׳ · הפסקה</b><span>כיבוד ושיחה.</span></div>
+          <div><b>65 דק׳ · סדנה</b><span>משחקי תפקידים ובניית עזרים.</span></div>
+          <div><b>25 דק׳ · רפלקציה</b><span>יומן, משוב ומשימה הבאה.</span></div>
+        </div>
+        <div class="req">
+          <div><b>נוכחות</b><br><span class="muted">8 מפגשים לפחות מתוך 10</span></div>
+          <div><b>משימות יישום</b><br><span class="muted">6 לפחות, עם יומן רפלקטיבי</span></div>
+          <div><b>תלקיט</b><br><span class="muted">מוצג במפגש הסיכום</span></div>
+          <div><b>שאלונים</b><br><span class="muted">פתיחה וסיום</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- YEAR A · meetings -->
+    <section class="screen y1m" id="year1-meetings" data-year="1" data-label="המפגשים" hidden>
+      <div class="mgrid" id="mgrid"></div>
+      <div class="panel detail" id="mdetail" aria-live="polite"></div>
+    </section>
+
+    <!-- YEAR B · status -->
+    <section class="screen y2s" id="year2-status" data-year="2" data-label="תמונת מצב" hidden>
+      <div class="summary">
+        <div>
+          <div class="eyebrow">שנה ב׳ · ממצאי שאלון הגננות</div>
+          <h2>מהמשימות הטכניות אל הליבה הרגשית והפדגוגית</h2>
+        </div>
+        <p>ניתוח השאלון שנערך בקרב גננות <b>בדבוריה ובאכסאל</b> מצביע על צורך מובהק בהעמקת המיומנויות של תומכות החינוך כחלק בלתי נפרד מהצוות הפדגוגי. הגננות רואות בתומכת שותפה משמעותית, אך מדגישות שלקראת שנה ב׳ יש לעבור מהתמקדות במשימות טכניות לביסוס יכולות רגשיות ופדגוגיות מתקדמות. הפערים העיקריים: <b>ויסות רגשי, ניהול התנהגות ותקשורת בין־אישית</b>. האתגר המרכזי הוא מענה לשונות הרבה בין הילדים בגן, והצורך ביוזמה ובביטחון מקצועי גבוה יותר.</p>
+      </div>
+      <div class="panel chal">
+        <h2>אתגרים מרכזיים בעבודה</h2>
+        <div class="chal-list">
+          <div class="ch"><div class="pic"><img src="img/crisis.webp" alt="תומכת מתלבטת מול דרך מפותלת"></div><h3>חוסר גמישות ויוזמה בעת משבר</h3><p>לעיתים חסרה היכולת לפעול באופן עצמאי ומגיב כשהמצב בגן משתנה.</p></div>
+          <div class="ch"><div class="pic"><img src="img/needs.webp" alt="תומכת מוקפת בצרכים שונים"></div><h3>מענה לשונות וצרכים מרובים</h3><p>קושי לתת מענה אישי לכל ילד במקביל לניהול השגרה של הגן.</p></div>
+          <div class="ch"><div class="pic"><img src="img/behavior.webp" alt="מבוגר מותש בין ילדים סוערים"></div><h3>התמודדות עם התנהגות מאתגרת</h3><p>שמירה על גבולות וסדר מול התנהגויות מורכבות של ילדים.</p></div>
+        </div>
+      </div>
+      <div class="panel cmp">
+        <h2>מיומנויות נדרשות מול הדגש הפדגוגי</h2>
+        <div class="cmp-grid">
+          <div class="h a">מיומנות נדרשת</div><div></div><div class="h b">דגש פדגוגי בשנה ב׳</div>
+          <div class="c">זיהוי צורכי הילד</div><div class="arrow">←</div><div class="c">תגובה מותאמת אישית לכל ילד</div>
+          <div class="c">תיווך במצבי קונפליקט</div><div class="arrow">←</div><div class="c">פתרון בעיות בין ילדים בצורה רגועה</div>
+          <div class="c">עידוד עצמאות</div><div class="arrow">←</div><div class="c">הענקת כלים לילד לפעול לבד</div>
+          <div class="c">תקשורת עם הורים</div><div class="arrow">←</div><div class="c">גבולות מקצועיים ומענה רגשי</div>
+        </div>
+        <p class="src">הסדר לפי תדירות ההופעה בשאלון.</p>
+      </div>
+    </section>
+
+    <!-- YEAR B · plan -->
+    <section class="screen y2p" id="year2-plan" data-year="2" data-label="יעדים ותכנית" hidden>
+      <div class="panel gcol">
+        <h2>יעדים לזהות מקצועית</h2>
+        <div class="g"><div class="pic"><img src="img/confidence.webp" alt=""></div><div><h3>ביטחון מקצועי ויוזמה</h3><p>להרגיש שותפה מלאה, להציע רעיונות ולקחת חלק בתכנון.</p></div></div>
+        <div class="g"><div class="pic"><img src="img/group.webp" alt=""></div><div><h3>ניהול קבוצה</h3><p>להנחות לבד פעילות בקבוצה קטנה או עבודה פרטנית.</p></div></div>
+        <div class="quote"><b>מה הגננות מצפות:</b> "ביטחון מקצועי, יוזמה ותחושת אחריות", שהתומכת תפתח זהות של שותפה משמעותית בעשייה החינוכית.</div>
+      </div>
+      <div class="areas">
+        <div class="areas-head">
+          <div>
+            <div class="eyebrow">שנה ב׳ · 8 מפגשים · 24 שעות</div>
+            <h2>ארבעה תחומי למידה, שני מפגשים בכל תחום</h2>
+          </div>
+          <span class="muted">הסדר לפי מידת הביקוש בשאלון</span>
+        </div>
+        <div class="area-grid">
+          <div class="panel area">
+            <div class="top-row"><div class="pic"><img src="img/regulation.webp" alt=""></div><div><h3>ויסות רגשי וניהול התנהגות</h3><span class="tag">המבוקש ביותר</span></div></div>
+            <p class="why">כלים להצבת גבולות ולהתמודדות עם מצבים מאתגרים בגן.</p>
+            <div class="sess">
+              <div class="s"><b><span>1</span> · להבין את הסערה</b><p>מה קורה לילד בהתפרצות, ואיך אני נשארת רגועה.</p></div>
+              <div class="s"><b><span>2</span> · גבולות בלי מאבק</b><p>הצבת גבולות עקבית ותגובה אחידה עם הגננת.</p></div>
+            </div>
+          </div>
+          <div class="panel area">
+            <div class="top-row"><div class="pic"><img src="img/inclusion.webp" alt=""></div><div><h3>הכלה ושילוב ילדים עם צרכים שונים</h3></div></div>
+            <p class="why">זיהוי ילדים שזקוקים לתמיכה ומענה מותאם לשונות.</p>
+            <div class="sess">
+              <div class="s"><b><span>3</span> · עין מקצועית</b><p>תצפית ממוקדת וזיהוי צורכי הילד.</p></div>
+              <div class="s"><b><span>4</span> · מענה בתוך השגרה</b><p>התאמות קטנות לכל ילד בלי לעצור את הגן.</p></div>
+            </div>
+          </div>
+          <div class="panel area">
+            <div class="top-row"><div class="pic"><img src="img/communication.webp" alt=""></div><div><h3>תקשורת מיטבית וכישורים חברתיים</h3></div></div>
+            <p class="why">תקשורת עם הילדים, עם ההורים ובתוך הצוות.</p>
+            <div class="sess">
+              <div class="s"><b><span>5</span> · מגשרת קטנה</b><p>תיווך בקונפליקט ופתרון בעיות רגוע בין ילדים.</p></div>
+              <div class="s"><b><span>6</span> · מול ההורים והצוות</b><p>גבולות מקצועיים, מה אומרים ולמי מפנים.</p></div>
+            </div>
+          </div>
+          <div class="panel area">
+            <div class="top-row"><div class="pic"><img src="img/play.webp" alt=""></div><div><h3>למידה דרך משחק וכלים דיגיטליים</h3></div></div>
+            <p class="why">העשרה פדגוגית, טכנולוגיה ופיתוח שפה דרך משחק.</p>
+            <div class="sess">
+              <div class="s"><b><span>7</span> · משחק שמלמד</b><p>משחק כמנוף לשפה, לעצמאות ולקשר.</p></div>
+              <div class="s"><b><span>8</span> · אני מובילה</b><p>כל תומכת מציגה פעילות דיגיטלית או משחקית שהובילה בקבוצה קטנה.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <button type="button" id="prev">→ הקודם</button>
+    <div class="pos" id="pos"></div>
+    <button type="button" id="next">הבא ←</button>
+  </footer>
+</div>
+
+<script>
+document.documentElement.lang = "he";
+document.documentElement.dir = "rtl";
+
+const meetings = [
+  { m: "אוקטובר", img: "confidence", t: "פתיחה: מי אני כתומכת חינוך?", s: "הגדרת התפקיד ומיפוי צרכים", c: ["תפקיד תומכת החינוך בגן", "גבולות התפקיד ושותפות עם הצוות", "ציפיות מהתהליך"], a: ["מעגל היכרות", "שאלון מיפוי צרכים", "מפת \"יום בחיי תומכת\""], k: "לתעד יום עבודה אחד: מה עשיתי, מה היה קשה ומה הצליח." },
+  { m: "נובמבר", img: "needs", t: "להכיר את הילד", s: "התפתחות רגשית, חברתית ושפתית", c: ["שלבי התפתחות ומה מצופה בכל גיל", "סימנים שכדאי לשים לב אליהם", "שונות בין ילדים"], a: ["ניתוח סרטונים קצרים", "עבודה בקבוצות לפי גיל"], k: "לבחור ילד אחד ולכתוב תצפית קצרה על חוזקה וקושי." },
+  { m: "דצמבר", img: "communication", t: "תקשורת שמקדמת", s: "לדבר עם ילדים כדי לחזק ולהרגיע", c: ["הקשבה פעילה ושיקוף רגשות", "שפה מעודדת במקום שיפוטית", "תקשורת לא מילולית"], a: ["משחקי תפקידים", "כתיבת \"משפטי זהב\" לכיס"], k: "להשתמש בשלושה משפטים מעודדים במשך שבוע ולתעד תגובות." },
+  { m: "ינואר", img: "behavior", t: "גבולות והתנהגות", s: "מניעה, חיזוק חיובי ותגובה במשבר", c: ["הבנת הצורך שמאחורי ההתנהגות", "שגרות וגבולות ברורים", "הרגעה במצבי סערה"], a: ["ניתוח אירועים מהשטח", "תכנית תגובה אחידה עם הצוות"], k: "ליישם טכניקת חיזוק אחת עם ילד מסוים ולתעד שבועיים." },
+  { m: "פברואר", img: "play", t: "תמיכה בלמידה", s: "תיווך, הנגשה וקבוצה קטנה", c: ["עקרונות התיווך בלמידה", "פירוק משימה לשלבים", "הנגשה חזותית"], a: ["בניית עזר למידה פשוט", "תרגול תיווך בזוגות"], k: "להכין עזר הנגשה אחד ולהשתמש בו בגן." },
+  { m: "מרץ", img: "inclusion", t: "שילוב ילדים עם צרכים מיוחדים", s: "עבודה לפי תכנית אישית (תל\"א)", c: ["מהי תל\"א ומה תפקידי בה", "קשב, תקשורת ומוטוריקה", "עידוד עצמאות במקום עשייה במקום הילד"], a: ["מפגש עם רכזת השילוב", "ניתוח מקרה"], k: "לזהות פעולה אחת שאני עושה במקום הילד ולהפוך אותה לתרגול עצמאות." },
+  { m: "מרץ", img: "partner", t: "עבודת צוות והורים", s: "שותפות עם הגננת ומה אומרים להורים", c: ["חלוקת תפקידים ותיאום ציפיות", "שיחה מקצועית עם הצוות", "מה נכון ומה לא נכון לומר להורים"], a: ["סימולציית שיחה", "בניית \"חוזה צוות\""], k: "לקיים שיחת תיאום קצרה עם הגננת ולסכם אותה." },
+  { m: "אפריל", img: "crisis", t: "מוגנות ובטיחות", s: "מוגנות, בטיחות בחצר ועזרה ראשונה", c: ["חוזר מנכ\"ל: מוגנות וחובת דיווח", "בטיחות בחצר ובטיולים", "עזרה ראשונה בסיסית"], a: ["סדנת עזרה ראשונה עם מדריך מוסמך", "תרחישים לתרגול"], k: "לבדוק את סביבת הגן לפי רשימת בטיחות ולהעביר הערות לגננת." },
+  { m: "מאי", img: "regulation", t: "חוסן אישי", s: "שמירה על עצמי ומניעת שחיקה", c: ["סימני שחיקה ומקורות כוח", "ויסות עצמי ברגעי לחץ", "קבוצת עמיתות כמשאב"], a: ["תרגילי נשימה והרפיה", "מעגל שיתוף"], k: "לבחור דבר אחד שמטעין אותי ולשלב אותו בשגרת השבוע." },
+  { m: "יוני", img: "group", t: "סיכום והוקרה", s: "תלקיטים, משוב ותעודות", c: ["מה למדתי ומה השתנה בעבודתי", "מטרות לשנה ב׳"], a: ["הצגת תלקיטים בתחנות", "שאלון סיום", "טקס הוקרה"], k: "אין משימה. מתחילים לחשוב על שנה ב׳." }
+];
+
+const mgrid = document.getElementById("mgrid");
+const mdetail = document.getElementById("mdetail");
+const li = arr => "<ul>" + arr.map(v => "<li>" + v + "</li>").join("") + "</ul>";
+function showMeeting(i) {
+  const x = meetings[i];
+  mgrid.querySelectorAll(".mcard").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+  mdetail.innerHTML =
+    '<div class="dtop"><div class="pic"><img src="img/' + x.img + '.webp" alt=""></div><div><div class="eyebrow">מפגש ' + (i + 1) + ' · ' + x.m + '</div><h2>' + x.t + '</h2><p class="muted">' + x.s + '</p></div></div>' +
+    '<div class="dcols"><div><h4>תכנים</h4>' + li(x.c) + '</div><div><h4>דרכי עבודה</h4>' + li(x.a) + '</div></div>' +
+    '<div class="task"><b>משימת יישום: </b>' + x.k + '</div>';
+}
+meetings.forEach((x, i) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "mcard";
+  b.innerHTML = '<div class="mhead"><span class="num">' + (i + 1) + '</span><small>' + x.m + '</small></div><h3>' + x.t + '</h3><p>' + x.s + '</p>';
+  b.addEventListener("click", () => showMeeting(i));
+  mgrid.appendChild(b);
+});
+showMeeting(0);
+
+/* screen navigation */
+const screens = [...document.querySelectorAll(".screen")];
+const tabs = document.getElementById("screen-tabs");
+const pos = document.getElementById("pos");
+let current = 0;
+function show(idx) {
+  current = Math.max(0, Math.min(screens.length - 1, idx));
+  const s = screens[current];
+  const year = s.dataset.year;
+  screens.forEach(el => el.hidden = el !== s);
+  document.querySelectorAll(".years button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.year === year)));
+  tabs.innerHTML = "";
+  screens.forEach((el, i) => {
+    if (el.dataset.year !== year) return;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = el.dataset.label;
+    b.setAttribute("aria-current", String(i === current));
+    b.addEventListener("click", () => show(i));
+    tabs.appendChild(b);
+  });
+  pos.textContent = "שנה " + (year === "1" ? "א׳" : "ב׳") + " · " + s.dataset.label + " · מסך " + (current + 1) + " מתוך " + screens.length;
+  document.getElementById("prev").disabled = current === 0;
+  document.getElementById("next").disabled = current === screens.length - 1;
+  document.getElementById("stage").scrollTop = 0;
+  if (location.hash !== "#" + s.id) history.replaceState(null, "", "#" + s.id);
+}
+document.querySelectorAll(".years button").forEach(b => b.addEventListener("click", () => show(screens.findIndex(s => s.dataset.year === b.dataset.year))));
+document.getElementById("prev").addEventListener("click", () => show(current - 1));
+document.getElementById("next").addEventListener("click", () => show(current + 1));
+document.addEventListener("keydown", e => {
+  if (e.target.closest && e.target.closest("input, textarea")) return;
+  if (e.key === "ArrowLeft" || e.key === "PageDown") show(current + 1);
+  if (e.key === "ArrowRight" || e.key === "PageUp") show(current - 1);
+});
+function fromHash() {
+  const i = screens.findIndex(s => "#" + s.id === location.hash);
+  show(i >= 0 ? i : 0);
+}
+window.addEventListener("hashchange", fromHash);
+fromHash();
+</script>
+
+</body>
+</html>
