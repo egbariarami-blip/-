@@ -1,0 +1,284 @@
+<title>פ"מ תומכות חינוך דבוריה</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column; a month-by-month path (Oct→Jun) is the spine of the page */
+:root {
+  --bg: #f4f6f1;
+  --surface: #ffffff;
+  --fg: #1d2620;
+  --muted: #5b6a5f;
+  --line: #d9e0d5;
+  --olive: #4c6a2c;
+  --olive-soft: #e5ecdb;
+  --sky: #2c6a87;
+  --sky-soft: #dcebf2;
+  --font-display: "Rubik", "Assistant", system-ui, sans-serif;
+  --font-body: "Assistant", "Rubik", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141a16; --surface: #1c241f; --fg: #e7ece5; --muted: #a2b0a5; --line: #2f3a32;
+    --olive: #a5c77a; --olive-soft: #26331d; --sky: #7fbcd8; --sky-soft: #1a2d36; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141a16; --surface: #1c241f; --fg: #e7ece5; --muted: #a2b0a5; --line: #2f3a32;
+  --olive: #a5c77a; --olive-soft: #26331d; --sky: #7fbcd8; --sky-soft: #1a2d36; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 17px; line-height: 1.65; }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); }
+h3 { font-size: 1.15rem; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-display); font-weight: 500; font-size: .85rem; letter-spacing: .04em; color: var(--olive); }
+section { padding-block: 48px; border-top: 1px solid var(--line); }
+.section-head { display: grid; gap: 8px; margin-bottom: 28px; max-width: 65ch; }
+.section-head p { color: var(--muted); }
+
+/* hero */
+header { padding-block: 56px 40px; }
+.hero { display: grid; gap: 20px; }
+.hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 800; }
+.hero h1 span { color: var(--olive); }
+.hero .lead { font-size: 1.2rem; max-width: 60ch; color: var(--muted); }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 8px; }
+.fact { display: grid; }
+.fact b { font-family: var(--font-display); font-size: 1.6rem; color: var(--fg); font-variant-numeric: tabular-nums; }
+.fact small { color: var(--muted); font-size: .9rem; }
+.ridge { display: block; width: 100%; height: 70px; margin-top: 32px; }
+.ridge path { fill: var(--olive-soft); }
+.ridge path.front { fill: var(--olive); opacity: .18; }
+
+/* goals */
+.goals { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+.goal { padding: 18px 0 0; border-top: 3px solid var(--olive); display: grid; gap: 6px; align-content: start; }
+.goal p { color: var(--muted); font-size: .97rem; }
+
+/* path */
+.path { display: grid; gap: 0; }
+.month { display: grid; grid-template-columns: 74px 1fr; gap: 18px; }
+.rail { position: relative; display: flex; flex-direction: column; align-items: center; }
+.rail::after { content: ""; position: absolute; top: 44px; bottom: 0; width: 2px; background: var(--line); }
+.month:last-child .rail::after { display: none; }
+.num { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; background: var(--olive-soft); color: var(--olive); font-variant-numeric: tabular-nums; z-index: 1; }
+.month.milestone .num { background: var(--olive); color: var(--bg); }
+.mname { font-size: .8rem; color: var(--muted); margin-top: 4px; text-align: center; z-index: 1; background: var(--bg); padding-inline: 2px; }
+details { padding-bottom: 22px; min-width: 0; }
+summary { cursor: pointer; list-style: none; display: grid; gap: 2px; padding: 8px 12px; margin-inline: -12px; border-radius: 8px; }
+summary::-webkit-details-marker { display: none; }
+summary:hover { background: var(--surface); }
+summary:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+summary h3::after { content: " +"; color: var(--muted); font-weight: 500; }
+details[open] summary h3::after { content: " −"; }
+summary p { color: var(--muted); font-size: .97rem; }
+.detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 24px; padding: 14px 0 4px; }
+.detail div { min-width: 0; }
+.detail h4 { margin: 0 0 4px; font-family: var(--font-display); font-size: .82rem; font-weight: 500; letter-spacing: .03em; color: var(--sky); }
+.detail ul { margin: 0; padding-inline-start: 18px; }
+.task { grid-column: 1 / -1; background: var(--sky-soft); border-radius: 8px; padding: 10px 14px; font-size: .97rem; }
+.task b { color: var(--sky); }
+.tools { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+button { font: inherit; font-family: var(--font-display); font-size: .9rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+button:hover { border-color: var(--olive); }
+button:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+
+/* session clock */
+.clock { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.bar { display: flex; height: 54px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.seg { display: grid; place-items: center; font-family: var(--font-display); font-size: .85rem; font-weight: 500; color: var(--fg); min-width: 0; overflow: hidden; white-space: nowrap; }
+.seg:nth-child(odd) { background: var(--olive-soft); }
+.seg:nth-child(even) { background: var(--surface); }
+.seg.break { background: repeating-linear-gradient(135deg, var(--surface) 0 6px, var(--bg) 6px 12px); color: var(--muted); }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.legend div { display: grid; gap: 2px; }
+.legend b { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.legend span { color: var(--muted); font-size: .95rem; }
+
+/* two cols */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+.cols ul { margin: 0; padding-inline-start: 20px; display: grid; gap: 8px; }
+.cols li b { font-family: var(--font-display); font-weight: 500; }
+table { width: 100%; border-collapse: collapse; font-size: .97rem; }
+.table-box { overflow-x: auto; }
+th, td { text-align: start; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); font-weight: 500; font-size: .85rem; color: var(--muted); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+.note { margin-top: 20px; font-size: .92rem; color: var(--muted); }
+footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+@media (max-width: 520px) {
+  .month { grid-template-columns: 52px 1fr; gap: 12px; }
+  .seg { font-size: .72rem; }
+}
+@media (prefers-reduced-motion: no-preference) { summary { transition: background .15s; } }
+</style>
+
+<div dir="rtl" lang="he">
+<header>
+  <div class="wrap hero">
+    <div class="eyebrow">מחלקת החינוך · דבוריה · שנת הלימודים תשפ"ז</div>
+    <h1>תהליך פיתוח מקצועי <span>לתומכות החינוך</span></h1>
+    <p class="lead">תכנית שנתית לסייעות בגני הילדים, לסייעות כיתה ולסייעות שילוב בבתי הספר בדבוריה. המפגשים מחברים בין ידע מקצועי לבין מה שקורה בכיתה ובגן בכל בוקר.</p>
+    <div class="facts">
+      <div class="fact"><b>10</b><small>מפגשים קבוצתיים</small></div>
+      <div class="fact"><b>30</b><small>שעות לימוד</small></div>
+      <div class="fact"><b>אוק׳–יוני</b><small>מפגש אחד בחודש בערך</small></div>
+      <div class="fact"><b>80%</b><small>נוכחות נדרשת לתעודה</small></div>
+    </div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1000 70" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 70 L0 52 C120 50 220 44 330 40 C420 30 470 8 520 6 C570 8 620 30 700 40 C800 48 900 50 1000 52 L1000 70 Z"></path>
+    <path class="front" d="M0 70 L0 60 C200 56 380 54 500 50 C640 54 820 58 1000 60 L1000 70 Z"></path>
+  </svg>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">למה התהליך</div>
+      <h2>מטרות התכנית</h2>
+      <p>תומכת החינוך נמצאת עם הילדים לאורך כל היום. התהליך נותן לה כלים, שפה מקצועית משותפת עם הצוות, ומקום לחשוב על העבודה יחד עם עמיתות.</p>
+    </div>
+    <div class="goals">
+      <div class="goal"><h3>הבנת התפקיד</h3><p>הגדרה ברורה של תחומי האחריות, הגבולות והשותפות עם הגננת או המורה.</p></div>
+      <div class="goal"><h3>הכרת הילד</h3><p>ידע על התפתחות, צרכים רגשיים וצרכים מיוחדים, ותרגום שלו להתנהלות יומיומית.</p></div>
+      <div class="goal"><h3>כלים לעבודה</h3><p>תיווך בלמידה, ניהול התנהגות, תקשורת מקדמת ומוגנות, עם תרגול בשטח.</p></div>
+      <div class="goal"><h3>חוסן וקהילה</h3><p>קבוצת עמיתות תומכת, רפלקציה על העשייה ומניעת שחיקה.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">מהלך השנה</div>
+      <h2>עשרה מפגשים, חודש אחרי חודש</h2>
+      <p>כל מפגש נמשך שלוש שעות ונגמר במשימת יישום שמבצעים בגן או בכיתה עד המפגש הבא. לחצו על מפגש לפרטים.</p>
+    </div>
+    <div class="tools">
+      <button type="button" id="open-all">פתיחת כל המפגשים</button>
+      <button type="button" id="close-all">סגירת הכול</button>
+    </div>
+    <div class="path" id="path"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">180 דקות</div>
+      <h2>מבנה קבוע לכל מפגש</h2>
+      <p>מבנה זהה בכל פעם עוזר למשתתפות לדעת מה מצפה להן ומשאיר זמן אמיתי לתרגול ולשיחה.</p>
+    </div>
+    <div class="clock">
+      <div class="bar" role="img" aria-label="חלוקת זמן המפגש">
+        <div class="seg" style="flex:20">פתיחה</div>
+        <div class="seg" style="flex:55">תוכן מקצועי</div>
+        <div class="seg break" style="flex:15">הפסקה</div>
+        <div class="seg" style="flex:65">סדנה מעשית</div>
+        <div class="seg" style="flex:25">רפלקציה</div>
+      </div>
+      <div class="legend">
+        <div><b>20 דק׳ · פתיחה</b><span>שיתוף ביישום המשימה מהחודש הקודם.</span></div>
+        <div><b>55 דק׳ · תוכן מקצועי</b><span>הרצאה קצרה, סרטון או מקרה מהשטח.</span></div>
+        <div><b>15 דק׳ · הפסקה</b><span>כיבוד ושיחה חופשית.</span></div>
+        <div><b>65 דק׳ · סדנה מעשית</b><span>משחקי תפקידים, ניתוח מקרים, בניית עזרים.</span></div>
+        <div><b>25 דק׳ · רפלקציה</b><span>כתיבה ביומן, הצגת המשימה הבאה ומשוב.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap cols">
+    <div>
+      <div class="section-head" style="margin-bottom:16px">
+        <div class="eyebrow">איך יודעים שזה עובד</div>
+        <h2>הערכה ומעקב</h2>
+      </div>
+      <ul>
+        <li><b>שאלון פתיחה וסיום:</b> מיפוי צרכים בתחילת השנה ומדידת שינוי בסופה.</li>
+        <li><b>יומן רפלקטיבי:</b> כל משתתפת כותבת אחרי כל משימת יישום.</li>
+        <li><b>תצפית עמיתות:</b> פעמיים בשנה, בזוגות, לפי דף תצפית קצר.</li>
+        <li><b>משוב מפגש:</b> טופס של שלוש שאלות בסוף כל מפגש.</li>
+        <li><b>תלקיט מסכם:</b> שלוש משימות נבחרות ורפלקציה, מוצג במפגש העשירי.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="section-head" style="margin-bottom:16px">
+        <div class="eyebrow">דרישות לתעודה</div>
+        <h2>סיום התהליך</h2>
+      </div>
+      <ul>
+        <li>נוכחות ב־8 מפגשים לפחות מתוך 10.</li>
+        <li>ביצוע 6 משימות יישום לפחות.</li>
+        <li>הגשת תלקיט והצגתו במפגש הסיכום.</li>
+        <li>מילוי שאלוני הפתיחה והסיום.</li>
+      </ul>
+      <p class="note">את מספר השעות המוכר ואת אופן ההכרה יש לתאם מול הגורם המממן (משרד החינוך או הרשות המקומית).</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">מי עושה מה</div>
+      <h2>שותפים בתהליך</h2>
+    </div>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>גורם</th><th>אחריות</th></tr></thead>
+        <tbody>
+          <tr><td>מחלקת החינוך ברשות</td><td>ייזום, תקציב, מקום למפגשים ותיאום לוח הזמנים מול המוסדות.</td></tr>
+          <tr><td>מנחת התהליך</td><td>תכנון והנחיית המפגשים, ליווי המשימות ומשוב על התלקיטים.</td></tr>
+          <tr><td>מנהלות ומנהלי בתי הספר</td><td>שחרור הסייעות למפגשים ותמיכה ביישום המשימות בכיתה.</td></tr>
+          <tr><td>מפקחת הגנים והגננות</td><td>שיתוף בתכנים, מתן הזדמנות ליישום בגן ומשוב לתומכת.</td></tr>
+          <tr><td>רכזת השילוב / היועצת</td><td>הנחיית המפגשים בנושאי שילוב ורגש לפי הצורך.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">הצעה לתכנית. התאריכים, המנחות והנושאים יעודכנו לפי מיפוי הצרכים במפגש הפתיחה.</div>
+</footer>
+</div>
+
+<script>
+document.documentElement.lang = "he";
+document.documentElement.dir = "rtl";
+const meetings = [
+  { m: "אוק׳", t: "פתיחה: מי אני כתומכת חינוך?", s: "היכרות, הגדרת התפקיד ומיפוי צרכים", c: ["תפקיד תומכת החינוך בגן ובכיתה", "גבולות התפקיד ושותפות עם הצוות", "ציפיות ממני ומהתהליך"], a: ["מעגל היכרות", "שאלון מיפוי צרכים", "מפת \"יום בחיי תומכת\""], k: "לתעד יום עבודה אחד: מה עשיתי, מה היה קשה, מה הצליח.", ms: true },
+  { m: "נוב׳", t: "להכיר את הילד", s: "התפתחות רגשית, חברתית ושפתית בגילאי 3–12", c: ["שלבי התפתחות ומה מצופה בכל גיל", "סימנים שכדאי לשים לב אליהם", "שונות בין ילדים"], a: ["ניתוח סרטונים קצרים", "עבודה בקבוצות לפי גיל"], k: "לבחור ילד אחד ולכתוב תצפית קצרה על חוזקה וקושי." },
+  { m: "דצמ׳", t: "תקשורת שמקדמת", s: "איך מדברים עם ילדים כדי לחזק ולהרגיע", c: ["הקשבה פעילה ושיקוף רגשות", "שפה מעודדת במקום שיפוטית", "תקשורת לא מילולית"], a: ["משחקי תפקידים", "כתיבת \"משפטי זהב\" לכיס"], k: "להשתמש בשלושה משפטים מעודדים במשך שבוע ולתעד תגובות." },
+  { m: "ינו׳", t: "גבולות והתנהגות", s: "מניעה, חיזוק חיובי ותגובה למצבי משבר", c: ["למה ילד מתנהג כך? הבנת הצורך", "שגרות וגבולות ברורים", "הרגעה במצבי סערה"], a: ["ניתוח אירועים מהשטח", "בניית תכנית תגובה אחידה עם הצוות"], k: "ליישם טכניקת חיזוק אחת עם ילד מסוים ולתעד שבועיים." },
+  { m: "פבר׳", t: "תמיכה בלמידה", s: "תיווך, הנגשה ועבודה בקבוצה קטנה", c: ["עקרונות התיווך בלמידה", "פירוק משימה לשלבים", "הנגשה חזותית"], a: ["בניית עזר למידה פשוט", "תרגול תיווך בזוגות"], k: "להכין עזר הנגשה אחד ולהשתמש בו בכיתה או בגן." },
+  { m: "מרץ", t: "שילוב תלמידים עם צרכים מיוחדים", s: "עבודה לפי תכנית לימודים אישית (תל\"א)", c: ["מהי תל\"א ומה תפקידי בה", "קשיים נפוצים: קשב, תקשורת, מוטוריקה", "עידוד עצמאות במקום עשייה במקום הילד"], a: ["מפגש עם רכזת השילוב", "ניתוח מקרה"], k: "לזהות פעולה אחת שאני עושה במקום הילד ולהפוך אותה לתרגול עצמאות.", ms: true },
+  { m: "מרץ", t: "עבודת צוות והורים", s: "שותפות עם הגננת או המורה, ומה אומרים להורים", c: ["חלוקת תפקידים ותיאום ציפיות", "שיחה מקצועית עם הצוות", "מה נכון ומה לא נכון לומר להורים"], a: ["סימולציית שיחה", "בניית \"חוזה צוות\""], k: "לקיים שיחת תיאום קצרה עם הגננת או המורה ולסכם אותה." },
+  { m: "אפר׳", t: "מוגנות ובטיחות", s: "מוגנות ילדים, בטיחות בחצר ועזרה ראשונה", c: ["חוזר מנכ\"ל: מוגנות וחובת דיווח", "בטיחות בחצר ובטיולים", "עזרה ראשונה בסיסית"], a: ["סדנת עזרה ראשונה עם מדריך מוסמך", "תרחישים לתרגול"], k: "לבדוק את סביבת העבודה לפי רשימת בטיחות ולהעביר הערות למנהלת." },
+  { m: "מאי", t: "חוסן אישי", s: "שמירה על עצמי ומניעת שחיקה", c: ["סימני שחיקה ומקורות כוח", "ויסות עצמי ברגעי לחץ", "קבוצת עמיתות כמשאב"], a: ["תרגילי נשימה והרפיה", "מעגל שיתוף"], k: "לבחור דבר אחד שמטעין אותי ולשלב אותו בשגרת השבוע." },
+  { m: "יוני", t: "סיכום והוקרה", s: "הצגת תלקיטים, משוב וחלוקת תעודות", c: ["מה למדתי ומה השתנה בעבודתי", "מטרות לשנה הבאה"], a: ["הצגת תלקיטים בתחנות", "שאלון סיום", "טקס הוקרה בהשתתפות מנהלים"], k: "אין משימה. מתחילים לחשוב על השנה הבאה.", ms: true }
+];
+const path = document.getElementById("path");
+meetings.forEach((x, i) => {
+  const row = document.createElement("div");
+  row.className = "month" + (x.ms ? " milestone" : "");
+  const li = arr => "<ul>" + arr.map(v => "<li>" + v + "</li>").join("") + "</ul>";
+  row.innerHTML =
+    '<div class="rail"><div class="num">' + (i + 1) + '</div><div class="mname">' + x.m + '</div></div>' +
+    '<details id="meeting-' + (i + 1) + '"><summary><h3>' + x.t + '</h3><p>' + x.s + '</p></summary>' +
+    '<div class="detail"><div><h4>תכנים</h4>' + li(x.c) + '</div><div><h4>דרכי עבודה</h4>' + li(x.a) + '</div>' +
+    '<div class="task"><b>משימת יישום: </b>' + x.k + '</div></div></details>';
+  path.appendChild(row);
+});
+path.querySelector("details").open = true;
+document.getElementById("open-all").addEventListener("click", () => path.querySelectorAll("details").forEach(d => d.open = true));
+document.getElementById("close-all").addEventListener("click", () => path.querySelectorAll("details").forEach(d => d.open = false));
+</script>
