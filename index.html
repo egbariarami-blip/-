@@ -2,350 +2,451 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;600;700&display=swap">
 <style>
-/* Layout: screen-by-screen app. Header with year switch + screen tabs, one screen fills the viewport, prev/next footer. */
+/* Layout: presentation, one screen at a time. A journey line on top (Year A = now, green → Year B = target, coral).
+   Each screen opens with a colored header band; big prev/next buttons at the bottom. */
 :root {
-  --bg: #f4f6f1;
+  --bg: #f3f5f4;
   --surface: #ffffff;
-  --fg: #1d2620;
-  --muted: #56655a;
-  --line: #d9e0d5;
-  --olive: #4c6a2c;
-  --olive-soft: #e5ecdb;
-  --sky: #2c6a87;
-  --sky-soft: #dcebf2;
-  --amber: #8a5a12;
-  --amber-soft: #f6ead4;
+  --fg: #18221d;
+  --muted: #56645c;
+  --line: #d6dfda;
+  --a: #2b7a57;
+  --a-deep: #1c5a3f;
+  --a-soft: #e1f0e8;
+  --b: #d0542a;
+  --b-deep: #a63b17;
+  --b-soft: #fbe5da;
+  --on: #ffffff;
   --tile: #ffffff;
   --font-display: "Rubik", "Assistant", system-ui, sans-serif;
   --font-body: "Assistant", "Rubik", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #141a16; --surface: #1c241f; --fg: #e7ece5; --muted: #a2b0a5; --line: #2f3a32;
-    --olive: #a5c77a; --olive-soft: #26331d; --sky: #7fbcd8; --sky-soft: #1a2d36;
-    --amber: #e3b56a; --amber-soft: #33291a; --tile: #f3f5f1; color-scheme: dark;
+    --bg: #111714; --surface: #1a221e; --fg: #e8eee9; --muted: #a3b2a9; --line: #2c3832;
+    --a: #3f9a71; --a-deep: #23684a; --a-soft: #1b2c23; --b: #e06a3f; --b-deep: #b04a22; --b-soft: #35211a;
+    --on: #ffffff; --tile: #f2f4f2; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #141a16; --surface: #1c241f; --fg: #e7ece5; --muted: #a2b0a5; --line: #2f3a32;
-  --olive: #a5c77a; --olive-soft: #26331d; --sky: #7fbcd8; --sky-soft: #1a2d36;
-  --amber: #e3b56a; --amber-soft: #33291a; --tile: #f3f5f1; color-scheme: dark;
+  --bg: #111714; --surface: #1a221e; --fg: #e8eee9; --muted: #a3b2a9; --line: #2c3832;
+  --a: #3f9a71; --a-deep: #23684a; --a-soft: #1b2c23; --b: #e06a3f; --b-deep: #b04a22; --b-soft: #35211a;
+  --on: #ffffff; --tile: #f2f4f2; color-scheme: dark;
 }
-html { height: 100%; font-size: clamp(12px, min(1.1vw, 2vh), 17px); }
+html { height: 100%; font-size: clamp(12px, min(1.08vw, 1.95vh), 17px); }
 body { height: 100%; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 1rem; line-height: 1.5; }
-h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
 p, ul { margin: 0; }
 button { font: inherit; color: inherit; cursor: pointer; }
-button:focus-visible, a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--b); outline-offset: 2px; }
 
-.app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1500px; margin: 0 auto; }
+.app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-width: 1500px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 
-/* header */
-.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1.5rem; padding-block: .9rem .7rem; border-bottom: 1px solid var(--line); }
-.brand { display: grid; }
-.brand small { font-family: var(--font-display); font-size: .8rem; color: var(--olive); letter-spacing: .04em; }
-.brand h1 { font-size: 1.35rem; font-weight: 800; }
-.nav { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
-.years { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-.years button { border: 0; background: none; padding: .35rem 1rem; border-radius: 999px; font-family: var(--font-display); font-weight: 500; font-size: .95rem; }
-.years button[aria-pressed="true"] { background: var(--olive); color: var(--bg); }
-.screens { display: flex; gap: .3rem; }
-.screens button { border: 0; background: none; padding: .35rem .7rem; border-radius: 6px; font-size: .95rem; color: var(--muted); border-bottom: 2px solid transparent; border-radius: 0; }
-.screens button[aria-current="true"] { color: var(--fg); border-bottom-color: var(--olive); font-weight: 700; }
+/* ---------- top: brand + journey line ---------- */
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 2rem; padding-block: .7rem .6rem; }
+.brand { display: grid; flex: 0 0 auto; }
+.brand small { font-family: var(--font-display); font-size: .78rem; color: var(--muted); letter-spacing: .04em; }
+.brand b { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; }
+.journey { flex: 1 1 520px; display: grid; grid-template-columns: 3fr 3fr; gap: .4rem; min-width: 0; }
+.leg { display: grid; gap: .25rem; min-width: 0; }
+.leg-label { display: flex; align-items: center; gap: .4rem; font-family: var(--font-display); font-weight: 700; font-size: .82rem; }
+.leg.a .leg-label { color: var(--a); }
+.leg.b .leg-label { color: var(--b); }
+.leg-label svg { width: 1rem; height: 1rem; }
+.track { position: relative; display: flex; justify-content: space-between; align-items: center; height: 1.6rem; }
+.track::before { content: ""; position: absolute; inset-inline: .5rem; top: 50%; height: 4px; transform: translateY(-50%); border-radius: 4px; background: var(--line); }
+.track .fill { position: absolute; inset-inline-start: .5rem; top: 50%; height: 4px; transform: translateY(-50%); border-radius: 4px; transition: width .45s ease; }
+.leg.a .fill { background: var(--a); }
+.leg.b .fill { background: var(--b); }
+.dot { position: relative; z-index: 1; width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 3px solid var(--line); background: var(--surface); padding: 0; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: .7rem; color: var(--muted); transition: transform .2s, background .3s, border-color .3s; }
+.dot:hover { transform: scale(1.15); }
+.leg.a .dot.done { border-color: var(--a); background: var(--a); color: var(--on); }
+.leg.b .dot.done { border-color: var(--b); background: var(--b); color: var(--on); }
+.dot.here { transform: scale(1.3); box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px currentColor; }
+.leg.a .dot.here { color: var(--a); background: var(--a); }
+.leg.b .dot.here { color: var(--b); background: var(--b); }
+.dot.here span { color: var(--on); }
 
-/* screen */
-.stage { min-height: 0; overflow: auto; }
-.screen { display: grid; gap: 1rem; padding-block: 1rem; min-height: 100%; align-content: center; }
+/* ---------- stage & screens ---------- */
+.stage { min-height: 0; overflow: auto; position: relative; }
+.screen { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: .9rem; padding-block: .3rem .6rem; box-sizing: border-box; }
 .screen[hidden] { display: none !important; }
-.eyebrow { font-family: var(--font-display); font-weight: 500; font-size: .78rem; letter-spacing: .04em; color: var(--olive); }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; min-width: 0; min-height: 0; }
-.panel > h2 { font-size: 1.15rem; margin-bottom: .7rem; }
+.screen.enter-fwd { animation: inL .45s cubic-bezier(.2,.8,.2,1); }
+.screen.enter-back { animation: inR .45s cubic-bezier(.2,.8,.2,1); }
+@keyframes inL { from { transform: translateX(-40px); opacity: .2; } to { transform: none; opacity: 1; } }
+@keyframes inR { from { transform: translateX(40px); opacity: .2; } to { transform: none; opacity: 1; } }
+
+/* header band */
+.band { position: relative; overflow: hidden; border-radius: 18px; padding: 1.1rem 1.6rem; color: var(--on); display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 6.2rem; }
+.band.a { background: linear-gradient(120deg, var(--a-deep), var(--a) 70%); }
+.band.b { background: linear-gradient(120deg, var(--b-deep), var(--b) 70%); }
+.band.ab { background: linear-gradient(90deg, var(--a-deep), var(--a) 35%, var(--b) 65%, var(--b-deep)); }
+.band .txt { position: relative; z-index: 1; display: grid; gap: .25rem; }
+.band .chip { justify-self: start; font-family: var(--font-display); font-weight: 700; font-size: .8rem; letter-spacing: .05em; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35); padding: .15rem .7rem; border-radius: 999px; }
+.band h2 { font-size: clamp(1.6rem, 2.6vw, 2.3rem); font-weight: 900; }
+.band p { font-size: 1rem; opacity: .92; max-width: 70ch; }
+.band .deco { position: absolute; inset-inline-end: -2rem; top: 50%; transform: translateY(-50%); width: 13rem; height: 13rem; opacity: .22; z-index: 0; }
+.band .deco circle { fill: none; stroke: #fff; stroke-width: 6; }
+.band .stripes { position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(255,255,255,.07) 0 14px, transparent 14px 34px); background-size: 200% 100%; z-index: 0; }
+.screen:not([hidden]) .band h2 { animation: rise .55s .05s cubic-bezier(.2,.8,.2,1) both; }
+.screen:not([hidden]) .band .chip { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+.screen:not([hidden]) .band p { animation: rise .55s .12s cubic-bezier(.2,.8,.2,1) both; }
+.screen:not([hidden]) .band .deco { animation: spin 1.1s cubic-bezier(.2,.8,.2,1) both; }
+.screen:not([hidden]) .band .stripes { animation: slide 6s linear infinite; }
+@keyframes rise { from { transform: translateY(14px); opacity: .3; } to { transform: none; opacity: 1; } }
+@keyframes spin { from { transform: translateY(-50%) scale(.6) rotate(-40deg); } to { transform: translateY(-50%) scale(1) rotate(0); } }
+@keyframes slide { to { background-position: -200% 0; } }
+
+.body { min-height: 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem; min-width: 0; }
 .muted { color: var(--muted); }
-.pic { background: var(--tile); border-radius: 10px; display: grid; place-items: center; flex: none; overflow: hidden; }
-.pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; display: block; }
+.pic { background: var(--tile); border-radius: 12px; position: relative; flex: none; overflow: hidden; }
+.pic img { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; mix-blend-mode: multiply; display: block; max-width: none; }
+.k { font-family: var(--font-display); font-weight: 700; font-size: .8rem; letter-spacing: .04em; }
+.k.a { color: var(--a); } .k.b { color: var(--b); }
 
-/* year A overview */
-.y1o { grid-template-rows: auto; }
-.intro { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; align-items: end; justify-content: space-between; }
-.intro h2 { font-size: 1.7rem; }
-.intro p { max-width: 60ch; }
-.facts { display: flex; flex-wrap: wrap; gap: .4rem 1.8rem; }
-.fact { display: grid; }
-.fact b { font-family: var(--font-display); font-size: 1.5rem; font-variant-numeric: tabular-nums; }
-.fact small { color: var(--muted); font-size: .85rem; }
-.goals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; }
-.goal { display: flex; gap: .8rem; align-items: center; }
-.goal .pic { width: 4.2rem; height: 4.2rem; }
-.goal p { font-size: .9rem; color: var(--muted); }
-.goal h3 { font-size: 1rem; margin-bottom: .15rem; }
-.clock { display: grid; gap: .9rem; align-content: start; }
-.bar { display: flex; height: 3rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
-.seg { display: grid; place-items: center; font-family: var(--font-display); font-size: .85rem; font-weight: 500; min-width: 0; overflow: hidden; white-space: nowrap; }
-.seg:nth-child(odd) { background: var(--olive-soft); }
-.seg:nth-child(even) { background: var(--surface); }
-.seg.break { background: repeating-linear-gradient(135deg, var(--surface) 0 6px, var(--bg) 6px 12px); color: var(--muted); }
-.legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; }
-.legend div { display: grid; gap: .1rem; font-size: .9rem; }
-.legend b { font-family: var(--font-display); font-weight: 500; font-variant-numeric: tabular-nums; }
-.legend span { color: var(--muted); }
-.req { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-top: .4rem; font-size: .9rem; }
-.req div { border-top: 2px solid var(--olive); padding-top: .4rem; }
+/* S1 cover */
+.cover { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 1.2rem; align-items: stretch; }
+.yr { border-radius: 18px; padding: 1.3rem; display: grid; gap: .8rem; align-content: space-between; border: 2px solid; }
+.yr.a { background: var(--a-soft); border-color: var(--a); }
+.yr.b { background: var(--b-soft); border-color: var(--b); }
+.yr h3 { font-size: 1.8rem; font-weight: 900; }
+.yr.a h3 { color: var(--a); } .yr.b h3 { color: var(--b); }
+.yr .nums { display: flex; gap: 2rem; }
+.yr .nums b { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; display: block; line-height: 1; font-variant-numeric: tabular-nums; }
+.yr .nums small { color: var(--muted); }
+.yr .pics { display: flex; gap: .8rem; }
+.yr .pics .pic { width: 7.5rem; height: 7.5rem; }
+.yr ul { padding-inline-start: 1.2rem; display: grid; gap: .2rem; }
+.arrow-big { display: grid; place-items: center; align-content: center; gap: .4rem; font-family: var(--font-display); font-weight: 800; color: var(--muted); }
+.arrow-big svg { width: 5rem; height: 3rem; }
+.arrow-big path { fill: none; stroke: url(#ab); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 160; animation: draw 1.4s .2s ease both; }
+@keyframes draw { from { stroke-dashoffset: 160; } to { stroke-dashoffset: 0; } }
 
-/* year A meetings */
-.y1m { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); align-items: start; }
-.y1m .mgrid { grid-auto-rows: 8.5rem; }
-.mgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: .7rem; min-height: 0; }
-.mcard { text-align: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .8rem; display: grid; grid-template-rows: auto auto 1fr; gap: .35rem; align-content: start; min-height: 0; overflow: hidden; }
-.mcard:hover { border-color: var(--olive); }
-.mcard[aria-pressed="true"] { border-color: var(--olive); box-shadow: inset 0 0 0 1px var(--olive); background: var(--olive-soft); }
-.mhead { display: flex; justify-content: space-between; align-items: center; }
-.num { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; background: var(--olive-soft); color: var(--olive); font-variant-numeric: tabular-nums; font-size: .9rem; }
-.mcard[aria-pressed="true"] .num { background: var(--olive); color: var(--bg); }
-.mhead small { color: var(--muted); font-size: .8rem; }
-.mcard h3 { font-size: .95rem; }
-.mcard p { font-size: .82rem; color: var(--muted); }
-.detail { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: .8rem; overflow: auto; }
-.dtop { display: flex; gap: .9rem; align-items: center; }
-.dtop .pic { width: 5rem; height: 5rem; }
-.dtop h2 { font-size: 1.25rem; }
-.dcols { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; font-size: .92rem; }
-.dcols h4, .detail h4 { font-size: .78rem; font-weight: 500; color: var(--sky); margin-bottom: .2rem; letter-spacing: .03em; }
-.dcols ul { padding-inline-start: 1.1rem; }
-.task { background: var(--sky-soft); border-radius: 8px; padding: .6rem .8rem; font-size: .92rem; align-self: start; }
-.task b { color: var(--sky); }
+/* S2 year A timeline */
+.tl { display: grid; grid-template-rows: auto auto; gap: 1.6rem; align-content: center; }
+.line10 { position: relative; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: .4rem; padding-top: .2rem; }
+.line10::before { content: ""; position: absolute; top: 1.55rem; inset-inline: 5%; height: 5px; border-radius: 5px; background: linear-gradient(90deg, var(--a), var(--a-deep)); }
+.node { position: relative; z-index: 1; display: grid; justify-items: center; gap: .25rem; background: none; border: 0; padding: 0; text-align: center; }
+.node .n { width: 2.7rem; height: 2.7rem; border-radius: 50%; background: var(--surface); border: 4px solid var(--a); color: var(--a); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; transition: transform .2s, background .2s; font-variant-numeric: tabular-nums; }
+.node:hover .n { transform: scale(1.12); }
+.node[aria-pressed="true"] .n { background: var(--a); color: var(--on); transform: scale(1.18); }
+.node small { font-size: .78rem; color: var(--muted); }
+.node b { font-family: var(--font-display); font-weight: 500; font-size: .82rem; line-height: 1.2; }
+.node[aria-pressed="true"] b { color: var(--a); font-weight: 700; }
+.mdetail { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr); gap: 1.2rem; align-items: start; border-top: 5px solid var(--a); }
+.mdetail .pic { width: 10rem; height: 10rem; }
+.mdetail h3 { font-size: 1.4rem; color: var(--a); margin-bottom: .2rem; }
+.mdetail h4 { font-size: .8rem; color: var(--muted); margin-bottom: .3rem; letter-spacing: .04em; }
+.mdetail ul { padding-inline-start: 1.1rem; display: grid; gap: .2rem; }
+.task { background: var(--a-soft); border-radius: 12px; padding: .8rem 1rem; }
+.task h4 { color: var(--a) !important; }
+.mdetail.swap { animation: pop .35s ease; }
+@keyframes pop { from { transform: translateY(8px); opacity: .4; } to { transform: none; opacity: 1; } }
 
-/* year B status */
-.y2s { grid-template-rows: auto auto; align-items: start; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
-.summary { grid-column: 1 / -1; display: flex; gap: 1rem 2rem; flex-wrap: wrap; align-items: start; }
-.summary h2 { font-size: 1.6rem; flex: 0 0 auto; max-width: 16ch; }
-.summary p { flex: 1 1 32rem; font-size: .98rem; max-width: 95ch; }
-.summary p b { color: var(--olive); }
-.chal { display: grid; grid-template-rows: auto minmax(0, 1fr); }
-.chal-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; min-height: 0; }
-.ch { display: grid; grid-template-rows: auto auto 1fr; gap: .45rem; align-content: start; }
-.ch .pic { height: 7.5rem; width: 100%; }
-.ch h3 { font-size: 1rem; }
-.ch p { font-size: .88rem; color: var(--muted); }
-.cmp { display: grid; grid-template-rows: auto minmax(0, 1fr); }
-.cmp-grid { display: grid; grid-template-columns: minmax(0, .85fr) auto minmax(0, 1.3fr); gap: .45rem .6rem; align-content: start; font-size: .92rem; }
-.cmp-grid .h { font-family: var(--font-display); font-weight: 500; font-size: .82rem; padding: .3rem .7rem; border-radius: 999px; text-align: center; }
-.cmp-grid .h.a { background: var(--sky-soft); color: var(--sky); }
-.cmp-grid .h.b { background: var(--olive-soft); color: var(--olive); }
-.cmp-grid .c { border: 1px solid var(--line); border-radius: 999px; padding: .45rem .8rem; text-align: center; min-width: 0; }
-.cmp-grid .arrow { color: var(--muted); align-self: center; }
-.src { font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+/* S3 now status */
+.now { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: .9rem; }
+.findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.find { display: flex; gap: .8rem; align-items: center; border-inline-start: 6px solid var(--a); }
+.find b { font-family: var(--font-display); font-size: 1rem; display: block; }
+.find p { font-size: .9rem; color: var(--muted); }
+.find .big { font-family: var(--font-display); font-weight: 900; font-size: 2rem; color: var(--a); line-height: 1; }
+.chal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; }
+.ch { display: grid; grid-template-rows: minmax(7rem, 1fr) auto auto auto; gap: .5rem; overflow: hidden; }
+.ch .pic { height: 100%; width: 100%; }
+.ch h3 { font-size: 1.15rem; }
+.ch p { color: var(--muted); font-size: .95rem; }
+.ch .flag { justify-self: start; font-family: var(--font-display); font-weight: 700; font-size: .72rem; color: var(--a); background: var(--a-soft); border-radius: 999px; padding: .1rem .6rem; }
 
-/* year B plan */
-.y2p { grid-template-columns: minmax(0, 1fr) minmax(0, 3.2fr); align-items: start; }
-.gcol { display: grid; grid-template-rows: auto repeat(3, auto); gap: .7rem; align-content: start; overflow: auto; }
-.g { display: flex; gap: .7rem; align-items: center; }
-.g .pic { width: 3.6rem; height: 3.6rem; }
-.g h3 { font-size: .95rem; }
-.g p { font-size: .84rem; color: var(--muted); }
-.quote { background: var(--amber-soft); border-radius: 10px; padding: .7rem .8rem; font-size: .9rem; }
-.quote b { color: var(--amber); font-family: var(--font-display); font-weight: 500; }
-.areas { display: grid; grid-template-rows: auto auto; gap: .7rem; min-height: 0; }
-.areas-head { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; }
-.areas-head h2 { font-size: 1.5rem; }
-.area-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; min-height: 0; }
-.area { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: .5rem; overflow: auto; }
-.area .top-row { display: flex; gap: .6rem; align-items: center; }
-.area .pic { width: 4.6rem; height: 4.6rem; }
-.area h3 { font-size: .98rem; }
-.area .why { font-size: .84rem; color: var(--muted); }
-.tag { display: inline-block; font-size: .72rem; font-family: var(--font-display); font-weight: 500; background: var(--amber-soft); color: var(--amber); border-radius: 999px; padding: .05rem .5rem; margin-top: .15rem; }
-.sess { display: grid; gap: .5rem; align-content: start; }
-.s { border-top: 1px solid var(--line); padding-top: .45rem; display: grid; gap: .1rem; }
-.s b { font-family: var(--font-display); font-weight: 500; font-size: .9rem; }
-.s b span { color: var(--olive); font-variant-numeric: tabular-nums; }
-.s p { font-size: .84rem; color: var(--muted); }
+/* S4 bridge */
+.bridge { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: .8rem; }
+.bhead { display: grid; grid-template-columns: minmax(0, 1fr) 7rem minmax(0, 1fr); align-items: center; text-align: center; }
+.bhead div { font-family: var(--font-display); font-weight: 900; font-size: 1.3rem; }
+.bhead .na { color: var(--a); } .bhead .nb { color: var(--b); }
+.rows { display: grid; gap: .7rem; align-content: start; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) 7rem minmax(0, 1fr); align-items: center; }
+.pill { border-radius: 14px; padding: .9rem 1.1rem; display: flex; align-items: center; gap: .8rem; font-family: var(--font-display); font-weight: 500; font-size: 1.08rem; min-width: 0; }
+.pill.a { background: var(--a-soft); border: 2px solid var(--a); }
+.pill.b { background: var(--b-soft); border: 2px solid var(--b); }
+.pill .pic { width: 3.2rem; height: 3.2rem; }
+.conn { position: relative; height: 6px; margin-inline: .4rem; border-radius: 6px; background: linear-gradient(90deg, var(--a), var(--b)); }
+.conn::after { content: ""; position: absolute; inset-inline-end: -4px; top: 50%; transform: translateY(-50%); border: 9px solid transparent; border-inline-start: 13px solid var(--b); border-inline-end: 0; }
+.screen:not([hidden]) .row { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+.screen:not([hidden]) .row:nth-child(2) { animation-delay: .08s; }
+.screen:not([hidden]) .row:nth-child(3) { animation-delay: .16s; }
+.screen:not([hidden]) .row:nth-child(4) { animation-delay: .24s; }
 
-/* footer */
-.foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .6rem .9rem; border-top: 1px solid var(--line); }
-.foot button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: .4rem .9rem; font-family: var(--font-display); font-weight: 500; font-size: .9rem; }
-.foot button:hover:not(:disabled) { border-color: var(--olive); }
-.foot button:disabled { opacity: .4; cursor: default; }
-.pos { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; text-align: center; }
+/* S5 target goals */
+.goals { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr); gap: 1rem; align-items: stretch; }
+.goal { display: grid; grid-template-rows: minmax(7rem, 1fr) auto auto; gap: .6rem; border-top: 6px solid var(--b); }
+.goal .pic { height: 100%; width: 100%; }
+.goal h3 { font-size: 1.35rem; color: var(--b); }
+.goal p { color: var(--muted); }
+.quote { background: var(--b-soft); border: 2px solid var(--b); border-radius: 14px; padding: 1.2rem; display: grid; gap: .8rem; align-content: center; }
+.quote .pic { width: 7rem; height: 7rem; }
+.quote blockquote { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.45rem; line-height: 1.25; color: var(--b); }
+.quote p { color: var(--fg); }
 
-/* small or short screens: stack and let the screen scroll inside itself */
-@media (max-width: 900px), (max-height: 520px) {
+/* S6 target program */
+.areas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .9rem; align-content: center; }
+.area { display: grid; gap: .6rem; align-content: start; border-top: 6px solid var(--b); }
+.area .head { display: flex; gap: .7rem; align-items: center; }
+.area .pic { width: 6rem; height: 6rem; }
+.area h3 { font-size: 1.05rem; }
+.area .why { font-size: .88rem; color: var(--muted); }
+.tag { display: inline-block; margin-top: .25rem; font-family: var(--font-display); font-weight: 700; font-size: .7rem; background: var(--b); color: var(--on); border-radius: 999px; padding: .08rem .55rem; }
+.s { display: flex; gap: .6rem; align-items: start; border-top: 1px solid var(--line); padding-top: .55rem; }
+.s .n { flex: none; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--b); color: var(--on); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: .9rem; }
+.s b { font-family: var(--font-display); font-weight: 700; font-size: .95rem; display: block; }
+.s p { font-size: .85rem; color: var(--muted); }
+
+/* ---------- footer nav ---------- */
+.foot { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 1rem; padding-block: .6rem .8rem; border-top: 1px solid var(--line); }
+.nb { display: inline-flex; align-items: center; gap: .7rem; border: 0; border-radius: 14px; padding: .65rem 1.3rem; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; color: var(--on); box-shadow: 0 6px 16px -8px rgba(0,0,0,.45); transition: transform .15s, filter .15s; min-width: 0; }
+.nb:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.07); }
+.nb:active:not(:disabled) { transform: translateY(1px); }
+.nb:disabled { opacity: .35; cursor: default; box-shadow: none; }
+.nb small { display: block; font-weight: 500; font-size: .75rem; opacity: .9; }
+.nb .ar { font-size: 1.6rem; line-height: 1; }
+.nb .lbl { text-align: start; min-width: 0; }
+.nb .lbl span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#prev { justify-self: start; }
+#next { justify-self: end; }
+.nb.a { background: var(--a); } .nb.b { background: var(--b); }
+.counter { font-family: var(--font-display); font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- small / short screens ---------- */
+@media (max-width: 900px), (max-height: 540px) {
   html { font-size: 15px; }
-  .stage { overflow: auto; }
-  .screen { height: auto; }
-  .y1m, .y2s, .y2p { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
-  .goals, .req { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .mgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
-  .area-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .chal-list { grid-template-columns: minmax(0, 1fr); }
-  .ch { grid-template-columns: 5.5rem minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: .8rem; }
-  .ch .pic { grid-row: span 2; height: 5.5rem; }
+  .screen { height: auto; min-height: 100%; }
+  .ch .pic { height: 7rem; }
+  .goal { grid-template-rows: 8rem auto auto; }
+  .tl { align-content: start; }
+  .journey { flex-basis: 100%; }
+  .cover { grid-template-columns: minmax(0, 1fr); }
+  .arrow-big svg { transform: rotate(-90deg); }
+  .line10 { grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 1rem; }
+  .line10::before { display: none; }
+  .mdetail { grid-template-columns: auto minmax(0, 1fr); }
+  .mdetail .task, .mdetail .c2 { grid-column: 1 / -1; }
+  .findings, .chal, .goals { grid-template-columns: minmax(0, 1fr); }
+  .ch { grid-template-columns: 7rem minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: .8rem; }
+  .ch .pic { grid-row: span 3; height: 7rem; }
+  .goal .pic { height: 7rem; }
+  .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bhead, .row { grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr); }
+  .pill { font-size: .95rem; padding: .7rem; }
+  .pill .pic { display: none; }
 }
 @media (max-width: 560px) {
-  .goals, .req, .area-grid, .dcols { grid-template-columns: minmax(0, 1fr); }
-  .screens button { padding: .35rem .45rem; }
-  .cmp-grid { font-size: .85rem; }
+  .areas { grid-template-columns: minmax(0, 1fr); }
+  .mdetail { grid-template-columns: minmax(0, 1fr); }
+  .mdetail .pic { width: 6rem; height: 6rem; }
+  .bhead div { font-size: 1rem; }
+  .row { grid-template-columns: minmax(0, 1fr); gap: .3rem; }
+  .bhead { grid-template-columns: 1fr 1fr; }
+  .bhead span { display: none; }
+  .conn { width: 6px; height: 1.4rem; justify-self: center; background: linear-gradient(180deg, var(--a), var(--b)); }
+  .conn::after { display: none; }
+  .nb { padding: .55rem .8rem; }
+  .nb .lbl span { display: none; }
+  .band .deco { width: 8rem; height: 8rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 </style>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="ab" x1="1" x2="0" y1="0" y2="0"><stop offset="0" stop-color="#2b7a57"/><stop offset="1" stop-color="#d0542a"/></linearGradient>
+    <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" fill="currentColor"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></symbol>
+  </defs>
+</svg>
+
 <div class="app" dir="rtl" lang="he">
   <header class="top">
-    <div class="brand">
-      <small>פסג"ה דבוריה · פיתוח מקצועי</small>
-      <h1>תומכות חינוך בגנים</h1>
-    </div>
-    <nav class="nav" aria-label="ניווט">
-      <div class="years" role="group" aria-label="בחירת שנה">
-        <button type="button" data-year="1" id="yr-1">שנה א׳ · תשפ"ו</button>
-        <button type="button" data-year="2" id="yr-2">שנה ב׳ · תשפ"ז</button>
+    <div class="brand"><small>פסג"ה דבוריה · פיתוח מקצועי</small><b>תומכות חינוך בגנים</b></div>
+    <nav class="journey" aria-label="מסלול המצגת">
+      <div class="leg a">
+        <div class="leg-label"><svg><use href="#pin"/></svg>שנה א׳ · תשפ"ו · עכשיו</div>
+        <div class="track" id="track-a"><div class="fill"></div></div>
       </div>
-      <div class="screens" id="screen-tabs"></div>
+      <div class="leg b">
+        <div class="leg-label"><svg><use href="#target"/></svg>שנה ב׳ · תשפ"ז · יעד TARGET</div>
+        <div class="track" id="track-b"><div class="fill"></div></div>
+      </div>
     </nav>
   </header>
 
   <main class="stage" id="stage">
 
-    <!-- YEAR A · overview -->
-    <section class="screen y1o" id="year1-overview" data-year="1" data-label="מבט על" hidden>
-      <div class="intro">
-        <div>
-          <div class="eyebrow">שנה א׳ · תכנית בסיס</div>
-          <h2>מכירות את התפקיד, מכירות את הילד</h2>
-          <p class="muted">השנה הראשונה בנתה שפה מקצועית משותפת: מה תפקידה של תומכת החינוך, איך מתפתח ילד, ואילו כלים בסיסיים עוזרים ביום יום בגן.</p>
+    <!-- 1 · cover -->
+    <section class="screen" id="start" data-year="a" data-label="פתיחה" hidden>
+      <div class="band ab">
+        <div class="stripes"></div>
+        <div class="txt">
+          <span class="chip">פסג"ה דבוריה · דבוריה ואכסאל</span>
+          <h2>פיתוח מקצועי לתומכות חינוך</h2>
+          <p>מתמונת המצב של היום אל היעד של שנה ב׳</p>
         </div>
-        <div class="facts">
-          <div class="fact"><b>10</b><small>מפגשים</small></div>
-          <div class="fact"><b>30</b><small>שעות</small></div>
-          <div class="fact"><b>אוק׳–יוני</b><small>מפגש בחודש</small></div>
-        </div>
+        <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="16"/></svg>
       </div>
-      <div class="goals">
-        <div class="goal panel"><div class="pic"><img src="img/confidence.png" alt=""></div><div><h3>הבנת התפקיד</h3><p>תחומי אחריות, גבולות ושותפות עם הגננת.</p></div></div>
-        <div class="goal panel"><div class="pic"><img src="img/needs.png" alt=""></div><div><h3>הכרת הילד</h3><p>התפתחות, צרכים רגשיים וצרכים מיוחדים.</p></div></div>
-        <div class="goal panel"><div class="pic"><img src="img/communication.png" alt=""></div><div><h3>כלים לעבודה</h3><p>תקשורת, תיווך, התנהגות ומוגנות.</p></div></div>
-        <div class="goal panel"><div class="pic"><img src="img/regulation.png" alt=""></div><div><h3>חוסן וקהילה</h3><p>קבוצת עמיתות ומניעת שחיקה.</p></div></div>
-      </div>
-      <div class="panel clock">
-        <h2>מבנה קבוע לכל מפגש · 180 דקות</h2>
-        <div class="bar" role="img" aria-label="חלוקת זמן המפגש">
-          <div class="seg" style="flex:20">פתיחה</div>
-          <div class="seg" style="flex:55">תוכן מקצועי</div>
-          <div class="seg break" style="flex:15">הפסקה</div>
-          <div class="seg" style="flex:65">סדנה מעשית</div>
-          <div class="seg" style="flex:25">רפלקציה</div>
+      <div class="body cover">
+        <div class="yr a">
+          <span class="k a">שנה א׳ · תשפ"ו · עכשיו</span>
+          <h3>בסיס: התפקיד והילד</h3>
+          <div class="nums"><div><b>10</b><small>מפגשים</small></div><div><b>30</b><small>שעות</small></div></div>
+          <ul><li>מה תפקידה של תומכת החינוך</li><li>התפתחות הילד וצרכים שונים</li><li>כלים בסיסיים לעבודה בגן</li></ul>
+          <div class="pics"><div class="pic"><img src="img/confidence.png" alt=""></div><div class="pic"><img src="img/needs.png" alt=""></div><div class="pic"><img src="img/partner.png" alt=""></div></div>
         </div>
-        <div class="legend">
-          <div><b>20 דק׳ · פתיחה</b><span>שיתוף במשימת היישום.</span></div>
-          <div><b>55 דק׳ · תוכן</b><span>הרצאה קצרה, סרטון או מקרה.</span></div>
-          <div><b>15 דק׳ · הפסקה</b><span>כיבוד ושיחה.</span></div>
-          <div><b>65 דק׳ · סדנה</b><span>משחקי תפקידים ובניית עזרים.</span></div>
-          <div><b>25 דק׳ · רפלקציה</b><span>יומן, משוב ומשימה הבאה.</span></div>
+        <div class="arrow-big" aria-hidden="true">
+          <svg viewBox="0 0 100 60"><path d="M92 30 H10 M30 10 L10 30 L30 50"/></svg>
+          <span>מעבר</span>
         </div>
-        <div class="req">
-          <div><b>נוכחות</b><br><span class="muted">8 מפגשים לפחות מתוך 10</span></div>
-          <div><b>משימות יישום</b><br><span class="muted">6 לפחות, עם יומן רפלקטיבי</span></div>
-          <div><b>תלקיט</b><br><span class="muted">מוצג במפגש הסיכום</span></div>
-          <div><b>שאלונים</b><br><span class="muted">פתיחה וסיום</span></div>
+        <div class="yr b">
+          <span class="k b">שנה ב׳ · תשפ"ז · יעד</span>
+          <h3>העמקה: רגש ופדגוגיה</h3>
+          <div class="nums"><div><b>8</b><small>מפגשים</small></div><div><b>24</b><small>שעות</small></div></div>
+          <ul><li>ויסות רגשי וניהול התנהגות</li><li>הכלה ושילוב, תקשורת מיטבית</li><li>ביטחון מקצועי, יוזמה וניהול קבוצה</li></ul>
+          <div class="pics"><div class="pic"><img src="img/regulation.png" alt=""></div><div class="pic"><img src="img/group.png" alt=""></div><div class="pic"><img src="img/play.png" alt=""></div></div>
         </div>
       </div>
     </section>
 
-    <!-- YEAR A · meetings -->
-    <section class="screen y1m" id="year1-meetings" data-year="1" data-label="המפגשים" hidden>
-      <div class="mgrid" id="mgrid"></div>
-      <div class="panel detail" id="mdetail" aria-live="polite"></div>
-    </section>
-
-    <!-- YEAR B · status -->
-    <section class="screen y2s" id="year2-status" data-year="2" data-label="תמונת מצב" hidden>
-      <div class="summary">
-        <div>
-          <div class="eyebrow">שנה ב׳ · ממצאי שאלון הגננות</div>
-          <h2>מהמשימות הטכניות אל הליבה הרגשית והפדגוגית</h2>
+    <!-- 2 · year A meetings -->
+    <section class="screen" id="year-a" data-year="a" data-label="מה עשינו בשנה א׳" hidden>
+      <div class="band a">
+        <div class="stripes"></div>
+        <div class="txt">
+          <span class="chip">שנה א׳ · תשפ"ו · עכשיו</span>
+          <h2>עשרה מפגשים על קו אחד</h2>
+          <p>מפגש בחודש, מאוקטובר עד יוני. לחצו על מפגש בקו כדי לראות מה למדו ומה יישמו בגן.</p>
         </div>
-        <p>ניתוח השאלון שנערך בקרב גננות <b>בדבוריה ובאכסאל</b> מצביע על צורך מובהק בהעמקת המיומנויות של תומכות החינוך כחלק בלתי נפרד מהצוות הפדגוגי. הגננות רואות בתומכת שותפה משמעותית, אך מדגישות שלקראת שנה ב׳ יש לעבור מהתמקדות במשימות טכניות לביסוס יכולות רגשיות ופדגוגיות מתקדמות. הפערים העיקריים: <b>ויסות רגשי, ניהול התנהגות ותקשורת בין־אישית</b>. האתגר המרכזי הוא מענה לשונות הרבה בין הילדים בגן, והצורך ביוזמה ובביטחון מקצועי גבוה יותר.</p>
+        <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="31"/></svg>
       </div>
-      <div class="panel chal">
-        <h2>אתגרים מרכזיים בעבודה</h2>
-        <div class="chal-list">
-          <div class="ch"><div class="pic"><img src="img/crisis.png" alt="תומכת מתלבטת מול דרך מפותלת"></div><h3>חוסר גמישות ויוזמה בעת משבר</h3><p>לעיתים חסרה היכולת לפעול באופן עצמאי ומגיב כשהמצב בגן משתנה.</p></div>
-          <div class="ch"><div class="pic"><img src="img/needs.png" alt="תומכת מוקפת בצרכים שונים"></div><h3>מענה לשונות וצרכים מרובים</h3><p>קושי לתת מענה אישי לכל ילד במקביל לניהול השגרה של הגן.</p></div>
-          <div class="ch"><div class="pic"><img src="img/behavior.png" alt="מבוגר מותש בין ילדים סוערים"></div><h3>התמודדות עם התנהגות מאתגרת</h3><p>שמירה על גבולות וסדר מול התנהגויות מורכבות של ילדים.</p></div>
-        </div>
-      </div>
-      <div class="panel cmp">
-        <h2>מיומנויות נדרשות מול הדגש הפדגוגי</h2>
-        <div class="cmp-grid">
-          <div class="h a">מיומנות נדרשת</div><div></div><div class="h b">דגש פדגוגי בשנה ב׳</div>
-          <div class="c">זיהוי צורכי הילד</div><div class="arrow">←</div><div class="c">תגובה מותאמת אישית לכל ילד</div>
-          <div class="c">תיווך במצבי קונפליקט</div><div class="arrow">←</div><div class="c">פתרון בעיות בין ילדים בצורה רגועה</div>
-          <div class="c">עידוד עצמאות</div><div class="arrow">←</div><div class="c">הענקת כלים לילד לפעול לבד</div>
-          <div class="c">תקשורת עם הורים</div><div class="arrow">←</div><div class="c">גבולות מקצועיים ומענה רגשי</div>
-        </div>
-        <p class="src">הסדר לפי תדירות ההופעה בשאלון.</p>
+      <div class="body tl">
+        <div class="line10" id="line10"></div>
+        <div class="card mdetail" id="mdetail" aria-live="polite"></div>
       </div>
     </section>
 
-    <!-- YEAR B · plan -->
-    <section class="screen y2p" id="year2-plan" data-year="2" data-label="יעדים ותכנית" hidden>
-      <div class="panel gcol">
-        <h2>יעדים לזהות מקצועית</h2>
-        <div class="g"><div class="pic"><img src="img/confidence.png" alt=""></div><div><h3>ביטחון מקצועי ויוזמה</h3><p>להרגיש שותפה מלאה, להציע רעיונות ולקחת חלק בתכנון.</p></div></div>
-        <div class="g"><div class="pic"><img src="img/group.png" alt=""></div><div><h3>ניהול קבוצה</h3><p>להנחות לבד פעילות בקבוצה קטנה או עבודה פרטנית.</p></div></div>
-        <div class="quote"><b>מה הגננות מצפות:</b> "ביטחון מקצועי, יוזמה ותחושת אחריות", שהתומכת תפתח זהות של שותפה משמעותית בעשייה החינוכית.</div>
-      </div>
-      <div class="areas">
-        <div class="areas-head">
-          <div>
-            <div class="eyebrow">שנה ב׳ · 8 מפגשים · 24 שעות</div>
-            <h2>ארבעה תחומי למידה, שני מפגשים בכל תחום</h2>
-          </div>
-          <span class="muted">הסדר לפי מידת הביקוש בשאלון</span>
+    <!-- 3 · status now -->
+    <section class="screen" id="now" data-year="a" data-label="תמונת מצב עכשיו" hidden>
+      <div class="band a">
+        <div class="stripes"></div>
+        <div class="txt">
+          <span class="chip">סוף שנה א׳ · תמונת מצב</span>
+          <h2>איפה אנחנו עכשיו</h2>
+          <p>ממצאי השאלון שמילאו הגננות בדבוריה ובאכסאל</p>
         </div>
-        <div class="area-grid">
-          <div class="panel area">
-            <div class="top-row"><div class="pic"><img src="img/regulation.png" alt=""></div><div><h3>ויסות רגשי וניהול התנהגות</h3><span class="tag">המבוקש ביותר</span></div></div>
-            <p class="why">כלים להצבת גבולות ולהתמודדות עם מצבים מאתגרים בגן.</p>
-            <div class="sess">
-              <div class="s"><b><span>1</span> · להבין את הסערה</b><p>מה קורה לילד בהתפרצות, ואיך אני נשארת רגועה.</p></div>
-              <div class="s"><b><span>2</span> · גבולות בלי מאבק</b><p>הצבת גבולות עקבית ותגובה אחידה עם הגננת.</p></div>
-            </div>
-          </div>
-          <div class="panel area">
-            <div class="top-row"><div class="pic"><img src="img/inclusion.png" alt=""></div><div><h3>הכלה ושילוב ילדים עם צרכים שונים</h3></div></div>
-            <p class="why">זיהוי ילדים שזקוקים לתמיכה ומענה מותאם לשונות.</p>
-            <div class="sess">
-              <div class="s"><b><span>3</span> · עין מקצועית</b><p>תצפית ממוקדת וזיהוי צורכי הילד.</p></div>
-              <div class="s"><b><span>4</span> · מענה בתוך השגרה</b><p>התאמות קטנות לכל ילד בלי לעצור את הגן.</p></div>
-            </div>
-          </div>
-          <div class="panel area">
-            <div class="top-row"><div class="pic"><img src="img/communication.png" alt=""></div><div><h3>תקשורת מיטבית וכישורים חברתיים</h3></div></div>
-            <p class="why">תקשורת עם הילדים, עם ההורים ובתוך הצוות.</p>
-            <div class="sess">
-              <div class="s"><b><span>5</span> · מגשרת קטנה</b><p>תיווך בקונפליקט ופתרון בעיות רגוע בין ילדים.</p></div>
-              <div class="s"><b><span>6</span> · מול ההורים והצוות</b><p>גבולות מקצועיים, מה אומרים ולמי מפנים.</p></div>
-            </div>
-          </div>
-          <div class="panel area">
-            <div class="top-row"><div class="pic"><img src="img/play.png" alt=""></div><div><h3>למידה דרך משחק וכלים דיגיטליים</h3></div></div>
-            <p class="why">העשרה פדגוגית, טכנולוגיה ופיתוח שפה דרך משחק.</p>
-            <div class="sess">
-              <div class="s"><b><span>7</span> · משחק שמלמד</b><p>משחק כמנוף לשפה, לעצמאות ולקשר.</p></div>
-              <div class="s"><b><span>8</span> · אני מובילה</b><p>כל תומכת מציגה פעילות דיגיטלית או משחקית שהובילה בקבוצה קטנה.</p></div>
-            </div>
-          </div>
+        <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="31"/></svg>
+      </div>
+      <div class="body now">
+        <div class="findings">
+          <div class="card find"><span class="big">✓</span><div><b>שותפה משמעותית</b><p>הגננות רואות בתומכת חלק בלתי נפרד מהצוות.</p></div></div>
+          <div class="card find"><span class="big">!</span><div><b>עדיין משימות טכניות</b><p>צריך לעבור ליכולות רגשיות ופדגוגיות מתקדמות.</p></div></div>
+          <div class="card find"><span class="big">3</span><div><b>פערים עיקריים</b><p>ויסות רגשי, ניהול התנהגות ותקשורת בין־אישית.</p></div></div>
+        </div>
+        <div class="chal">
+          <div class="card ch"><div class="pic"><img src="img/crisis.png" alt="תומכת מתלבטת מול דרך מפותלת"></div><span class="flag">אתגר 1</span><h3>חוסר גמישות ויוזמה בעת משבר</h3><p>לעיתים חסרה היכולת לפעול באופן עצמאי ומגיב כשהמצב בגן משתנה.</p></div>
+          <div class="card ch"><div class="pic"><img src="img/needs.png" alt="תומכת מוקפת בצרכים שונים"></div><span class="flag">אתגר 2</span><h3>מענה לשונות וצרכים מרובים</h3><p>קושי לתת מענה אישי לכל ילד במקביל לניהול השגרה של הגן.</p></div>
+          <div class="card ch"><div class="pic"><img src="img/behavior.png" alt="מבוגר מותש בין ילדים סוערים"></div><span class="flag">אתגר 3</span><h3>התמודדות עם התנהגות מאתגרת</h3><p>שמירה על גבולות וסדר מול התנהגויות מורכבות של ילדים.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · bridge now → target -->
+    <section class="screen" id="bridge" data-year="b" data-label="מעכשיו ליעד" hidden>
+      <div class="band ab">
+        <div class="stripes"></div>
+        <div class="txt">
+          <span class="chip">המעבר משנה א׳ לשנה ב׳</span>
+          <h2>מעכשיו אל היעד</h2>
+          <p>כל מיומנות שהגננות ביקשו, ולאן אנחנו רוצים לקחת אותה בשנה ב׳ (לפי תדירות ההופעה בשאלון)</p>
+        </div>
+        <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="16"/></svg>
+      </div>
+      <div class="body bridge">
+        <div class="bhead"><div class="na">עכשיו · מיומנות נדרשת</div><span></span><div class="nb">יעד · דגש פדגוגי</div></div>
+        <div class="rows">
+          <div class="row"><div class="pill a"><div class="pic"><img src="img/needs.png" alt=""></div>זיהוי צורכי הילד</div><div class="conn"></div><div class="pill b">תגובה מותאמת אישית לכל ילד</div></div>
+          <div class="row"><div class="pill a"><div class="pic"><img src="img/behavior.png" alt=""></div>תיווך במצבי קונפליקט</div><div class="conn"></div><div class="pill b">פתרון בעיות בין ילדים בצורה רגועה</div></div>
+          <div class="row"><div class="pill a"><div class="pic"><img src="img/play.png" alt=""></div>עידוד עצמאות</div><div class="conn"></div><div class="pill b">הענקת כלים לילד לפעול לבד</div></div>
+          <div class="row"><div class="pill a"><div class="pic"><img src="img/communication.png" alt=""></div>תקשורת עם הורים</div><div class="conn"></div><div class="pill b">גבולות מקצועיים ומענה רגשי</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · target goals -->
+    <section class="screen" id="target" data-year="b" data-label="היעד" hidden>
+      <div class="band b">
+        <div class="stripes"></div>
+        <div class="txt">
+          <span class="chip">שנה ב׳ · תשפ"ז · TARGET</span>
+          <h2>היעד: זהות מקצועית של שותפה</h2>
+          <p>מה תומכת החינוך תדע ותעשה בסוף שנה ב׳</p>
+        </div>
+        <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="16"/></svg>
+      </div>
+      <div class="body goals">
+        <div class="card goal"><div class="pic"><img src="img/confidence.png" alt="תומכת מציגה רעיון"></div><h3>חיזוק הביטחון המקצועי והיוזמה</h3><p>התומכת מרגישה שותפה מלאה, מציעה רעיונות ולוקחת חלק פעיל בתכנון הפעילויות.</p></div>
+        <div class="card goal"><div class="pic"><img src="img/group.png" alt="תומכת מנחה קבוצת ילדים"></div><h3>פיתוח יכולת ניהול קבוצה</h3><p>התומכת מנחה לבד פעילות בקבוצה קטנה או עבודה פרטנית עם ילד.</p></div>
+        <div class="quote">
+          <div class="pic"><img src="img/partner.png" alt=""></div>
+          <blockquote>"ביטחון מקצועי, יוזמה ותחושת אחריות"</blockquote>
+          <p>זה מה שהגננות מצפות: שהתומכת תפתח זהות של שותפה משמעותית בעשייה החינוכית.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · target program -->
+    <section class="screen" id="program" data-year="b" data-label="התכנית לשנה ב׳" hidden>
+      <div class="band b">
+        <div class="stripes"></div>
+        <div class="txt">
+          <span class="chip">שנה ב׳ · 8 מפגשים · 24 שעות</span>
+          <h2>ארבעה תחומים, שני מפגשים בכל תחום</h2>
+          <p>התחומים מסודרים לפי מידת הביקוש בשאלון</p>
+        </div>
+        <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="16"/></svg>
+      </div>
+      <div class="body areas">
+        <div class="card area">
+          <div class="head"><div class="pic"><img src="img/regulation.png" alt=""></div><div><h3>ויסות רגשי וניהול התנהגות</h3><span class="tag">המבוקש ביותר</span></div></div>
+          <p class="why">כלים להצבת גבולות ולהתמודדות עם מצבים מאתגרים בגן.</p>
+          <div class="s"><span class="n">1</span><div><b>להבין את הסערה</b><p>מה קורה לילד בהתפרצות, ואיך אני נשארת רגועה.</p></div></div>
+          <div class="s"><span class="n">2</span><div><b>גבולות בלי מאבק</b><p>גבולות עקביים ותגובה אחידה עם הגננת.</p></div></div>
+        </div>
+        <div class="card area">
+          <div class="head"><div class="pic"><img src="img/inclusion.png" alt=""></div><div><h3>הכלה ושילוב ילדים עם צרכים שונים</h3></div></div>
+          <p class="why">זיהוי ילדים שזקוקים לתמיכה ומענה מותאם לשונות.</p>
+          <div class="s"><span class="n">3</span><div><b>עין מקצועית</b><p>תצפית ממוקדת וזיהוי צורכי הילד.</p></div></div>
+          <div class="s"><span class="n">4</span><div><b>מענה בתוך השגרה</b><p>התאמות קטנות לכל ילד בלי לעצור את הגן.</p></div></div>
+        </div>
+        <div class="card area">
+          <div class="head"><div class="pic"><img src="img/communication.png" alt=""></div><div><h3>תקשורת מיטבית וכישורים חברתיים</h3></div></div>
+          <p class="why">תקשורת עם הילדים, עם ההורים ובתוך הצוות.</p>
+          <div class="s"><span class="n">5</span><div><b>מגשרת קטנה</b><p>תיווך בקונפליקט ופתרון בעיות רגוע בין ילדים.</p></div></div>
+          <div class="s"><span class="n">6</span><div><b>מול ההורים והצוות</b><p>גבולות מקצועיים: מה אומרים ולמי מפנים.</p></div></div>
+        </div>
+        <div class="card area">
+          <div class="head"><div class="pic"><img src="img/play.png" alt=""></div><div><h3>למידה דרך משחק וכלים דיגיטליים</h3></div></div>
+          <p class="why">העשרה פדגוגית, טכנולוגיה ופיתוח שפה דרך משחק.</p>
+          <div class="s"><span class="n">7</span><div><b>משחק שמלמד</b><p>משחק כמנוף לשפה, לעצמאות ולקשר.</p></div></div>
+          <div class="s"><span class="n">8</span><div><b>אני מובילה</b><p>כל תומכת מציגה פעילות שהובילה בקבוצה קטנה.</p></div></div>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="foot">
-    <button type="button" id="prev">→ הקודם</button>
-    <div class="pos" id="pos"></div>
-    <button type="button" id="next">הבא ←</button>
+    <button type="button" class="nb" id="prev"><span class="ar">→</span><span class="lbl"><small>אחורה</small><span id="prev-name"></span></span></button>
+    <div class="counter" id="counter"></div>
+    <button type="button" class="nb" id="next"><span class="lbl"><small>קדימה</small><span id="next-name"></span></span><span class="ar">←</span></button>
   </footer>
 </div>
 
@@ -353,79 +454,91 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--sky); outline-o
 document.documentElement.lang = "he";
 document.documentElement.dir = "rtl";
 
+/* year A meetings */
 const meetings = [
-  { m: "אוקטובר", img: "confidence", t: "פתיחה: מי אני כתומכת חינוך?", s: "הגדרת התפקיד ומיפוי צרכים", c: ["תפקיד תומכת החינוך בגן", "גבולות התפקיד ושותפות עם הצוות", "ציפיות מהתהליך"], a: ["מעגל היכרות", "שאלון מיפוי צרכים", "מפת \"יום בחיי תומכת\""], k: "לתעד יום עבודה אחד: מה עשיתי, מה היה קשה ומה הצליח." },
-  { m: "נובמבר", img: "needs", t: "להכיר את הילד", s: "התפתחות רגשית, חברתית ושפתית", c: ["שלבי התפתחות ומה מצופה בכל גיל", "סימנים שכדאי לשים לב אליהם", "שונות בין ילדים"], a: ["ניתוח סרטונים קצרים", "עבודה בקבוצות לפי גיל"], k: "לבחור ילד אחד ולכתוב תצפית קצרה על חוזקה וקושי." },
-  { m: "דצמבר", img: "communication", t: "תקשורת שמקדמת", s: "לדבר עם ילדים כדי לחזק ולהרגיע", c: ["הקשבה פעילה ושיקוף רגשות", "שפה מעודדת במקום שיפוטית", "תקשורת לא מילולית"], a: ["משחקי תפקידים", "כתיבת \"משפטי זהב\" לכיס"], k: "להשתמש בשלושה משפטים מעודדים במשך שבוע ולתעד תגובות." },
-  { m: "ינואר", img: "behavior", t: "גבולות והתנהגות", s: "מניעה, חיזוק חיובי ותגובה במשבר", c: ["הבנת הצורך שמאחורי ההתנהגות", "שגרות וגבולות ברורים", "הרגעה במצבי סערה"], a: ["ניתוח אירועים מהשטח", "תכנית תגובה אחידה עם הצוות"], k: "ליישם טכניקת חיזוק אחת עם ילד מסוים ולתעד שבועיים." },
-  { m: "פברואר", img: "play", t: "תמיכה בלמידה", s: "תיווך, הנגשה וקבוצה קטנה", c: ["עקרונות התיווך בלמידה", "פירוק משימה לשלבים", "הנגשה חזותית"], a: ["בניית עזר למידה פשוט", "תרגול תיווך בזוגות"], k: "להכין עזר הנגשה אחד ולהשתמש בו בגן." },
-  { m: "מרץ", img: "inclusion", t: "שילוב ילדים עם צרכים מיוחדים", s: "עבודה לפי תכנית אישית (תל\"א)", c: ["מהי תל\"א ומה תפקידי בה", "קשב, תקשורת ומוטוריקה", "עידוד עצמאות במקום עשייה במקום הילד"], a: ["מפגש עם רכזת השילוב", "ניתוח מקרה"], k: "לזהות פעולה אחת שאני עושה במקום הילד ולהפוך אותה לתרגול עצמאות." },
-  { m: "מרץ", img: "partner", t: "עבודת צוות והורים", s: "שותפות עם הגננת ומה אומרים להורים", c: ["חלוקת תפקידים ותיאום ציפיות", "שיחה מקצועית עם הצוות", "מה נכון ומה לא נכון לומר להורים"], a: ["סימולציית שיחה", "בניית \"חוזה צוות\""], k: "לקיים שיחת תיאום קצרה עם הגננת ולסכם אותה." },
-  { m: "אפריל", img: "crisis", t: "מוגנות ובטיחות", s: "מוגנות, בטיחות בחצר ועזרה ראשונה", c: ["חוזר מנכ\"ל: מוגנות וחובת דיווח", "בטיחות בחצר ובטיולים", "עזרה ראשונה בסיסית"], a: ["סדנת עזרה ראשונה עם מדריך מוסמך", "תרחישים לתרגול"], k: "לבדוק את סביבת הגן לפי רשימת בטיחות ולהעביר הערות לגננת." },
-  { m: "מאי", img: "regulation", t: "חוסן אישי", s: "שמירה על עצמי ומניעת שחיקה", c: ["סימני שחיקה ומקורות כוח", "ויסות עצמי ברגעי לחץ", "קבוצת עמיתות כמשאב"], a: ["תרגילי נשימה והרפיה", "מעגל שיתוף"], k: "לבחור דבר אחד שמטעין אותי ולשלב אותו בשגרת השבוע." },
-  { m: "יוני", img: "group", t: "סיכום והוקרה", s: "תלקיטים, משוב ותעודות", c: ["מה למדתי ומה השתנה בעבודתי", "מטרות לשנה ב׳"], a: ["הצגת תלקיטים בתחנות", "שאלון סיום", "טקס הוקרה"], k: "אין משימה. מתחילים לחשוב על שנה ב׳." }
+  { m: "אוק׳", img: "confidence", t: "מי אני כתומכת חינוך?", c: ["תפקיד תומכת החינוך בגן", "גבולות התפקיד ושותפות עם הצוות", "ציפיות מהתהליך"], a: ["מעגל היכרות", "שאלון מיפוי צרכים", "מפת \"יום בחיי תומכת\""], k: "לתעד יום עבודה אחד: מה עשיתי, מה היה קשה ומה הצליח." },
+  { m: "נוב׳", img: "needs", t: "להכיר את הילד", c: ["שלבי התפתחות ומה מצופה בכל גיל", "סימנים שכדאי לשים לב אליהם", "שונות בין ילדים"], a: ["ניתוח סרטונים קצרים", "עבודה בקבוצות לפי גיל"], k: "לבחור ילד אחד ולכתוב תצפית קצרה על חוזקה וקושי." },
+  { m: "דצמ׳", img: "communication", t: "תקשורת שמקדמת", c: ["הקשבה פעילה ושיקוף רגשות", "שפה מעודדת במקום שיפוטית", "תקשורת לא מילולית"], a: ["משחקי תפקידים", "כתיבת \"משפטי זהב\" לכיס"], k: "להשתמש בשלושה משפטים מעודדים במשך שבוע ולתעד תגובות." },
+  { m: "ינו׳", img: "behavior", t: "גבולות והתנהגות", c: ["הבנת הצורך שמאחורי ההתנהגות", "שגרות וגבולות ברורים", "הרגעה במצבי סערה"], a: ["ניתוח אירועים מהשטח", "תכנית תגובה אחידה עם הצוות"], k: "ליישם טכניקת חיזוק אחת עם ילד מסוים ולתעד שבועיים." },
+  { m: "פבר׳", img: "play", t: "תמיכה בלמידה", c: ["עקרונות התיווך בלמידה", "פירוק משימה לשלבים", "הנגשה חזותית"], a: ["בניית עזר למידה פשוט", "תרגול תיווך בזוגות"], k: "להכין עזר הנגשה אחד ולהשתמש בו בגן." },
+  { m: "מרץ", img: "inclusion", t: "שילוב ילדים עם צרכים מיוחדים", c: ["מהי תל\"א ומה תפקידי בה", "קשב, תקשורת ומוטוריקה", "עידוד עצמאות במקום עשייה במקום הילד"], a: ["מפגש עם רכזת השילוב", "ניתוח מקרה"], k: "לזהות פעולה אחת שאני עושה במקום הילד ולהפוך אותה לתרגול עצמאות." },
+  { m: "מרץ", img: "partner", t: "עבודת צוות והורים", c: ["חלוקת תפקידים ותיאום ציפיות", "שיחה מקצועית עם הצוות", "מה נכון ומה לא נכון לומר להורים"], a: ["סימולציית שיחה", "בניית \"חוזה צוות\""], k: "לקיים שיחת תיאום קצרה עם הגננת ולסכם אותה." },
+  { m: "אפר׳", img: "crisis", t: "מוגנות ובטיחות", c: ["חוזר מנכ\"ל: מוגנות וחובת דיווח", "בטיחות בחצר ובטיולים", "עזרה ראשונה בסיסית"], a: ["סדנת עזרה ראשונה עם מדריך מוסמך", "תרחישים לתרגול"], k: "לבדוק את סביבת הגן לפי רשימת בטיחות ולהעביר הערות לגננת." },
+  { m: "מאי", img: "regulation", t: "חוסן אישי", c: ["סימני שחיקה ומקורות כוח", "ויסות עצמי ברגעי לחץ", "קבוצת עמיתות כמשאב"], a: ["תרגילי נשימה והרפיה", "מעגל שיתוף"], k: "לבחור דבר אחד שמטעין אותי ולשלב אותו בשגרת השבוע." },
+  { m: "יוני", img: "group", t: "סיכום והוקרה", c: ["מה למדתי ומה השתנה בעבודתי", "מטרות לשנה ב׳"], a: ["הצגת תלקיטים", "שאלון סיום", "טקס הוקרה"], k: "ממלאות את שאלון הסיום, שממנו נבנתה תמונת המצב." }
 ];
-
-const mgrid = document.getElementById("mgrid");
+const line10 = document.getElementById("line10");
 const mdetail = document.getElementById("mdetail");
 const li = arr => "<ul>" + arr.map(v => "<li>" + v + "</li>").join("") + "</ul>";
 function showMeeting(i) {
   const x = meetings[i];
-  mgrid.querySelectorAll(".mcard").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+  line10.querySelectorAll(".node").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
   mdetail.innerHTML =
-    '<div class="dtop"><div class="pic"><img src="img/' + x.img + '.png" alt=""></div><div><div class="eyebrow">מפגש ' + (i + 1) + ' · ' + x.m + '</div><h2>' + x.t + '</h2><p class="muted">' + x.s + '</p></div></div>' +
-    '<div class="dcols"><div><h4>תכנים</h4>' + li(x.c) + '</div><div><h4>דרכי עבודה</h4>' + li(x.a) + '</div></div>' +
-    '<div class="task"><b>משימת יישום: </b>' + x.k + '</div>';
+    '<div class="pic"><img src="img/' + x.img + '.png" alt=""></div>' +
+    '<div><span class="k a">מפגש ' + (i + 1) + ' · ' + x.m + '</span><h3>' + x.t + '</h3><h4>תכנים</h4>' + li(x.c) + '</div>' +
+    '<div class="c2"><h4>דרכי עבודה</h4>' + li(x.a) + '</div>' +
+    '<div class="task"><h4>משימת יישום בגן</h4><p>' + x.k + '</p></div>';
+  mdetail.classList.remove("swap"); void mdetail.offsetWidth; mdetail.classList.add("swap");
 }
 meetings.forEach((x, i) => {
   const b = document.createElement("button");
-  b.type = "button";
-  b.className = "mcard";
-  b.innerHTML = '<div class="mhead"><span class="num">' + (i + 1) + '</span><small>' + x.m + '</small></div><h3>' + x.t + '</h3><p>' + x.s + '</p>';
+  b.type = "button"; b.className = "node";
+  b.innerHTML = '<span class="n">' + (i + 1) + '</span><small>' + x.m + '</small><b>' + x.t + '</b>';
   b.addEventListener("click", () => showMeeting(i));
-  mgrid.appendChild(b);
+  line10.appendChild(b);
 });
 showMeeting(0);
 
-/* screen navigation */
+/* screens + journey line */
 const screens = [...document.querySelectorAll(".screen")];
-const tabs = document.getElementById("screen-tabs");
-const pos = document.getElementById("pos");
-let current = 0;
+const tracks = { a: document.getElementById("track-a"), b: document.getElementById("track-b") };
+screens.forEach((s, i) => {
+  const d = document.createElement("button");
+  d.type = "button"; d.className = "dot"; d.title = s.dataset.label; d.setAttribute("aria-label", s.dataset.label);
+  d.innerHTML = "<span>" + (i + 1) + "</span>";
+  d.addEventListener("click", () => show(i));
+  tracks[s.dataset.year].appendChild(d);
+  s._dot = d;
+});
+let current = -1;
 function show(idx) {
-  current = Math.max(0, Math.min(screens.length - 1, idx));
-  const s = screens[current];
-  const year = s.dataset.year;
-  screens.forEach(el => el.hidden = el !== s);
-  document.querySelectorAll(".years button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.year === year)));
-  tabs.innerHTML = "";
-  screens.forEach((el, i) => {
-    if (el.dataset.year !== year) return;
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = el.dataset.label;
-    b.setAttribute("aria-current", String(i === current));
-    b.addEventListener("click", () => show(i));
-    tabs.appendChild(b);
+  idx = Math.max(0, Math.min(screens.length - 1, idx));
+  const dir = idx >= current ? "enter-fwd" : "enter-back";
+  current = idx;
+  const s = screens[idx];
+  screens.forEach(el => { el.hidden = el !== s; el.classList.remove("enter-fwd", "enter-back"); });
+  void s.offsetWidth; s.classList.add(dir);
+  screens.forEach((el, i) => { el._dot.classList.toggle("done", i <= idx); el._dot.classList.toggle("here", i === idx); el._dot.setAttribute("aria-current", String(i === idx)); });
+  ["a", "b"].forEach(y => {
+    const group = screens.filter(el => el.dataset.year === y);
+    const last = group.filter(el => screens.indexOf(el) <= idx).length;
+    const frac = group.length > 1 ? Math.max(0, last - 1) / (group.length - 1) : 0;
+    tracks[y].querySelector(".fill").style.width = "calc((100% - 1rem) * " + (last ? frac : 0) + ")";
   });
-  pos.textContent = "שנה " + (year === "1" ? "א׳" : "ב׳") + " · " + s.dataset.label + " · מסך " + (current + 1) + " מתוך " + screens.length;
-  document.getElementById("prev").disabled = current === 0;
-  document.getElementById("next").disabled = current === screens.length - 1;
+  const prev = document.getElementById("prev"), next = document.getElementById("next");
+  prev.disabled = idx === 0; next.disabled = idx === screens.length - 1;
+  const ps = screens[idx - 1], ns = screens[idx + 1];
+  document.getElementById("prev-name").textContent = ps ? ps.dataset.label : "";
+  document.getElementById("next-name").textContent = ns ? ns.dataset.label : "";
+  prev.className = "nb " + (ps ? ps.dataset.year : "a");
+  next.className = "nb " + (ns ? ns.dataset.year : "b");
+  document.getElementById("counter").textContent = (idx + 1) + " / " + screens.length;
   document.getElementById("stage").scrollTop = 0;
   if (location.hash !== "#" + s.id) history.replaceState(null, "", "#" + s.id);
 }
-document.querySelectorAll(".years button").forEach(b => b.addEventListener("click", () => show(screens.findIndex(s => s.dataset.year === b.dataset.year))));
 document.getElementById("prev").addEventListener("click", () => show(current - 1));
 document.getElementById("next").addEventListener("click", () => show(current + 1));
 document.addEventListener("keydown", e => {
-  if (e.target.closest && e.target.closest("input, textarea")) return;
-  if (e.key === "ArrowLeft" || e.key === "PageDown") show(current + 1);
-  if (e.key === "ArrowRight" || e.key === "PageUp") show(current - 1);
+  if (e.key === "ArrowLeft" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); show(current + 1); }
+  if (e.key === "ArrowRight" || e.key === "PageUp") { e.preventDefault(); show(current - 1); }
 });
-function fromHash() {
-  const i = screens.findIndex(s => "#" + s.id === location.hash);
-  show(i >= 0 ? i : 0);
-}
+let tx = null;
+document.getElementById("stage").addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+document.getElementById("stage").addEventListener("touchend", e => {
+  if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (Math.abs(dx) > 60) show(current + (dx > 0 ? 1 : -1));
+});
+function fromHash() { const i = screens.findIndex(s => "#" + s.id === location.hash); show(i >= 0 ? i : 0); }
 window.addEventListener("hashchange", fromHash);
 fromHash();
 </script>
