@@ -69,28 +69,33 @@ body.splash #hud,body.splash #intro{opacity:0;pointer-events:none}
 #intro .hint{display:inline-block;margin-top:2.5vh;padding:.5em 1.2em;border-radius:99px;background:#fff;color:#2a1a5e;font-weight:700;font-size:clamp(13px,1.3vw,22px);animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-8px)}}
 body.travel #intro{opacity:0;transform:translateY(-30px)}
-#hud{position:fixed;bottom:2vh;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:1.2vw;z-index:20;direction:rtl;padding:0 2vw;cursor:default;transition:opacity .5s}
-#hud .rb{all:unset;cursor:pointer;width:2.6vw;height:2.6vw;min-width:34px;min-height:34px;border-radius:50%;background:#ffffff22;backdrop-filter:blur(6px);text-align:center;display:grid;place-items:center;font-size:clamp(14px,1.2vw,22px);transition:background .2s}
-#hud .rb:hover{background:#ffffff55}
-#hud .nav{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:.5em;padding:.55em 1.3em;border-radius:99px;background:#fff;color:#2a1a5e;font-weight:900;font-size:clamp(14px,1.35vw,24px);box-shadow:0 8px 24px #0007;transition:transform .15s,box-shadow .15s;white-space:nowrap}
-#hud .nav b{font-size:1.35em;line-height:1}
-#hud .nav:hover{transform:translateY(-3px);box-shadow:0 12px 30px #000a}
-#hud .nav:active{transform:translateY(1px)}
-#hud .nav:focus-visible,#hud .rb:focus-visible{outline:3px solid #FFC857;outline-offset:3px}
-#hud .nav.next{background:linear-gradient(90deg,#FFD700,#FFC857)}
-#dots{display:flex;gap:1vw;align-items:flex-end;padding:.5em 1em;border-radius:20px;background:#120b2e88;backdrop-filter:blur(6px)}
+#hud{position:fixed;left:max(14px,1.4vw);top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px 10px 12px;width:104px;border-radius:26px;
+  background:linear-gradient(180deg,#24165acc,#120b2ee6);border:1px solid #ffffff26;box-shadow:0 18px 50px #0009,inset 0 1px 0 #ffffff1f;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);direction:rtl;cursor:default;transition:opacity .5s}
+.hsep{width:64%;height:1px;background:#ffffff26}
+#hud .nav{all:unset;cursor:pointer;display:grid;justify-items:center;gap:4px;font-weight:700;font-size:12px;letter-spacing:.02em;color:#fffd}
+#hud .nav b{display:grid;place-items:center;border-radius:50%;line-height:1;transition:transform .15s,box-shadow .2s}
+#hud .nav.next b{width:62px;height:62px;font-size:28px;background:linear-gradient(135deg,#FFE066,#FFC857 55%,#FF9F68);color:#1a1038;box-shadow:0 8px 24px #ffc85766;animation:glowp 2.4s ease-in-out infinite}
+#hud .nav.prev b{width:46px;height:46px;font-size:21px;background:#fff;color:#2a1a5e;box-shadow:0 6px 18px #0006}
+@keyframes glowp{50%{box-shadow:0 8px 36px #ffc857bb}}
+#hud .nav:hover b{transform:scale(1.08)}
+#hud .nav:active b{transform:scale(.94)}
+#hud .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#hud .rb{all:unset;cursor:pointer;width:36px;height:36px;border-radius:12px;background:#ffffff12;border:1px solid #ffffff22;display:grid;place-items:center;font-size:16px;transition:background .2s,transform .15s}
+#hud .rb:hover{background:#ffffff33;transform:translateY(-1px)}
+#hud .nav:focus-visible b,#hud .rb:focus-visible{outline:3px solid #FFC857;outline-offset:3px}
+#dots{display:flex;flex-direction:column;align-items:center;gap:9px}
 .grp{display:flex;flex-direction:column;align-items:center;gap:5px}
-.grp small{font-size:clamp(10px,.85vw,15px);font-weight:700;color:var(--gc);white-space:nowrap}
-.grp .row{display:flex;gap:.65vw;align-items:center;height:18px}
-.sep{width:2px;height:30px;border-radius:2px;background:#fff3}
-.dot{width:.9vw;height:.9vw;min-width:10px;min-height:10px;border-radius:50%;background:#fff5;cursor:pointer;transition:all .3s}
+.grp small{font-size:11px;font-weight:700;color:var(--gc);white-space:nowrap}
+.grp .row{display:flex;gap:7px;align-items:center;height:14px}
+.sep{width:40%;height:1px;background:#fff3}
+.dot{width:10px;height:10px;border-radius:50%;background:#fff5;cursor:pointer;transition:all .3s}
 .dot.visited{background:var(--c)}
-.dot.now{transform:scale(1.7);background:var(--c);box-shadow:0 0 12px var(--c)}
+.dot.now{transform:scale(1.5);background:var(--c);box-shadow:0 0 10px var(--c)}
 
 /* panels */
 .panel{position:fixed;inset:0;z-index:10;visibility:hidden;clip-path:circle(0% at 50% 50%);transition:clip-path .75s cubic-bezier(.7,0,.2,1),visibility 0s .75s;
  background:radial-gradient(circle at 28% 45%,color-mix(in srgb,var(--c) 60%,#120b2e),#120b2e 78%);
- display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:3vw;padding:6vh 6vw 13vh}
+ display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:3vw;padding:6vh 6vw 6vh calc(130px + 3vw)}
 .panel.on{visibility:visible;clip-path:circle(76% at 50% 50%);transition:clip-path .75s cubic-bezier(.7,0,.2,1),visibility 0s}
 .panel .wm{position:absolute;left:3vw;bottom:-6vh;font-size:44vh;font-weight:900;color:#fff;opacity:.06;line-height:1;pointer-events:none}
 .yearband{position:absolute;top:0;left:0;right:0;height:.8vh;background:var(--yb)}
@@ -186,11 +191,10 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:.9;transform:translateY(112vh) rotate(720deg)}}
 
 @media (max-width:820px){
-  .panel{grid-template-columns:1fr;padding:5vh 5vw 16vh;align-content:start;overflow:auto}
+  .panel{grid-template-columns:1fr;padding:5vh 5vw 5vh 118px;align-content:start;overflow:auto}
   .panel .art{width:min(80vw,40vh)}
   #intro{max-width:90vw}
-  #dots .grp small{display:none}
-  #hud .nav span{display:none}
+  #hud{transform:translateY(-50%) scale(.86);transform-origin:left center}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01s!important;animation-iteration-count:1!important}}
 </style>
@@ -411,14 +415,18 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 
 <div id="zoom" class="noadv"><img alt="סיכום שאלון הגננות"></div>
 
-<div id="hud" class="noadv">
-  <button class="nav prev" id="bPrev" title="הקודם"><b>→</b><span>הקודם</span></button>
+<div id="hud" class="noadv" aria-label="ניווט במצגת">
   <span id="dots"></span>
-  <button class="nav next" id="bNext" title="הבא"><span>הבא</span><b>←</b></button>
-  <button class="rb" id="bMap" title="מפת הדרך">🗺</button>
-  <button class="rb" id="bOpen" title="פתיח הכנס">🎉</button>
-  <button class="rb" id="bSnd" title="השתקה / צליל">🔊</button>
-  <button class="rb" id="bFs" title="מסך מלא">⛶</button>
+  <span class="hsep"></span>
+  <button class="nav next" id="bNext" title="הבא"><b>←</b>הבא</button>
+  <button class="nav prev" id="bPrev" title="הקודם"><b>→</b>הקודם</button>
+  <span class="hsep"></span>
+  <div class="tools">
+    <button class="rb" id="bMap" title="מפת הדרך">🗺</button>
+    <button class="rb" id="bOpen" title="פתיח הכנס">🎉</button>
+    <button class="rb" id="bSnd" title="השתקה / צליל">🔊</button>
+    <button class="rb" id="bFs" title="מסך מלא">⛶</button>
+  </div>
 </div>
 
 <script>
@@ -455,7 +463,7 @@ S.forEach((s,i)=>{
   else if(s.sh==='burst')el('polygon',{class:'shape',points:poly(10,R+7,-90,.72),fill:s.c},g);
   else el('polygon',{class:'shape',points:poly(s.sh,R+(s.sh<5?6:3),s.sh==4?0:-90),fill:s.c},g);
   el('text',{class:'ic',y:1},g).textContent=s.ic;
-  el('text',{class:'lbl',x:i==N-1?-105:0,y:i==N-1?6:58},g).textContent=s.l;
+  el('text',{class:'lbl',x:i==N-1?-105:0,y:i==N-1?6:i==0?-46:58},g).textContent=s.l;
   if(s.sign){
     const sg=el('g',{transform:`translate(${p.x},${p.y-78})`},$('#signs'));
     const sgi=el('g',{class:'sign'},sg);
