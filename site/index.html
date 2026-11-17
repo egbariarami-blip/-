@@ -49,6 +49,8 @@ html,body{height:100%;overflow:hidden;background:#120b2e;color:#fff;font-family:
 .sp .tag2 b{color:#FFC857}
 .go{all:unset;cursor:pointer;margin-top:1vh;padding:.6em 1.8em;border-radius:99px;background:linear-gradient(90deg,#FFD700,#FF9F68);color:#1a1038;font-weight:900;font-size:clamp(17px,2vw,34px);box-shadow:0 10px 40px #ff9f6888;
   opacity:0;animation:fadeD .6s 3.8s ease forwards,throb 1.4s 4.4s ease-in-out infinite}
+.snd{all:unset;cursor:pointer;font-size:clamp(12px,1.1vw,18px);font-weight:700;padding:.35em 1em;border-radius:99px;background:#ffffff1f;border:1px solid #ffffff55;opacity:0;animation:fadeD .6s 4s ease forwards}
+.snd:hover{background:#ffffff38}
 .go:focus-visible{outline:3px solid #fff;outline-offset:4px}
 @keyframes fadeD{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
 @keyframes boom{0%{opacity:0;transform:scale(.2) rotate(-6deg)}60%{opacity:1}100%{opacity:1;transform:none}}
@@ -227,13 +229,13 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 </svg>
 
 <!-- opener -->
-<div id="splash" class="noadv" role="dialog" aria-label="כנס פתיחה שנה ב׳">
+<div id="splash" class="noadv" role="dialog" aria-label="כנס פתיחה">
   <canvas id="fx"></canvas>
   <div class="rays"></div>
   <div class="sp">
     <div class="who">מרכז פסג"ה דבוריה · תומכות החינוך בגנים</div>
     <h1>כנס פתיחה</h1>
-    <span class="yr">שנה ב׳ · תשפ"ז</span>
+    <span class="yr">תשפ"ז</span>
     <div class="date" aria-label="26.11.26">
       <span style="--d:1.5s">2</span><span style="--d:1.6s">6</span><span class="dotsep" style="--d:1.7s">.</span>
       <span style="--d:1.8s">1</span><span style="--d:1.9s">1</span><span class="dotsep" style="--d:2s">.</span>
@@ -247,13 +249,13 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
     </div>
     <div class="tag2">ארבעה יישובים, <b>מטרה אחת</b>: ממשיכים יחד אל הפסגה</div>
     <button class="go" id="go" type="button">יוצאים לדרך ←</button>
+    <button class="snd" id="sndOn" type="button">🔊 הפעלת צליל</button>
   </div>
 </div>
 
 <div id="intro">
   <h1>הדרך אל <b>הפסגה</b></h1>
   <p>קידום תהליכי פיתוח מקצועי לתומכות חינוך · מרכז פסג"ה דבוריה</p>
-  <div class="yrs"><span style="background:#7BD389">שנה א׳ · התחלה</span><span style="background:#FFE066">←</span><span style="background:#FF9F68">שנה ב׳ · כנס פתיחה 26.11.26</span></div>
   <span class="hint">👆 לחיצה, ויוצאים לדרך</span>
 </div>
 
@@ -383,39 +385,6 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
   </div>
 </section>
 
-<!-- 7 year B opening conference -->
-<section class="panel" style="--c:#FF9F68" id="conf">
-  <span class="yearband" style="--yb:#FF9F68"></span>
-  <span class="wm">ב</span>
-  <div>
-    <span class="tag in">שנה ב׳ · תשפ"ז · ממשיכים 🎉</span>
-    <h2 class="in" style="--d:.15s">כנס פתיחה שנה ב׳</h2>
-    <div class="in" style="--d:.35s"><span class="bigdate">26.11.26</span></div>
-    <ul>
-      <li class="in" style="--d:.55s">📍 <mark>ארבעה יישובים</mark>: דבוריה, אכסאל, שיבלי ואום אל־ע׳נם</li>
-      <li class="in" style="--d:.75s">🤝 יחד עם <mark>שותפי התפקיד והמפקחים</mark></li>
-    </ul>
-  </div>
-  <div class="art">
-    <svg class="hub" viewBox="0 0 400 400">
-      <defs><radialGradient id="hubg"><stop offset="0" stop-color="#FFF3B0"/><stop offset="1" stop-color="#FFC857"/></radialGradient></defs>
-      <path class="ln" style="--d:.9s" d="M85 85 L200 200"/>
-      <path class="ln" style="--d:1.05s" d="M315 85 L200 200"/>
-      <path class="ln" style="--d:1.2s" d="M85 315 L200 200"/>
-      <path class="ln" style="--d:1.35s" d="M315 315 L200 200"/>
-      <circle r="7" fill="#FFD700"><animateMotion dur="2.4s" repeatCount="indefinite" path="M85 85 L200 200"/></circle>
-      <circle r="7" fill="#FFD700"><animateMotion dur="2.4s" begin=".6s" repeatCount="indefinite" path="M315 85 L200 200"/></circle>
-      <circle r="7" fill="#FFD700"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M85 315 L200 200"/></circle>
-      <circle r="7" fill="#FFD700"><animateMotion dur="2.4s" begin="1.8s" repeatCount="indefinite" path="M315 315 L200 200"/></circle>
-      <g class="nd" style="--d:.2s"><circle class="node" cx="315" cy="85" r="58" style="fill:#7BD389"/><text x="315" y="92" font-size="22" style="fill:#1a1038">דבוריה</text></g>
-      <g class="nd" style="--d:.35s"><circle class="node" cx="85" cy="85" r="58" style="fill:#4ECDC4"/><text x="85" y="92" font-size="22" style="fill:#1a1038">אכסאל</text></g>
-      <g class="nd" style="--d:.5s"><circle class="node" cx="315" cy="315" r="58" style="fill:#FFC857"/><text x="315" y="322" font-size="22" style="fill:#1a1038">שיבלי</text></g>
-      <g class="nd" style="--d:.65s"><circle class="node" cx="85" cy="315" r="58" style="fill:#FF9F68"/><text x="85" y="310" font-size="19" style="fill:#1a1038">אום</text><text x="85" y="334" font-size="19" style="fill:#1a1038">אל־ע׳נם</text></g>
-      <g class="nd" style="--d:1.6s"><circle class="node core-n" cx="200" cy="200" r="66"/><text x="200" y="192" font-size="22" style="fill:#1a1038">כנס</text><text x="200" y="220" font-size="22" style="fill:#1a1038">פתיחה</text></g>
-    </svg>
-  </div>
-</section>
-
 <!-- 8 summit -->
 <section class="panel" style="--c:#FFD700" id="summit">
   <div>
@@ -424,7 +393,7 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
     <ul>
       <li class="in" style="--d:.4s">🧭 הובלת תהליך <mark>מערכתי ורב־שותפים</mark> בארבעה יישובים</li>
       <li class="in" style="--d:.6s">🎙 תכנון שנשען על <mark>קול השטח</mark>: הגננות ותומכות החינוך</li>
-      <li class="in" style="--d:.8s">🤝 <mark>שותפויות ורצף עבודה</mark> בין הרשויות, משנה א׳ לשנה ב׳</li>
+      <li class="in" style="--d:.8s">🤝 יצירת <mark>שותפויות ורצף עבודה</mark> בין הרשויות</li>
       <li class="in" style="--d:1s">✅ הבטחת <mark>איכות, הערכה ושיפור מתמיד</mark></li>
       <li class="in" style="--d:1.2s">🌟 תהליך מתמשך בעל <mark>השפעה</mark> על עבודת תומכות החינוך בגנים</li>
     </ul>
@@ -448,6 +417,7 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
   <button class="nav next" id="bNext" title="הבא"><span>הבא</span><b>←</b></button>
   <button class="rb" id="bMap" title="מפת הדרך">🗺</button>
   <button class="rb" id="bOpen" title="פתיח הכנס">🎉</button>
+  <button class="rb" id="bSnd" title="השתקה / צליל">🔊</button>
   <button class="rb" id="bFs" title="מסך מלא">⛶</button>
 </div>
 
@@ -455,15 +425,14 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 const NS='http://www.w3.org/2000/svg', $=s=>document.querySelector(s);
 const S=[
  {t:.08,c:'#FF6B6B',ic:'1',l:'קשר עם המועצה',sh:6,g:'prep'},
- {t:.21,c:'#4ECDC4',ic:'2',l:'מיפוי ואיתור צורך',sh:4,g:'prep'},
- {t:.34,c:'#C77DFF',ic:'3',l:'בחירת מובילות',sh:'star',g:'prep'},
- {t:.47,c:'#5DA9FF',ic:'4',l:'תכנית עבודה',sh:'sq',g:'prep'},
- {t:.60,c:'#7BD389',ic:'🌱',l:'יוצאים לדרך',sh:3,g:'a',sign:'שנה א׳'},
- {t:.72,c:'#4FC3A1',ic:'🎙',l:'קול השטח',sh:5,g:'a'},
- {t:.85,c:'#FF9F68',ic:'🎉',l:'כנס פתיחה 26.11',sh:'star',g:'b',sign:'שנה ב׳'},
+ {t:.23,c:'#4ECDC4',ic:'2',l:'מיפוי ואיתור צורך',sh:4,g:'prep'},
+ {t:.38,c:'#C77DFF',ic:'3',l:'בחירת מובילות',sh:'star',g:'prep'},
+ {t:.53,c:'#5DA9FF',ic:'4',l:'תכנית עבודה',sh:'sq',g:'prep'},
+ {t:.68,c:'#7BD389',ic:'🌱',l:'יוצאים לדרך',sh:3,g:'a',sign:'שנה א׳'},
+ {t:.83,c:'#4FC3A1',ic:'🎙',l:'קול השטח',sh:5,g:'a'},
  {t:1,  c:'#FFD700',ic:'🚩',l:'הערך המוסף',sh:'burst',g:'end'}
 ];
-const G={prep:['הכנה','#ffffffcc'],a:['שנה א׳','#7BD389'],b:['שנה ב׳','#FF9F68'],end:['פסגה','#FFD700']};
+const G={prep:['הכנה','#ffffffcc'],a:['שנה א׳','#7BD389'],end:['פסגה','#FFD700']};
 const N=S.length, road=$('#road'), L=road.getTotalLength(), world=$('#world');
 const panels=[...document.querySelectorAll('.panel')];
 const pt=t=>road.getPointAtLength(t*L);
@@ -523,7 +492,7 @@ for(let i=0;i<10;i++){const b=document.createElement('i');b.className='bar';b.st
 const cols=['#FF6B6B','#4ECDC4','#FFC857','#C77DFF','#5DA9FF','#7BD389','#fff'];
 function confetti(host,n){for(let i=0;i<n;i++){const c=document.createElement('i');c.className='conf';
   c.style.cssText=`left:${Math.random()*100}%;background:${cols[i%7]};--t:${3+Math.random()*3}s;--d:${Math.random()*4}s;border-radius:${i%3?2:50}px`;host.appendChild(c)}}
-confetti($('#summit'),40); confetti($('#conf'),30); confetti($('#splash'),36);
+confetti($('#summit'),40); confetti($('#splash'),36);
 
 // camera
 let cam={x:800,y:450,z:1};
@@ -544,18 +513,64 @@ async function goTo(i){
   if(busy||i<0||i>=N)return; busy=true;
   await closePanel(); document.body.classList.add('travel');
   const t0=tCur,t1=S[i].t,c0={...cam},d=1000+Math.abs(t1-t0)*3200;
+  sfx.whoosh(d/1000);
   await tween(d,k=>{const p=place(lerp(t0,t1,k)),m=Math.min(1,k*2.5);setCam(lerp(c0.x,p.x,m),lerp(c0.y,p.y,m),lerp(c0.z,2.3,m))});
   cur=i; mark();
   const z0=cam.z; await tween(480,k=>setCam(S[i].x,S[i].y,lerp(z0,7,k)));
   panels[i].classList.add('on'); open=i; busy=false;
+  if(i===N-1){sfx.fanfare();[300,900,1500].forEach(ms=>setTimeout(()=>sfx.pop(),ms))} else sfx.chime();
 }
 async function showMap(){
   if(busy)return; busy=true; await closePanel();
-  const c0={...cam}; await tween(1000,k=>setCam(lerp(c0.x,800,k),lerp(c0.y,450,k),lerp(c0.z,1,k)));
+  sfx.whoosh(1); const c0={...cam}; await tween(1000,k=>setCam(lerp(c0.x,800,k),lerp(c0.y,450,k),lerp(c0.z,1,k)));
   document.body.classList.remove('travel'); busy=false;
 }
 function next(){ if(cur>=N-1){ if(open>=0) showMap(); else goTo(N-1); } else goTo(cur+1) }
 function prev(){ if(cur>0) goTo(cur-1); else showMap() }
+
+/* ---------- sound (Web Audio, synthesized) ---------- */
+const sfx=(()=>{
+  let ac=null, master=null, muted=false;
+  try{muted=localStorage.getItem('psagah-muted')==='1'}catch(e){}
+  function ctx(){
+    if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();master=ac.createGain();master.gain.value=muted?0:.55;master.connect(ac.destination)}
+    if(ac.state==='suspended')ac.resume();
+    return ac;
+  }
+  function noiseBuf(sec){const b=ac.createBuffer(1,ac.sampleRate*sec,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
+  function tone(f,t0,dur,type='triangle',vol=.25,dest=master){
+    const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;
+    g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol,t0+.02);g.gain.exponentialRampToValueAtTime(.001,t0+dur);
+    o.connect(g);g.connect(dest);o.start(t0);o.stop(t0+dur+.05);
+  }
+  const api={
+    unlock(){ctx()},
+    get muted(){return muted},
+    toggle(){muted=!muted;try{localStorage.setItem('psagah-muted',muted?'1':'0')}catch(e){}if(ctx())master.gain.setTargetAtTime(muted?0:.55,ac.currentTime,.05);return muted},
+    pop(){ if(!ac||muted)return; const t=ac.currentTime;
+      const n=ac.createBufferSource();n.buffer=noiseBuf(.6);const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(2200,t);f.frequency.exponentialRampToValueAtTime(200,t+.5);
+      const g=ac.createGain();g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.55);n.connect(f);f.connect(g);g.connect(master);n.start(t);
+      for(let i=0;i<7;i++){const c=ac.createBufferSource();c.buffer=noiseBuf(.03);const cg=ac.createGain();const tt=t+.25+Math.random()*.5;cg.gain.setValueAtTime(.18,tt);cg.gain.exponentialRampToValueAtTime(.001,tt+.03);const hp=ac.createBiquadFilter();hp.type='highpass';hp.frequency.value=3000;c.connect(hp);hp.connect(cg);cg.connect(master);c.start(tt)}
+    },
+    whoosh(sec=1.2){ if(!ctx()||muted)return; const t=ac.currentTime;
+      const n=ac.createBufferSource();n.buffer=noiseBuf(sec+.2);const f=ac.createBiquadFilter();f.type='bandpass';f.Q.value=1.2;
+      f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(1800,t+sec*.6);f.frequency.exponentialRampToValueAtTime(500,t+sec);
+      const g=ac.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.35,t+sec*.5);g.gain.linearRampToValueAtTime(0,t+sec);
+      n.connect(f);f.connect(g);g.connect(master);n.start(t);n.stop(t+sec+.1);
+    },
+    chime(){ if(!ctx()||muted)return; const t=ac.currentTime;
+      [523.25,659.25,783.99,1046.5].forEach((f,i)=>{tone(f,t+i*.07,.9,'sine',.16);tone(f*2,t+i*.07,.5,'triangle',.04)});
+    },
+    fanfare(){ if(!ctx()||muted)return; const t=ac.currentTime+.02;
+      const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;lp.connect(master);
+      const seq=[[392,0,.16],[392,.18,.16],[523.25,.36,.16],[659.25,.54,.5],[523.25,1.06,.18],[783.99,1.26,1.1]];
+      seq.forEach(([f,o,d])=>{tone(f,t+o,d+.15,'sawtooth',.12,lp);tone(f/2,t+o,d+.15,'square',.05,lp)});
+      tone(1046.5,t+1.26,1.2,'triangle',.08);
+      const n=ac.createBufferSource();n.buffer=noiseBuf(.2);const g=ac.createGain();g.gain.setValueAtTime(.35,t+1.26);g.gain.exponentialRampToValueAtTime(.001,t+1.45);const hp=ac.createBiquadFilter();hp.type='highpass';hp.frequency.value=5000;n.connect(hp);hp.connect(g);g.connect(master);n.start(t+1.26);
+    }
+  };
+  return api;
+})();
 
 /* ---------- opener ---------- */
 const splash=$('#splash'), fx=$('#fx'), ctx=fx.getContext('2d');
@@ -568,7 +583,7 @@ function loop(ts){
   const W=fx.width,H=fx.height,r=devicePixelRatio;
   ctx.globalCompositeOperation='destination-out';ctx.fillStyle='rgba(0,0,0,.22)';ctx.fillRect(0,0,W,H);
   ctx.globalCompositeOperation='lighter';
-  if(ts-lastBurst>650){lastBurst=ts;burst(W*(.12+Math.random()*.76),H*(.12+Math.random()*.4))}
+  if(ts-lastBurst>650){lastBurst=ts;burst(W*(.12+Math.random()*.76),H*(.12+Math.random()*.4));if(!splash.classList.contains('out'))sfx.pop()}
   parts=parts.filter(p=>p.life>0);
   for(const p of parts){p.x+=p.vx*r;p.y+=p.vy*r;p.vy+=.06;p.vx*=.985;p.life-=.012;
     ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,2.4*r,0,7);ctx.fill()}
@@ -576,16 +591,17 @@ function loop(ts){
 }
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function startFx(){fxOn=!reduce;parts=[];if(fxOn)requestAnimationFrame(loop)}
-function closeSplash(){if(splash.classList.contains('out'))return;splash.classList.add('out');document.body.classList.remove('splash');setTimeout(()=>{fxOn=false},900)}
+function closeSplash(){if(splash.classList.contains('out'))return;sfx.unlock();sfx.fanfare();splash.classList.add('out');document.body.classList.remove('splash');setTimeout(()=>{fxOn=false},900)}
 function openSplash(){
   if(busy)return; closePanel();
   splash.classList.remove('out');document.body.classList.add('splash');
   // restart CSS animations
   splash.querySelectorAll('.sp *').forEach(e=>{e.style.animation='none';void e.offsetWidth;e.style.animation=''});
-  startFx();
+  startFx();sfx.unlock();setTimeout(()=>sfx.fanfare(),500);
 }
 startFx();
 $('#go').onclick=e=>{e.stopPropagation();closeSplash()};
+$('#sndOn').onclick=e=>{e.stopPropagation();sfx.unlock();if(sfx.muted){sfx.toggle();bSnd.textContent='🔊'}sfx.fanfare();e.currentTarget.textContent='🔊 הצליל פועל'};
 splash.addEventListener('click',closeSplash);
 
 document.addEventListener('click',e=>{if(e.target.closest('.noadv'))return;next()});
@@ -596,9 +612,12 @@ document.addEventListener('keydown',e=>{
   else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(e.key)){e.preventDefault();prev()}
   else if(e.key==='Escape'||e.key==='Home'||e.key==='m')showMap();
   else if(e.key==='f')fs();
+  else if(e.key==='s')bSnd.click();
 });
 const fs=()=>{try{(document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()).catch(()=>{})}catch(e){}};
 $('#bNext').onclick=next; $('#bPrev').onclick=prev; $('#bMap').onclick=showMap; $('#bFs').onclick=fs; $('#bOpen').onclick=openSplash;
+const bSnd=$('#bSnd');bSnd.textContent=sfx.muted?'🔇':'🔊';bSnd.onclick=()=>{bSnd.textContent=sfx.toggle()?'🔇':'🔊';sfx.chime()};
+document.addEventListener('pointerdown',()=>sfx.unlock(),{once:true});
 
 // survey image
 const slot=$('#slot'), zoom=$('#zoom');
