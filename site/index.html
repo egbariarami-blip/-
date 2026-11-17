@@ -161,7 +161,19 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 .slot{position:absolute;inset:2% 0;border-radius:24px;border:4px dashed #fff8;background:#0003;display:grid;place-items:center;text-align:center;overflow:hidden;cursor:pointer;font-size:clamp(14px,1.5vw,26px);padding:1em;line-height:1.6}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
 .slot.filled{border-style:solid;border-color:#fff;box-shadow:0 20px 60px #0008;cursor:zoom-in}
-.panel.voice .art{width:min(46vw,90vh);aspect-ratio:16/9}
+.panel.voice .art{width:min(46vw,90vh);aspect-ratio:16/9;transform:translateY(-9vh)}
+.chart{all:unset;position:absolute;left:-5%;bottom:-40%;width:50%;aspect-ratio:780/577;background:#fff;border-radius:16px;border:4px solid #FFC857;box-shadow:0 22px 50px #000b;cursor:zoom-in;transform:rotate(-3deg)}
+.chart img{width:100%;height:100%;object-fit:contain;border-radius:12px;display:block}
+.chart .badge2{position:absolute;top:-16px;right:-16px;background:#FFC857;color:#1a1038;font-weight:900;padding:.3em .9em;border-radius:99px;font-size:clamp(12px,1.15vw,20px);box-shadow:0 6px 18px #0007;white-space:nowrap}
+.chart:hover{transform:rotate(0) scale(1.03)}
+.chart:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.panel.on .chart{animation:chartIn .9s 1.5s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes chartIn{from{opacity:0;transform:translateY(80px) rotate(-14deg) scale(.5)}to{opacity:1;transform:rotate(-3deg)}}
+.stat{display:flex;align-items:center;gap:1vw;margin-top:1.6vh;padding:.55em 1em;border-radius:16px;background:#ffffff14;border-right:6px solid #FFC857}
+.stat b{font-size:clamp(30px,4.2vw,72px);font-weight:900;color:#FFC857;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat b::after{content:'%'}
+.stat span{font-size:clamp(13px,1.35vw,24px);display:grid;gap:.2em;line-height:1.3}
+.stat small{opacity:.78;font-size:.78em}
 .voices{display:grid;gap:1.6vh}
 .vg{display:grid;gap:.6vh}
 .vg h3{font-size:clamp(16px,1.9vw,34px);font-weight:900;display:flex;align-items:center;gap:.4em}
@@ -378,13 +390,14 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
         <div><span class="q in" style="--d:1.3s">באיזה תחום תרצו להתפתח?</span></div>
       </div>
     </div>
-    <p class="in" style="--d:1.6s;margin-top:1.2vh;font-size:clamp(12px,1.1vw,20px);opacity:.75">לחיצה על התמונה מגדילה אותה</p>
+    <div class="stat in" style="--d:1.6s"><b class="cnt" data-to="89.4">0</b><span>מתומכות החינוך רוצות <mark>להמשיך ללמוד</mark> במסלולי פיתוח מקצועי נוספים<small>דירוג 5 מתוך 5 · ממוצע 4.78 · 85 משיבות</small></span></div>
   </div>
   <div class="art in" style="--d:.5s">
     <label class="slot noadv" id="slot">
       <input type="file" accept="image/*" hidden id="pick">
       <span>🖼️<br>כאן תופיע תמונת סיכום השאלון<br><small>לחיצה לבחירת תמונה</small></span>
     </label>
+    <button class="chart noadv" id="chart" type="button" aria-label="הגדלת תוצאות סקר תומכות החינוך"><img src="survey-supporters.jpg" alt="סקר תומכות החינוך: ארצה להשתתף במסלולי פיתוח מקצועי נוספים בעתיד. 85 תגובות, ממוצע 4.78, 89.4% דירגו 5"><span class="badge2">🙋‍♀️ 89.4% רוצות להמשיך</span></button>
   </div>
 </section>
 
@@ -525,6 +538,7 @@ async function goTo(i){
   cur=i; mark();
   const z0=cam.z; await tween(480,k=>setCam(S[i].x,S[i].y,lerp(z0,7,k)));
   panels[i].classList.add('on'); open=i; busy=false;
+  panels[i].querySelectorAll('.cnt').forEach(c=>{const to=+c.dataset.to;c.textContent='0';setTimeout(()=>tween(1400,k=>{c.textContent=(to*k).toFixed(1)}),1600)});
   if(i===N-1){sfx.fanfare();[300,900,1500].forEach(ms=>setTimeout(()=>sfx.pop(),ms))} else sfx.chime();
 }
 async function showMap(){
@@ -629,7 +643,8 @@ const slot=$('#slot'), zoom=$('#zoom');
 function setImg(src){let im=slot.querySelector('img');if(!im){im=new Image();im.alt='סיכום שאלון הגננות';slot.appendChild(im)}im.src=src;slot.classList.add('filled');zoom.querySelector('img').src=src}
 const probe=new Image();probe.onload=()=>setImg(probe.src);probe.src='survey.jpg';
 $('#pick').onchange=e=>{const f=e.target.files[0];if(f)setImg(URL.createObjectURL(f))};
-slot.addEventListener('click',e=>{if(slot.classList.contains('filled')){e.preventDefault();zoom.classList.add('on')}});
+slot.addEventListener('click',e=>{if(slot.classList.contains('filled')){e.preventDefault();zoom.querySelector('img').src=slot.querySelector('img').src;zoom.classList.add('on')}});
+$('#chart').addEventListener('click',e=>{e.stopPropagation();zoom.querySelector('img').src='survey-supporters.jpg';zoom.classList.add('on')});
 zoom.addEventListener('click',()=>zoom.classList.remove('on'));
 </script>
 </body>
