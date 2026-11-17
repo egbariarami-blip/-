@@ -199,7 +199,7 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01s!important;animation-iteration-count:1!important}}
 </style>
 </head>
-<body class="splash">
+<body>
 
 <svg id="world" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
   <defs>
@@ -233,11 +233,11 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
 </svg>
 
 <!-- opener -->
-<div id="splash" class="noadv" role="dialog" aria-label="כנס פתיחה">
+<div id="splash" class="noadv out" role="dialog" aria-label="כנס פתיחה">
   <canvas id="fx"></canvas>
   <div class="rays"></div>
   <div class="sp">
-    <div class="who">מרכז פסג"ה דבוריה · תומכות החינוך בגנים</div>
+    <div class="who">סיימנו את שנה א׳ · מרכז פסג"ה דבוריה מזמין</div>
     <h1>כנס פתיחה</h1>
     <span class="yr">תשפ"ז</span>
     <div class="date" aria-label="26.11.26">
@@ -252,8 +252,7 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
       <span class="town" style="--k:#FF9F68;--x:-60vw;--y:40vh;--r:-30deg;--d:3.1s">📍 אום אל־ע׳נם</span>
     </div>
     <div class="tag2">ארבעה יישובים, <b>מטרה אחת</b>: ממשיכים יחד אל הפסגה</div>
-    <button class="go" id="go" type="button">יוצאים לדרך ←</button>
-    <button class="snd" id="sndOn" type="button">🔊 הפעלת צליל</button>
+    <button class="go" id="go" type="button">ממשיכים יחד ←</button>
   </div>
 </div>
 
@@ -423,7 +422,7 @@ body.travel #intro{opacity:0;transform:translateY(-30px)}
   <span class="hsep"></span>
   <div class="tools">
     <button class="rb" id="bMap" title="מפת הדרך">🗺</button>
-    <button class="rb" id="bOpen" title="פתיח הכנס">🎉</button>
+    <button class="rb" id="bOpen" title="כנס הפתיחה">🎉</button>
     <button class="rb" id="bSnd" title="השתקה / צליל">🔊</button>
     <button class="rb" id="bFs" title="מסך מלא">⛶</button>
   </div>
@@ -533,7 +532,7 @@ async function showMap(){
   sfx.whoosh(1); const c0={...cam}; await tween(1000,k=>setCam(lerp(c0.x,800,k),lerp(c0.y,450,k),lerp(c0.z,1,k)));
   document.body.classList.remove('travel'); busy=false;
 }
-function next(){ if(cur>=N-1){ if(open>=0) showMap(); else goTo(N-1); } else goTo(cur+1) }
+function next(){ if(cur>=N-1){ if(open>=0) openSplash(); else goTo(N-1); } else goTo(cur+1) }
 function prev(){ if(cur>0) goTo(cur-1); else showMap() }
 
 /* ---------- sound (Web Audio, synthesized) ---------- */
@@ -599,7 +598,7 @@ function loop(ts){
 }
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function startFx(){fxOn=!reduce;parts=[];if(fxOn)requestAnimationFrame(loop)}
-function closeSplash(){if(splash.classList.contains('out'))return;sfx.unlock();sfx.fanfare();splash.classList.add('out');document.body.classList.remove('splash');setTimeout(()=>{fxOn=false},900)}
+function closeSplash(){if(splash.classList.contains('out'))return;splash.classList.add('out');document.body.classList.remove('splash');setTimeout(()=>{fxOn=false},900);showMap()}
 function openSplash(){
   if(busy)return; closePanel();
   splash.classList.remove('out');document.body.classList.add('splash');
@@ -607,9 +606,7 @@ function openSplash(){
   splash.querySelectorAll('.sp *').forEach(e=>{e.style.animation='none';void e.offsetWidth;e.style.animation=''});
   startFx();sfx.unlock();setTimeout(()=>sfx.fanfare(),500);
 }
-startFx();
 $('#go').onclick=e=>{e.stopPropagation();closeSplash()};
-$('#sndOn').onclick=e=>{e.stopPropagation();sfx.unlock();if(sfx.muted){sfx.toggle();bSnd.textContent='🔊'}sfx.fanfare();e.currentTarget.textContent='🔊 הצליל פועל'};
 splash.addEventListener('click',closeSplash);
 
 document.addEventListener('click',e=>{if(e.target.closest('.noadv'))return;next()});
