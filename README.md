@@ -1,11 +1,32 @@
-<div align="center">
+# WISC-IV HEB — تطبيق ويندوز
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+تطبيق سطح مكتب لويندوز لنظام تقييم WISC-IV HEB (مشروع د. نزيه ناطور).
+التطبيق بيفتح النظام الموجود على الإنترنت (`https://wisc-nazeeh.vercel.app`) في نافذة خاصة فيه، بدون متصفح:
 
-  <h1>Built with AI Studio</h2>
+- أيقونة على سطح المكتب وفي قائمة ابدأ.
+- تنزيل تقارير Word (.docx): بيسألك وين تحفظ، وبعدها بيعرض فتح الملف.
+- طباعة (Ctrl+P)، تحديث (F5)، تكبير وتصغير.
+- إذا ما في إنترنت، بتظهر صفحة "لا يوجد اتصال" مع زر "حاول مجددًا".
+- البيانات بتضل بقاعدة البيانات تبعت النظام، فكل جهاز بيشوف نفس الطلاب.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## تنزيل ملف التثبيت
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+1. افتح تبويب **Actions** في المستودع على GitHub ← **Build Windows app** ← آخر تشغيل ناجح.
+2. نزّل **WISC-Windows** من قسم Artifacts (ملف zip).
+3. جوّاه في ملفين:
+   - `WISC-Setup-1.0.0.exe`: ملف التثبيت (بيعمل أيقونة على سطح المكتب).
+   - `WISC-Portable-1.0.0.exe`: نسخة بتشتغل مباشرة بدون تثبيت.
 
-</div>
+> إذا ظهرت رسالة Windows SmartScreen: اضغط **More info** ← **Run anyway** (الملف مش موقّع رقميًا).
+
+## تغيير عنوان النظام
+
+العنوان موجود بملف `config.json` (`appUrl`). بعد ما تغيّره، شغّل البناء مرة ثانية.
+
+## تطوير
+
+```bash
+npm install
+npm start        # تشغيل التطبيق
+npm run dist     # بناء ملف التثبيت (على ويندوز)
+```

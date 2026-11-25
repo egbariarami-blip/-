@@ -1,0 +1,51 @@
+{
+  "name": "wisc-desktop",
+  "productName": "WISC-IV HEB",
+  "version": "1.0.0",
+  "description": "מערכת אבחונים WISC-IV HEB — ד\"ר נזיה נאטור (אפליקציית Windows)",
+  "main": "main.js",
+  "author": "Rami Egbaria",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.ramico.wisc",
+    "productName": "WISC-IV HEB",
+    "copyright": "Rami Egbaria",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "offline.html",
+      "config.json",
+      "build/icon.png"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "artifactName": "WISC-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "WISC-Portable-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WISC-IV HEB",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    }
+  }
+}

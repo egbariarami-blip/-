@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>WISC-IV HEB</title>
+<style>
+  body { margin:0; height:100vh; display:flex; align-items:center; justify-content:center;
+         font-family: "Segoe UI", Arial, sans-serif; background:#f8fafc; color:#0f172a; }
+  .card { text-align:center; background:#fff; padding:40px 48px; border-radius:16px;
+          box-shadow:0 10px 30px rgba(15,23,42,.08); max-width:440px; }
+  h1 { font-size:22px; margin:0 0 12px; }
+  p { color:#475569; line-height:1.6; margin:0 0 24px; }
+  button { background:#1e40af; color:#fff; border:0; border-radius:10px; padding:12px 28px;
+           font-size:16px; cursor:pointer; }
+  button:hover { background:#1e3a8a; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>אין חיבור למערכת</h1>
+    <p>המערכת עובדת דרך האינטרנט. בדקו את החיבור ונסו שוב.<br>
+       لا يوجد اتصال بالإنترنت — تأكد من الاتصال وحاول مرة أخرى.</p>
+    <button onclick="window.wiscDesktop.retry()">נסה שוב · حاول مجددًا</button>
+  </div>
+</body>
+</html>
